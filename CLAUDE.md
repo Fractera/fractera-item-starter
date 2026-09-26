@@ -100,8 +100,10 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
   baked into the build: a corrected paragraph shows up within those five minutes without a rebuild. Code changes still
   need a rebuild.
 - **The site works without the internet.** Once drawn, a page is a file on this machine; nothing on it may depend on a
-  remote service to appear. Known gap, named so it is not mistaken for done: design fonts are still linked from
-  `fonts.googleapis.com` — offline the page opens with the system font (node step 315 will serve fonts from the node).
+  remote service to appear. Design fonts included (node step 315): `scripts/local-fonts.mjs` copies the `@fontsource*`
+  files listed in `lib/design/local-fonts.json` into `public/fonts/` before every build, and `lib/design-css.ts` links
+  `/fonts/<slug>.css` by family name. A new catalogue font = a row in that table + its npm package; the script fails the
+  build if a catalogue family has no files.
 - **The five-minute mechanism** (Next 16.2, from its own docs in `node_modules/next/dist/docs`): in the classic mode this
   template uses today, `export const revalidate = 300` with `generateStaticParams` returning `[]` and `dynamicParams`
   left on. Under Cache Components the same is `cacheLife({ revalidate: 300 })` — note that the `'minutes'` preset
