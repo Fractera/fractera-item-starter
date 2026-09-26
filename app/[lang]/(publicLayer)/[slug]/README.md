@@ -17,4 +17,5 @@ on any route file outside its closed list. Skill: `.claude/skills/use-page-tree`
 
 Pages are static: the build draws only the roots; a child is drawn on its first visit and refreshed every five minutes
 (`revalidate = 300`). Texts are JSON read at run time (`lib/page-tree.ts`, `ELEMENT_DIR`): a corrected paragraph shows
-up within five minutes without a rebuild. Every page has `en.json` (required) and `ru.json`; no visible string in code.
+up within five minutes without a rebuild — or at once after `npm run pages:refresh`, which the agent runs after every
+text change before telling the person the change is live. Every page has `en.json` (required) and `ru.json`; no visible string in code.
