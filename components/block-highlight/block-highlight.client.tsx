@@ -107,7 +107,9 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
       const r = anchor.getBoundingClientRect()
       // Блок выше окна — его начало у верхнего края, а не середина.
       const gap = r.height < window.innerHeight ? (window.innerHeight - r.height) / 2 : 16
-      window.scrollTo({ top: Math.max(0, window.scrollY + r.top - gap) })
+      // 🛑 `behavior: "instant"` обязателен: у `<html>` стоит `scroll-smooth`, а плавная прокрутка в браузере владельца
+      // не доходит до места — окно оставалось наверху, хотя блок «найден» (замерено 318-2; безголовый Chrome докручивал).
+      window.scrollTo({ top: Math.max(0, window.scrollY + r.top - gap), behavior: "instant" })
       for (const t of flashTimers.current) window.clearTimeout(t)
       const rect = boxOf(el)
       if (!rect) return
