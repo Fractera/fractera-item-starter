@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import type { BlockHighlightWords } from "./block-highlight.i18n"
 
 // ПОДСВЕТКА БЛОКОВ В РЕЖИМЕ АРХИТЕКТОРА (node step 317-3). Образец — FineTuneOverlay сайта 22slots: рамка поверх блока,
@@ -18,6 +18,9 @@ import type { BlockHighlightWords } from "./block-highlight.i18n"
 type Target = { rect: DOMRect; bid: string; kind: string; page: string; file: string }
 
 const LOCAL = new Set(["localhost", "127.0.0.1", "[::1]"])
+// Слово владельца 2026-09-26: «блок подсвечивается на 3 секунды а потом тухнет».
+const FLASH_MS = 3000
+const FADE_MS = 400
 
 function zoneOf(host: string): string {
   const labels = host.split(".")
@@ -47,7 +50,21 @@ function boxOf(el: Element): DOMRect | null {
 }
 
 function addressText(t: Target, w: BlockHighlightWords): string {
-  return `${w.page}: ${t.page}\n${w.file}: ${t.file}\n${w.block}: ${t.bid} (${t.kind})`
+  return `${w.page}: ${t.page}\n${w.file}: ${t.file}\n${w.block}: ${t.bid} (${t.kind})\n${w.link}: ${blockLink(t.page, t.bid)}`
+}
+
+/** Ссылка на блок (318): путь страницы и `#block=<bid>`, без источника — порт узла меняется, его не помнят. Её вставляют
+ *  в поле «Найти блок» Preview ядра; её же агент возвращает, закончив правку блока. */
+function blockLink(page: string, bid: string): string {
+  return `${page}#block=${bid}`
+}
+
+/** Первый потомок обёртки `display: contents`, у которого есть коробка: к нему прокручивают. */
+function firstBoxed(el: Element): Element | null {
+  return Array.from(el.children).find((c) => {
+    const r = c.getBoundingClientRect()
+    return r.width > 0 && r.height > 0
+  }) ?? null
 }
 
 export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
@@ -55,6 +72,9 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
   const [target, setTarget] = useState<Target | null>(null)
   const [parent, setParent] = useState<{ source: MessageEventSource; origin: string } | null>(null)
   const [copied, setCopied] = useState(false)
+  // Найденный по ссылке блок (318): рамка держится FLASH_MS и гаснет. Живёт отдельно от режима подсветки.
+  const [flash, setFlash] = useState<{ el: Element; rect: DOMRect; fading: boolean } | null>(null)
+  const flashTimers = useRef<number[]>([])
 
   // Включение и выключение — только сообщением от своего источника.
   useEffect(() => {
@@ -69,6 +89,51 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
     window.addEventListener("message", onMessage)
     return () => window.removeEventListener("message", onMessage)
   }, [])
+
+  // Поиск по ссылке (318): `{ type: "fractera:locate", bid }` от своего источника — прокрутить к блоку, обвести на
+  // FLASH_MS, погасить, ответить `fractera:locate-state { bid, found }`. Режим подсветки для этого не нужен. Посетитель
+  // с `#block=` в адресе ничего не увидит: островок сам адрес не читает, действует только по сообщению ядра.
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      const d = e.data as { type?: string; bid?: unknown } | null
+      if (!d || d.type !== "fractera:locate" || !ownOrigin(e.origin) || !e.source) return
+      const bid = typeof d.bid === "string" ? d.bid : ""
+      const el = bid ? document.querySelector(`[data-block="${CSS.escape(bid)}"]`) : null
+      const anchor = el ? firstBoxed(el) : null
+      ;(e.source as WindowProxy).postMessage({ type: "fractera:locate-state", bid, found: Boolean(anchor) }, e.origin)
+      if (!el || !anchor) return
+      anchor.scrollIntoView({ block: "center" })
+      for (const t of flashTimers.current) window.clearTimeout(t)
+      const rect = boxOf(el)
+      if (!rect) return
+      setFlash({ el, rect, fading: false })
+      flashTimers.current = [
+        window.setTimeout(() => setFlash((f) => (f ? { ...f, fading: true } : f)), FLASH_MS),
+        window.setTimeout(() => setFlash(null), FLASH_MS + FADE_MS),
+      ]
+    }
+    window.addEventListener("message", onMessage)
+    return () => {
+      window.removeEventListener("message", onMessage)
+      for (const t of flashTimers.current) window.clearTimeout(t)
+    }
+  }, [])
+
+  // Рамка найденного блока следует за ним при прокрутке и смене размера окна.
+  useEffect(() => {
+    if (!flash) return
+    const el = flash.el
+    const onMove = () => {
+      const rect = boxOf(el)
+      if (rect) setFlash((f) => (f && f.el === el ? { ...f, rect } : f))
+    }
+    window.addEventListener("scroll", onMove, true)
+    window.addEventListener("resize", onMove)
+    return () => {
+      window.removeEventListener("scroll", onMove, true)
+      window.removeEventListener("resize", onMove)
+    }
+  }, [flash?.el])
 
   // Наведение: ближайший блок с адресом, рамка по его содержимому.
   useEffect(() => {
@@ -120,10 +185,23 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
     setCopied(ok)
   }, [target, parent, words])
 
-  if (!on || !target) return null
+  const flashFrame = flash && (
+    <div
+      aria-hidden
+      data-highlight-flash={flash.fading ? "fading" : "on"}
+      className="pointer-events-none fixed rounded-sm border-2 border-primary shadow-[0_0_0_4px_color-mix(in_oklab,var(--primary)_25%,transparent)] transition-opacity"
+      style={{
+        top: flash.rect.top - 2, left: flash.rect.left - 2, width: flash.rect.width + 4, height: flash.rect.height + 4,
+        zIndex: 2147483000, opacity: flash.fading ? 0 : 1, transitionDuration: `${FADE_MS}ms`,
+      }}
+    />
+  )
+
+  if (!on || !target) return flashFrame ? <div data-highlight-ui>{flashFrame}</div> : null
   const { rect } = target
   return (
     <div data-highlight-ui>
+      {flashFrame}
       <div
         aria-hidden
         className="pointer-events-none fixed rounded-sm border-2 border-primary"
