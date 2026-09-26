@@ -102,7 +102,14 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
       const anchor = el ? firstBoxed(el) : null
       ;(e.source as WindowProxy).postMessage({ type: "fractera:locate-state", bid, found: Boolean(anchor) }, e.origin)
       if (!el || !anchor) return
-      anchor.scrollIntoView({ block: "center" })
+      // 🛑 Не `scrollIntoView`: он прокручивает и всех родителей, а окно ядра на том же сайте (localhost) браузер
+      // прокручивает вместе с нами — поле «Найти блок» уезжало за край экрана (замерено 318-2). Двигаем только свой документ.
+      const r = anchor.getBoundingClientRect()
+      // Блок выше окна — его начало у верхнего края, а не середина.
+      const gap = r.height < window.innerHeight ? (window.innerHeight - r.height) / 2 : 16
+      // 🛑 `behavior: "instant"` обязателен: у `<html>` стоит `scroll-smooth`, а плавная прокрутка в браузере владельца
+      // не доходит до места — окно оставалось наверху, хотя блок «найден» (замерено 318-2; безголовый Chrome докручивал).
+      window.scrollTo({ top: Math.max(0, window.scrollY + r.top - gap), behavior: "instant" })
       for (const t of flashTimers.current) window.clearTimeout(t)
       const rect = boxOf(el)
       if (!rect) return
