@@ -1,0 +1,11 @@
+{
+  "title": "Finance",
+  "description": "The finance branch: pages protected by authorization.",
+  "keywords": "",
+  "blocks": [
+    {
+      "kind": "p",
+      "text": "You are at the root of the finance branch. Its pages are protected by authorization."
+    }
+  ]
+}

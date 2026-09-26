@@ -1,0 +1,11 @@
+{
+  "title": "Account",
+  "description": "The account branch: pages protected by authorization.",
+  "keywords": "",
+  "blocks": [
+    {
+      "kind": "p",
+      "text": "You are at the root of the account branch. Its pages are protected by authorization."
+    }
+  ]
+}

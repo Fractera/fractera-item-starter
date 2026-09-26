@@ -4,8 +4,8 @@ You are the agent of one element of a Fractera node. This folder is the element:
 here only. The element was born from the Fractera item template, and the template gives it one thing above all: **a frame
 of routes that does not grow with the number of pages.** Grow the element inside that frame.
 
-> Status (node step 314, 2026-09-26): the tree below is the target of the template. Parts of the code still follow the
-> older layout (role pages as separate route folders); they are being moved into this tree. Build new pages the new way.
+> Status (node step 314-2, 2026-09-26): the code follows this tree. `scripts/check-routes.mjs` keeps the list of route
+> files closed; the only working page that is more than text (`admin/users`) is a folder of data naming its widget.
 
 ## The frame — Next 16.2, and why it is shaped like this
 
@@ -21,7 +21,9 @@ root is data.
 │   ├── skills/*
 │   └── hooks/*
 ├── lib/
-│   └── page-tree.ts
+│   ├── page-tree.ts
+│   ├── branch-page.tsx
+│   └── page-widgets.tsx
 ├── scripts/
 │   └── check-routes.mjs
 └── app/[lang]/
@@ -62,7 +64,7 @@ root is data.
     │   │   └── _pages/ finance/
     │   └── admin/
     │       ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
-    │       └── _pages/ admin/
+    │       └── _pages/ admin/ · users/
     │
     └── (guestLayer)/
         └── guest/

@@ -1,11 +1,7 @@
 import { blocksToMarkdown, faqToMarkdown } from './blocks-to-markdown'
 import { urlFor, mdUrlFor } from '@/lib/seo/alternates'
 import { getAppConfig, metaForLang } from '@/config/app-config'
-import { footerPage } from '@/lib/pages/footer-page'
-import { data as privacyData } from '@/app/[lang]/(publicLayer)/(footerPages)/privacy/_data'
-import { data as termsData } from '@/app/[lang]/(publicLayer)/(footerPages)/terms/_data'
-import { data as cookiesData } from '@/app/[lang]/(publicLayer)/(footerPages)/cookies/_data'
-import { data as accessibilityData } from '@/app/[lang]/(publicLayer)/(footerPages)/accessibility/_data'
+import { branchChildren, wordsIn } from '@/lib/page-tree'
 
 // ПЕРЕЧЕНЬ ПУБЛИЧНЫХ ПОВЕРХНОСТЕЙ — ОДИН НА ВЕСЬ AIO (шаг 505).
 //
@@ -68,18 +64,11 @@ export function publicSurfaces(lang: string): Surface[] {
   // шаблон несёт архитектуру, а не продукт. Свой раздел элемент добавляет сюда своей строкой.
   // 🪦 РАЗДЕЛ /blog И ЕГО ПОСТЫ УДАЛЕНЫ (229-2, 2026-09-18).
 
-  for (const [data, sub] of [
-    [privacyData, '/privacy'],
-    [termsData, '/terms'],
-    [cookiesData, '/cookies'],
-    // Заявление о доступности — документ того же рода, что правовые: короткий
-    // текст о свойствах сайта, который читатель ищет в подвале. Раздел карты у
-    // него 'legal' по той же причине.
-    [accessibilityData, '/accessibility'],
-  ] as const) {
-    const page = footerPage(data as never, lang)
+  // 314-2: дети публичной ветки — из дерева данных; новая папка страницы попадает в карту для ИИ сама.
+  for (const child of branchChildren('(publicLayer)')) {
+    const page = wordsIn(child, lang)
     surfaces.push({
-      subPath: sub,
+      subPath: `/${child.slug}`,
       title: page.title,
       description: page.description,
       section: 'legal',

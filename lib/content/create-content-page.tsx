@@ -243,17 +243,7 @@ export function createContentPage<C extends ContentPageContent>(config: ContentP
       // Осталась одна, и она стоит там же, где НАРИСОВАННЫЙ путь: объявленное
       // поисковику и показанное человеку обязаны совпадать по построению, а не
       // по внимательности того, кто правит.
-      ...(faq && faq.length > 0
-        ? [{
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: faq.map(f => ({
-              '@type': 'Question',
-              name: f.q,
-              acceptedAnswer: { '@type': 'Answer', text: plainAnswer(f.a) },
-            })),
-          }]
-        : []),
+      // 🪦 314-2: разметку `FAQPage` ставит сам блок `faq` из «Блоков» рядом с видимыми вопросами; здесь она была бы второй.
     ]
 
     return (

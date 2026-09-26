@@ -15,7 +15,8 @@ import { join, relative, sep } from "node:path"
 
 const ROOT = process.cwd()
 const LAYER = join(ROOT, "app", "[lang]", "(protectedLayer)")
-const GROUPS = ["(account)", "(admin)", "(finance)", "(staff)"]
+// 314-2: категории — ветки с собственным адресом (/<lang>/account …), а не группы в скобках.
+const GROUPS = ["account", "admin", "finance", "staff"]
 
 const problems = []
 const fail = (file, rule, detail) => problems.push({ file: relative(ROOT, file), rule, detail })
@@ -114,7 +115,9 @@ for (const g of GROUPS) {
   for (const f of walk(join(LAYER, g))) {
     const src = stripComments(read(f))
     for (const other of GROUPS.filter(x => x !== g)) {
-      if (src.includes(`${other}/`)) {
+      // 314-2: ветки зовутся без скобок, и голое `account/` совпало бы с `components/menu/account/` — чужой веткой
+      // считается только путь В ветку: `(protectedLayer)/<ветка>/` или `../<ветка>/`.
+      if (new RegExp(`(\\(protectedLayer\\)/|\\.\\./)${other}/`).test(src)) {
         fail(f, "cross-group-import", `тянет из ${other} — общее поднимается к общему предку, а не берётся у соседа`)
       }
     }

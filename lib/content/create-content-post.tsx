@@ -224,17 +224,7 @@ export function createContentPost(config: ContentPostConfig) {
           item: i === breadcrumbs.length - 1 ? url : abs(b.href ?? subPath),
         })),
       },
-      ...(faq && faq.length > 0
-        ? [{
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: faq.map(f => ({
-              '@type': 'Question',
-              name: f.q,
-              acceptedAnswer: { '@type': 'Answer', text: plainAnswer(f.a) },
-            })),
-          }]
-        : []),
+      // 🪦 314-2: разметку `FAQPage` ставит сам блок `faq` из «Блоков» рядом с видимыми вопросами; здесь она была бы второй.
     ]
 
     // Сведения поста ЧАСТЯМИ: раскладку и разделители рисует `PageHeader`

@@ -1,4 +1,4 @@
-import { administrationUsersUi } from "@/app/[lang]/(protectedLayer)/(admin)/administration/users/_data/ui.i18n"
+import { branchChild, wordsIn } from "@/lib/page-tree"
 import type { ShellLink as DrawerLink } from "@/components/shell/shell-types"
 // The architect pages live in the node's core (280); /<lang>/architect redirects there.
 const ARCHITECT_HOME = "/architect"
@@ -35,6 +35,11 @@ import { ARCHITECT_LAYER_ROLES } from "@/lib/roles"
 // Слова каждого пункта живут при своей странице (её `_data/ui.i18n.ts`), а не в
 // словаре ящика: это строка одной страницы, и языков у неё столько же, сколько у
 // страницы, — не 82 впрок.
+function usersLink(lang: string): DrawerLink[] {
+  const page = branchChild(["(protectedLayer)", "admin"], "users")
+  return page ? [{ href: `/${lang}/admin/users`, label: wordsIn(page, lang).title }] : []
+}
+
 export function accountLinks(lang: string): DrawerLink[] {
   return [
     // 🔒 СЛОЙ АРХИТЕКТОРА — ПЕРВЫМ И ТОЛЬКО ЕГО РОЛЯМ (268, слово владельца 2026-09-22: «в правом
@@ -46,6 +51,7 @@ export function accountLinks(lang: string): DrawerLink[] {
       label: ARCHITECT_TITLE[lang] ?? ARCHITECT_TITLE.en,
       roles: ARCHITECT_LAYER_ROLES,
     },
-    { href: `/${lang}/administration/users`, label: administrationUsersUi(lang).title },
+    // 314-2: таблица пользователей — ребёнок ветки admin (`admin/_pages/users/`); подпись — из её данных.
+    ...usersLink(lang),
   ]
 }

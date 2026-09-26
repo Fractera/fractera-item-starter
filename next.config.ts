@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
   // build keeps serving — no downtime. Unset, it is the usual .next.
   distDir: process.env.NEXT_DIST_DIR || ".next",
   outputFileTracingRoot: root,
+  // 314-2: данные страниц (JSON дерева) едут в standalone-сборку — запасной источник, когда `ELEMENT_DIR` не задан.
+  outputFileTracingIncludes: {
+    '/**': ['./app/**/_data/*.json', './app/**/_pages/**/*.json'],
+  },
   turbopack: { root },
   serverExternalPackages: ["better-sqlite3"],
 

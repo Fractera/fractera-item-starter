@@ -1,0 +1,15 @@
+{
+  "title": "Page for the role subscriber_max",
+  "description": "A page protected by authorization: it grants access to the role subscriber_max.",
+  "keywords": "",
+  "blocks": [
+    {
+      "kind": "p",
+      "text": "You are on a page protected by authorization. It grants access to the role **subscriber_max**."
+    },
+    {
+      "kind": "p",
+      "text": "Roles allowed here: {roles}."
+    }
+  ]
+}

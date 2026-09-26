@@ -69,7 +69,8 @@ const SNOOZE_DAYS = 30
 // 🔒 ПРОВЕРЯЕМ АДРЕС, А НЕ РОЛЬ. Роль островку неизвестна без запроса к двери, а
 // запрос ради баннера — лишний поход в сеть на каждой странице. Адрес же говорит
 // всё: слой архитектора и панель закрыты по устройству, и путь это называет.
-const PROTECTED_PATHS = ['/architect', '/dashboard', '/administration']
+// 314-2: ветки защищённого и гостевого слоя шаблона элемента.
+const PROTECTED_PATHS = ['/architect', '/dashboard', '/account', '/staff', '/finance', '/admin', '/guest']
 
 function onProtectedPage(): boolean {
   if (typeof window === 'undefined') return false
