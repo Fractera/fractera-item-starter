@@ -70,7 +70,8 @@ const mdRoutes = walkDirs(LANG_DIR, "index.md");
 // markdown-версии прилетело странице настроек: по модели гейта всё, что не
 // `(protectedLayer)`, публично. Карта для ИИ — приглашение прочитать; страница за
 // замком роли в неё не попадает, и markdown-двойник ей не нужен.
-const CLOSED_LAYERS = ["(protectedLayer)", "(architectLayer)"];
+// 314-2: гостевая группа закрыта от поиска и требует сессии (гостевой вход) — карта для ИИ её не приглашает.
+const CLOSED_LAYERS = ["(protectedLayer)", "(architectLayer)", "(guestLayer)"];
 const isClosed = p => CLOSED_LAYERS.some(m => p.includes(m));
 
 const pageDirs = walkPages(LANG_DIR).filter(d => !isClosed(rel(d)));

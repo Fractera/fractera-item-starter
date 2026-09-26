@@ -27,139 +27,24 @@ import { resolveMarkdownLinks } from '@/lib/content/blocks/links'
 // решения о ссылках, чтобы обе формы страницы не разошлись снова.
 
 function lines(block: Block): string[] {
+  // 314-2: виды набора элемента (`lib/content/blocks/registry.tsx`). Новый вид в наборе — строка здесь той же правкой,
+  // иначе машинная версия страницы молча теряет его текст.
   switch (block.kind) {
-    case 'h2':
-      return [`## ${block.text}`]
-    case 'h3':
-      return [`### ${block.text}`]
-    // Четвёртый и пятый уровни (шаг 30-1). Модель обязана видеть ТУ ЖЕ глубину,
-    // что человек: markdown-версия страницы существует ради структуры, и
-    // уплощённые здесь заголовки превратили бы дерево документа в плоский список.
-    case 'h4':
-      return [`#### ${block.text}`]
-    case 'h5':
-      return [`##### ${block.text}`]
     case 'p':
       return [block.text]
-    case 'note':
-      return [block.text]
-    case 'quote':
-      // Цитата вместе с источником: без него утверждение теряет автора, а это
-      // ровно то, ради чего цитату и приводят.
-      // `lead` — первая строка самой цитаты, поэтому и в тексте она остаётся
-      // ВНУТРИ цитаты, жирной строкой: вынести её наружу заголовком значило бы
-      // объявить машинному читателю раздел, которого на странице нет.
+    case 'section-head':
+      return [`## ${block.title}`]
+    case 'hero-centered':
       return [
-        ...(block.lead ? [`> **${block.lead}**`, `>`] : []),
-        `> ${block.text}`,
-        ...(block.cite ? [`>`, `> — ${block.cite}`] : []),
+        ...(block.pill ? [`_${block.pill}_`, ''] : []),
+        `# ${block.title}`,
+        '',
+        block.description,
+        ...(block.cta ? ['', `[${block.cta.label}](${block.cta.href})`] : []),
+        ...(block.secondary ? [`[${block.secondary.label}](${block.secondary.href})`] : []),
       ]
-    case 'founder':
-      return [`> ${block.text}`]
-    case 'list':
-      return block.items.map(i => `- ${i}`)
-    case 'olist':
-      return block.items.map((i, n) => `${n + 1}. ${i}`)
-    case 'code':
-      return ['```', block.text, '```']
-    // Подпись у кнопки необязательна: там, где заголовок раздела уже сказал то
-    // же самое, её убрали. Без подписи остаётся сама ссылка.
-    case 'cta':
-      return [block.text ? `${block.text} — [${block.label}](${block.href})` : `[${block.label}](${block.href})`]
-    case 'callout':
-      return [`**${block.title}** ${block.text}`]
-    case 'docref':
-      return [`**${block.title}** — ${block.summary}: [${block.label ?? 'документ'}](${block.href})`]
-    case 'figure':
-      // Изображение описывается СЛОВАМИ. Модель картинку не увидит, а `alt` и
-      // подпись — это то, ради чего её поставили.
-      return [`![${block.alt}](${block.src})`, ...(block.caption ? [`*${block.caption}*`] : [])]
-    case 'table': {
-      const head = `| ${block.headers.join(' | ')} |`
-      const sep = `| ${block.headers.map(() => '---').join(' | ')} |`
-      const body = block.rows.map(r => `| ${r.join(' | ')} |`)
-      return [...(block.caption ? [block.caption, ''] : []), head, sep, ...body]
-    }
-    // Первый экран лендинга. Иллюстрация опускается намеренно: она из слота
-    // настроек, у каждого проекта своя, и её адрес машинному читателю не говорит
-    // ничего. А вот заголовок с описанием — самый весомый текст страницы, и
-    // потерять его здесь значило бы отдать модели пустую главную.
-    case 'heroSplit':
-      return [`## ${block.title}`, '', block.description]
-    // Первый экран по центру: заголовок, описание и три шага — нумерованным списком, порядок в них и есть смысл.
-    case 'heroCentered':
-      return [`## ${block.title}`, '', block.description, ...(block.steps ? ['', ...block.steps.map((s, i) => `${i + 1}. **${s.title}** — ${s.text}`)] : [])]
-    // Завершающая секция. Восемьдесят два названия языков машинному читателю не
-    // нужны — он их и так знает; смысл секции целиком в её заголовке.
-    case 'languageMarquee':
-      return [`## ${block.title}`, ...(block.note ? ['', block.note] : [])]
-    // Ряд мер. Число без слова при нём — не утверждение, а цифра, поэтому пара
-    // едет вместе одной строкой списка.
-    case 'metrics':
-      return block.items.map(m => `- **${m.value}** — ${m.label}`)
-    // «Как это работает». Очерёдность здесь — само содержание, и нумерованный
-    // список передаёт её точнее любой прозы. Зажигание опускается намеренно: это
-    // подача, а машинному читателю нужен порядок, а не подсветка.
-    case 'flow':
-      return [
-        `## ${block.title}`,
-        ...(block.note ? ['', block.note] : []),
-        '',
-        ...block.steps.map((s, n) => `${n + 1}. **${s.title}** — ${s.text}`),
-      ]
-    // Раздел карточками. Ярлык рубрики опускается: машинному читателю он не
-    // говорит ничего, чего не говорит заголовок.
-    case 'cards':
-      return [
-        `## ${block.title}`,
-        ...(block.note ? ['', block.note] : []),
-        '',
-        ...block.children.flatMap(child => [...lines(child), '']),
-      ]
-    // Ячейка — контейнер: раскрываем содержимое, как `columns` и `group`.
-    case 'card':
-      return block.children.flatMap(child => [...lines(child), ''])
-    // Крупное утверждение. Для машины это обычная цитата: разрядка и градиент —
-    // способ показать её человеку, а не часть смысла.
-    case 'statement':
-      return [`> ${block.text}`]
-    // Счета, которых не будет. Зачёркивание — знак на экране; словами то же
-    // самое говорит сама фраза, поэтому имя поставщика просто стоит при ней, а
-    // ярлык — в скобках: «Neon» без пояснения машинному читателю говорит мало.
-    case 'noBill':
-      return [
-        `## ${block.heading}`,
-        ...(block.note ? ['', block.note] : []),
-        '',
-        ...block.items.map(i => `- ${i.text} ${i.vendor} (${i.badge.label})`),
-        '',
-        `### ${block.title}`,
-        '',
-        block.text,
-      ]
-    case 'columns':
-    case 'group':
-      // Контейнер — раскладка, а не содержимое: разворачиваем детей.
-      return block.children.flatMap(child => [...lines(child), ''])
-    // Рабочий экран.
-    //
-    // 🔒 МЕНЮ И ВКЛАДКИ МАШИНЕ НЕ ОТДАЮТСЯ, И ЭТО НЕ ПОТЕРЯ. Это НАВИГАЦИЯ — она
-    // сообщает, куда можно уйти с этого экрана, а не что на нём написано.
-    // Модель, прочитав список из восьми пунктов, пересказала бы его как
-    // содержание страницы. Заголовок, описание и карточки — содержание, они
-    // едут; карточки при этом сохраняют свой тон словом, потому что «состояние
-    // системы» и «цена решения» — разные утверждения, и цвет их различает только
-    // на экране.
-    case 'workspace':
-      return [
-        `## ${block.title}`,
-        ...(block.lead ? ['', block.lead] : []),
-        ...(block.notes ?? []).flatMap(n => ['', `**${n.title}** (${n.tone}) — ${n.text}`]),
-        '',
-        ...block.children.flatMap(child => [...lines(child), '']),
-      ]
-    default:
-      return []
+    case 'warning-card':
+      return [`> **${block.title}** ${block.text}`]
   }
 }
 

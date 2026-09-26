@@ -1,11 +1,11 @@
 {
-  "id": "root",
-  "name": "Fractera Root",
-  "summary": "The site of the node: what a visitor sees at the root of the domain. A replaceable element — any repository that keeps this passport's contract can take its place.",
+  "id": "item",
+  "name": "Fractera Item",
+  "summary": "The template of a node element (step 314): the architecture of the site without its content. A new element is born from it; the birth writes the element's own id here, and every name the element uses at run time is read from this field.",
   "kind": "microservice",
   "entry": "global",
   "port": {
-    "desired": 24683,
+    "desired": 24690,
     "note": "A wish, not a decision. The node assigns the actual port from the block 24680-24699. Ask the node, never remember."
   },
   "env": {
@@ -33,11 +33,10 @@
     "Answers GET /api/health with 200 without a session.",
     "Signs people in only through the node's auth element; never carries its own sign-in.",
     "Reaches stored data only through the node's data element; never opens a database file.",
-    "Public pages stay static: no force-dynamic, no cookies() or headers() in a layout or a page."
+    "Public pages stay static: no force-dynamic, no cookies() or headers() in a layout or a page.",
+    "Reads its own name from this passport at start (lib/own-id.ts); no name of the element is written in its code."
   ],
-  "provides": [
-    "site"
-  ],
+  "provides": [],
   "languages": {
     "count": 2,
     "note": "en is the base, ru the translation; the set is this site's own setting (NEXT_PUBLIC_SUPPORTED_LANGUAGES, kind own)."

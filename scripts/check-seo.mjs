@@ -45,7 +45,8 @@ const warnings = [];
 // ✗ Соблазн был противоположный и неверный: дописать `generateMetadata` странице,
 // чтобы гейт замолчал. Это подделало бы ответ — метаданные существовали бы ради
 // проверки, а не ради читателя, которого у закрытой страницы нет.
-const PRIVATE_MARKERS = ["(protectedLayer)", "(architectLayer)"];
+// 314-2: гостевая группа закрыта от поиска и требует сессии (гостевой вход) — не публичная страница.
+const PRIVATE_MARKERS = ["(protectedLayer)", "(architectLayer)", "(guestLayer)"];
 
 function walk(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {

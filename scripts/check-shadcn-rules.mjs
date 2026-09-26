@@ -19,7 +19,8 @@ import fs from "node:fs"
 import path from "node:path"
 
 const ROOT = process.cwd()
-const AREAS = ["sections", "components"]
+// 314-2: `sections/` удалён из шаблона — блоки «Блоков» лежат в `components/blocks/`.
+const AREAS = ["components"]
 const SKIP_DIRS = new Set(["ui", "node_modules"])
 
 const RULES = [
@@ -73,19 +74,9 @@ const EXEMPT = [
     why: "исходник shadcn: чужой код, автор этих же правил",
   },
   {
-    file: "components/ai-elements/",
-    rule: "*",
-    why: "исходник AI Elements (Vercel): та же семья, что shadcn, вендорен целиком в 80-2 — правим его только заменой путей импорта, иначе правка живёт до первого обновления библиотеки",
-  },
-  {
-    file: "sections/tone.ts",
+    file: "lib/blocks/tone.ts",
     rule: "no-literal-colour",
-    why: "карта тонов ПЕРЕЧИСЛЯЕТ классы намеренно — именно так класс попадает в сборку Tailwind (урок шага 54)",
-  },
-  {
-    file: "components/workspace/workspace-shell.tsx",
-    rule: "no-manual-dark",
-    why: "та же карта тонов, что в sections/tone.ts, только для полос рабочего экрана: тон — это ПАРА классов на обе темы, перечисленная целиком, иначе класс не доедет до сборки",
+    why: "карта тонов блока «Блоков» ПЕРЕЧИСЛЯЕТ классы намеренно — именно так класс попадает в сборку Tailwind (урок шага 54)",
   },
 ]
 

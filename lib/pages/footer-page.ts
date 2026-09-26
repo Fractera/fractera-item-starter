@@ -68,9 +68,10 @@ export function panelNotice(lang: string, texts: { title: string; text: string; 
   // `<панель>/footer-pages` — без языка, и он отдавал 404: все страницы панели
   // живут под `/<язык>/`. Язык берём тот же, на котором читают страницу, — тогда
   // человек попадает в панель на своём языке, а не на чужом.
+  // 314-2: виды `cta`/`note` ушли с каталогом; ссылка — строкой абзаца, `p` из «Блоков» разбирает `[подпись](адрес)`.
   return admin
-    ? { kind: 'cta', text: `${texts.title} ${texts.text}`, href: `${admin}/${lang}/footer-pages`, label: texts.label }
-    : { kind: 'note', text: `${texts.title} ${texts.text}` }
+    ? { kind: 'p', text: `${texts.title} ${texts.text} [${texts.label}](${admin}/${lang}/footer-pages)` }
+    : { kind: 'p', text: `${texts.title} ${texts.text}` }
 }
 
 /** Собрать содержимое страницы на языке: перевод, иначе английская основа. */

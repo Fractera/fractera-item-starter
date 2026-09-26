@@ -18,7 +18,8 @@ import fs from "fs"
 import path from "path"
 
 const ROOT = process.cwd()
-const SCAN = ["app", "components", "sections"]
+// 314-2: `sections/` удалён из шаблона — блоки «Блоков» лежат в `components/blocks/` и проверяются вместе с `components`.
+const SCAN = ["app", "components"]
 const SKIP = new Set(["node_modules", ".next", ".git", ".swc"])
 
 // 🔒 ЧУЖОЙ ВЕНДОРЕННЫЙ КОД — ИСКЛЮЧЕНИЕ, А НЕ ДОЛГ (шаг 80, доставка на сервер).
@@ -36,8 +37,9 @@ const SKIP = new Set(["node_modules", ".next", ".git", ".swc"])
 // а не только того, чьё имя вспомнилось.**
 //
 // 🔒 Это ИСКЛЮЧЕНИЕ, а не прощённое нарушение: правило сюда не относится, потому
-// что файл не наш. Наш код в этой папке — только `_tools/chat/`, и он проверяется.
-const VENDORED = new Set([path.join("components", "ai-elements")])
+// что файл не наш. Своего кода в этой папке у шаблона нет (314-2: `_tools/` удалён).
+// 314-2: вендоренный AI Elements удалён из шаблона вместе с блоком чата; список пуст, механизм оставлен.
+const VENDORED = new Set([])
 
 // 🔒 ИСКЛЮЧЕНИЯ ПЕРЕЧИСЛЕНЫ ПОИМЕННО, А НЕ ШАБЛОНОМ. Шаблон вроде «всё в
 // components/ui» однажды накроет файл, который в него случайно переехал.

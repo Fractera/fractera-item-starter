@@ -4,10 +4,6 @@ import { SUPPORTED_LANGUAGES } from "@/config/translations/translations.config"
 import { urlFor } from "@/lib/seo/alternates"
 import { translatedLanguages } from "@/lib/seo/translation-state"
 import { data as homeData } from "@/app/[lang]/(publicLayer)/_data"
-import { data as agiItemData } from "@/app/[lang]/(publicLayer)/(rootPages)/agi-item/_data"
-import { data as architectureData } from "@/app/[lang]/(publicLayer)/(rootPages)/m2m/_data"
-import { data as hostData } from "@/app/[lang]/(publicLayer)/(rootPages)/host/_data"
-import { data as itemsData } from "@/app/[lang]/(publicLayer)/(rootPages)/items/_data"
 import { data as privacyData } from "@/app/[lang]/(publicLayer)/(footerPages)/privacy/_data"
 import { data as termsData } from "@/app/[lang]/(publicLayer)/(footerPages)/terms/_data"
 import { data as cookiesData } from "@/app/[lang]/(publicLayer)/(footerPages)/cookies/_data"
@@ -43,12 +39,8 @@ import { data as accessibilityData } from "@/app/[lang]/(publicLayer)/(footerPag
 // каких языках у страницы есть СВОЙ текст, — а это знают только её данные. Голый
 // путь заставлял карту догадываться, и она догадывалась неверно: печатала каждый
 // включённый язык подряд, обещая поисковику страницы, помеченные `noindex`.
-const ROOT_PAGES = [
-  { sub: "/agi-item", data: agiItemData },
-  { sub: "/m2m", data: architectureData },
-  { sub: "/host", data: hostData },
-  { sub: "/items", data: itemsData },
-] as const
+// 314-2: страницы содержимого root из шаблона убраны; разделы элемента добавляются сюда своими строками.
+const ROOT_PAGES: readonly { sub: string; data: typeof privacyData }[] = []
 
 const FOOTER_PAGES = [
   { sub: "/privacy", data: privacyData },

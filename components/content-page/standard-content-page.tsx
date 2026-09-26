@@ -1,12 +1,12 @@
 import { type ReactNode } from 'react'
-import type { Block, FaqPair, TocItem } from '@/lib/content/blocks/types'
+import type { Block, FaqPair } from '@/lib/content/blocks/types'
 // Импортируется под другим именем НАМЕРЕННО: у компонента есть проп `author`,
 // и одноимённая функция была бы перекрыта им внутри тела — значение по умолчанию
 // ссылалось бы само на себя.
 import { author as projectAuthor } from '@/lib/author'
 import { getPostBodyUi } from '@/lib/content/post-body-ui'
 import { renderBlocks } from '@/lib/content/blocks/registry'
-import { PostBody, headingId } from './post-body'
+import { PostBody } from './post-body'
 import { PageHeader } from './page-header.server'
 import { PageCover } from './page-cover.server'
 import { BackLink } from './back-link.server'
@@ -151,46 +151,8 @@ export function StandardContentPage({
   const blockUi = getPostBodyUi(lang)
 
 
-  // Table of contents — built from the H2 sections with their H3 subsections
-  // nested underneath, so labels AND anchors match exactly what PostBody emits
-  // (same headingId).
-  //
-  // 🔒 ДВА УРОВНЯ, А НЕ ОДИН (решение владельца 2026-08-30). Страница с тремя
-  // разделами и семнадцатью подразделами получала оглавление из трёх строк —
-  // над длинным документом это хуже, чем его отсутствие. Подраздел попадает в
-  // оглавление ТОЛЬКО под своим разделом: `h3` до первого `h2` — это подраздел
-  // без раздела, и в карте страницы ему места нет.
-  // 🛑 РАЗДЕЛ СО СВОЕЙ ШАПКОЙ — ТОЖЕ РАЗДЕЛ, И ОГЛАВЛЕНИЕ ОБЯЗАНО ЕГО ВИДЕТЬ.
-  // ✗ оплачено 2026-09-19: с главной убраны дублирующие `h2`, стоявшие вплотную к
-  // секциям (`flow`, `cards`) и дававшие два заголовка об одном и том же, — и
-  // оглавление схлопнулось с шести пунктов до двух. Причина: сборщик знал только
-  // самостоятельный блок `h2`, а заголовок, нарисованный шапкой секции, для него
-  // не существовал.
-  //
-  // 🔒 ОТСЮДА УСТРОЙСТВО, А НЕ ЗАПЛАТА: в оглавление идёт ЗАГОЛОВОК ВТОРОГО
-  // УРОВНЯ, кем бы он ни был нарисован. Виды с собственной шапкой перечислены
-  // ниже поимённо.
-  //
-  // 🛑 НОВЫЙ ВИД С СОБСТВЕННОЙ ШАПКОЙ ДОБАВЛЯЕТСЯ В ЭТОТ СПИСОК ТОЙ ЖЕ ПРАВКОЙ.
-  // Забыли — раздел молча исчезает из оглавления, и заметить это можно только
-  // глазами, пересчитав пункты.
-  const SECTION_WITH_HEAD = new Set(['flow', 'cards', 'noBill', 'benefitCards', 'featureGrid', 'platformGrid'])
-
-  const toc: TocItem[] = []
-  blocks.forEach((b, i) => {
-    if (b.kind === 'h2') {
-      toc.push({ id: headingId(b.text), text: b.text.replace(/\*\*/g, '') })
-    } else if (SECTION_WITH_HEAD.has(b.kind) && 'title' in b && typeof b.title === 'string') {
-      // 🔒 ЯКОРЬ СЕКЦИИ СОБИРАЕТСЯ ИЗ КЛЮЧА БЛОКА (`blk-<номер>-t`), и форма ключа
-      // задана в `lib/content/blocks/registry.tsx`. Здесь она повторена
-      // НАМЕРЕННО и с этой оговоркой: другого способа узнать чужой якорь у
-      // оглавления нет, а молчаливое расхождение даст пункты, ведущие в никуда.
-      toc.push({ id: `blk-${i}-t`, text: b.title.replace(/\*\*/g, '') })
-    } else if (b.kind === 'h3' && toc.length > 0) {
-      const section = toc[toc.length - 1]
-      ;(section.children ??= []).push({ id: headingId(b.text), text: b.text.replace(/\*\*/g, '') })
-    }
-  })
+  // 🪦 ОГЛАВЛЕНИЕ УБРАНО ИЗ ШАБЛОНА (314-2): его вид жил в удалённом каталоге `sections/`, а в «Блоках» оглавления нет.
+  // Понадобится — блок заводится в «Блоках» и ставится сюда командой.
 
   // ── ТРИ ЗОНЫ ШИРИНЫ, И ГРАНИЦА МЕЖДУ НИМИ — ЗАКОН СТРАНИЦЫ (2026-08-15) ────
   //
@@ -212,9 +174,8 @@ export function StandardContentPage({
   // на каждой второй ширине экрана. Поэтому такие секции физически стоят снаружи
   // колонки, а внутри неё остаётся текст.
   // Первым экраном считается любой из двух видов hero, несущих H1: сетка и первый экран по центру (304-1).
-  const heroBlock = blocks.find(b => b.kind === 'heroSplit' || b.kind === 'heroCentered')
-  const outroBlock = blocks.find(b => b.kind === 'languageMarquee')
-  const bodyBlocks = blocks.filter(b => b !== heroBlock && b !== outroBlock)
+  const heroBlock = blocks.find(b => b.kind === 'hero-centered')
+  const bodyBlocks = blocks.filter(b => b !== heroBlock)
 
   return (
     /* 🔒 ОБОЛОЧКА — ОБЩАЯ, А НЕ СВОЯ (2026-08-19). Здесь стоял собственный
@@ -240,7 +201,6 @@ export function StandardContentPage({
       hero={heroBlock ? <PostBody blocks={[heroBlock]} lang={lang} /> : undefined}
       afterHero={afterHero}
       afterBody={afterBody}
-      outro={outroBlock ? <PostBody blocks={[outroBlock]} lang={lang} /> : undefined}
     >
 
         {/* 1–2. Шапка страницы — ОДИН примитив на весь сайт.
@@ -273,17 +233,6 @@ export function StandardContentPage({
             абзац и действия. */}
         {afterHeader}
 
-        {/* 3. Оглавление — ВИД КАТАЛОГА `toc`, а не своя разметка (шаг 542).
-            Фабрика считает заголовки и передаёт их блоку; рисует его каталог.
-            Владелец решил 2026-08-22 оставить оглавление автоматическим, поэтому
-            блок появляется сам, а страницы о нём по-прежнему не знают.
-
-            🔒 РИСУЕТСЯ ЧЕРЕЗ `renderBlocks`, А НЕ ЧЕРЕЗ `PostBody`. Тот заворачивает
-            блоки в `flex flex-col gap-6`; здесь обёртка изменила бы отступы —
-            лента страницы обычный блочный поток, и воздух ей задают margin'ы
-            самих секций. */}
-        {renderBlocks([{ kind: 'toc', items: toc }], lang, blockUi, 'toc')}
-
         {/* 4–7, 9. Body blocks (callout, H2/H3, quote, CTA, docref download, …).
             Без первого экрана и завершающей секции: они нарисованы снаружи этой
             колонки, потому что подчиняются другой ширине. */}
@@ -300,7 +249,7 @@ export function StandardContentPage({
             содержательный на странице: ниже только ссылка «назад» и подвал сайта.
             Материал не изменился — вопросы приходят полем `faq` языковой ячейки,
             и та же ячейка кормит разметку `FAQPage` для поисковика. */}
-        {faq && faq.length > 0 && renderBlocks([{ kind: 'faq', items: faq }], lang, blockUi, 'faq')}
+        {faq && faq.length > 0 && renderBlocks([{ kind: 'faq', title: blockUi.faqTitle, items: faq }], 'faq')}
 
         {/* Ссылка «назад» — ПРИМИТИВ `BackLink`, последний элемент страницы.
             Ведёт на уровень выше; у корня сайта такого уровня нет, поэтому её
