@@ -88,6 +88,14 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
 - **The build draws only the roots of the branches.** A child is drawn the first time someone opens it, kept on disk and
   served from there; after five minutes the next visit refreshes it. That is why the build time does not depend on how
   many pages the element has.
+- **Tell the person when a change becomes visible — every time you change a text.** Pages refresh on a five-minute
+  timer (incremental static regeneration): after the timer runs out, the first visit still shows the old page and starts
+  the redraw, the next visit shows the new one. So without anything else, a corrected text is visible **at most five
+  minutes and one reload later**. Do not leave the person waiting: after a text change run `npm run pages:refresh` — it
+  calls the element's `POST /api/revalidate` on this machine, and the next visit shows the change at once. Then say so:
+  "the change is live, reload the page". If the command fails, say that the change will appear within five minutes.
+  🛑 Never put a secret into an address to refresh pages — a key in a URL leaks into history, logs and `Referer`, and a
+  static page that reads the address stops being static; `AUTH_SECRET` signs the sessions and never leaves the server.
 - **Page text is read at run time.** `_pages/<slug>/<lang>.json` is read by `lib/page-tree.ts` while the site runs, not
   baked into the build: a corrected paragraph shows up within those five minutes without a rebuild. Code changes still
   need a rebuild.

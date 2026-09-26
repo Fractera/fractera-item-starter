@@ -68,6 +68,10 @@ visit, kept on disk, and refreshed by the next visit after five minutes (`revali
 to Cache Components on your own). Texts are read at run time from the element folder (`ELEMENT_DIR`), so a corrected
 paragraph appears within those five minutes without a rebuild; code changes need a rebuild.
 
+**After every text change run `npm run pages:refresh`** (`scripts/refresh-pages.mjs` → `POST /api/revalidate` on this
+machine, key in the header, never in the address): the next visit shows the change at once. Tell the person: "the change
+is live, reload the page" — or, if the command failed, "it will appear within five minutes".
+
 ## Correcting a page someone talks about
 
 People name pages by their words. Search `app/**/_pages/**/<lang>.json` for those words; the matching folder is the
