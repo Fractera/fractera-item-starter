@@ -77,6 +77,30 @@ is live, reload the page" — or, if the command failed, "it will appear within 
 People name pages by their words. Search `app/**/_pages/**/<lang>.json` for those words; the matching folder is the
 page. Fix the paragraph in that language, then check the other languages for the same mistake.
 
+## Every block has an address — and you answer with its link
+
+Every block in `<lang>.json` carries a `bid` (a letter and four base36 characters, the same in every language). The person
+may bring an address copied in the core's Preview («Copy address»):
+
+```
+Page: /ru/privacy
+File: app/[lang]/(publicLayer)/_pages/privacy/ru.json
+Block: kns6w (p)
+Link: /ru/privacy#block=kns6w
+```
+
+Open that file, find that `bid`, edit that block and nothing else.
+
+**When you finish editing a block, end your answer with the block's link** and one sentence for the person: "Open
+Preview, paste the link into «Find block» and press Find — the page scrolls to the block and frames it for 3 seconds."
+
+- The link is `/<lang>/<path>#block=<bid>`. Take the `Link` line of the address you were given. If you found the block
+  yourself, build it: public root `/<lang>`, public page `/<lang>/<slug>`, protected branch `/<lang>/<branch>` and its
+  page `/<lang>/<branch>/<slug>`, guest `/<lang>/guest/<slug>`; the `bid` is in the JSON.
+- `<lang>` is the language file you edited. Edited several blocks — one link per block.
+- No host and no port: the node's port changes and the Preview adds its own element's address.
+- A new block has no `bid` yet: run `npm run blocks:ids` first, then give its link.
+
 ## The real exception
 
 A new branch (a new root) is new code and a decision of the person: ask first, then add its files to `ALLOWED` in
