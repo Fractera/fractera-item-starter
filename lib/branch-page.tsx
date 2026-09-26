@@ -56,6 +56,20 @@ function contentOf(page: TreePage, lang: string) {
 type Crumb = { label: string; href?: string }
 
 /**
+ * АДРЕС СТРАНИЦЫ ДЛЯ ПОДСВЕТКИ (317-2): обёртка `display: contents` (на вёрстку не влияет) с `data-page` — адрес страницы —
+ * и `data-file` — файл данных, из которого нарисован этот язык. Рамка подсветки берёт отсюда «страница · файл», а из
+ * блока — его `bid`; этого достаточно, чтобы агент открыл ровно тот абзац.
+ */
+function PageAddress({ page, file, children }: { page: string; file: string; children: React.ReactNode }) {
+  return <div data-page={page} data-file={file} style={{ display: 'contents' }}>{children}</div>
+}
+
+function dataFile(tree: TreePage, dir: string[], lang: string): string {
+  const name = tree.overrides[lang] ? `${lang}.json` : 'en.json'
+  return ['app', '[lang]', ...dir, name].join('/')
+}
+
+/**
  * Корень ветки: `segments` — путь папки ветки внутри `app/[lang]`, `subPath` — её адрес без языка.
  * 🔒 Данные читаются при каждой отрисовке, не при загрузке модуля: иначе правка JSON не дошла бы до сайта без перезапуска.
  */
@@ -75,8 +89,14 @@ export function rootPage(opts: { segments: string[]; subPath: string; titleInBod
     return build().generateMetadata({ params })
   }
   async function Page({ params }: { params: Promise<{ lang: string }> }) {
+    const { lang } = await params
     const P = build().Page
-    return <P params={params} />
+    const tree = branchRoot(...opts.segments)
+    return (
+      <PageAddress page={`/${lang}${opts.subPath}`} file={tree ? dataFile(tree, [...opts.segments, '_data'], lang) : ''}>
+        <P params={Promise.resolve({ lang })} />
+      </PageAddress>
+    )
   }
   return { generateMetadata, Page }
 }
@@ -113,7 +133,11 @@ export function childRoute(opts: { segments: string[]; subPath: string }) {
     const { lang, slug } = await params
     const b = build(slug)
     if (!b) notFound()
-    const body = <b.factory.Page params={Promise.resolve({ lang })} />
+    const body = (
+      <PageAddress page={`/${lang}${opts.subPath}/${slug}`} file={dataFile(b.page, [...opts.segments, '_pages', slug], lang)}>
+        <b.factory.Page params={Promise.resolve({ lang })} />
+      </PageAddress>
+    )
     const allowed = allowedRoles(b.page)
     if (!allowed) return body
     return (
