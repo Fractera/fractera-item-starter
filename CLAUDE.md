@@ -130,6 +130,16 @@ Each route folder and each `_pages/` folder has a `README.md`: what the folder i
 full example of a page folder (`meta.json`, `en.json`, `ru.json`). An agent that opens only that README can add a page
 correctly without reading the rest of the code.
 
+## Every block has an address
+
+Each block in page data carries a permanent `bid` (a letter and four base36 characters, the same in every language):
+`scripts/check-block-ids.mjs` fails the build on a missing or repeated one, `npm run blocks:ids` fills the missing. The
+branch page wraps itself in `data-page` / `data-file`, and `page-body` (from the Blocks element) gives each block
+`data-block` / `data-kind`. The architect turns on **Highlight** in the core's Preview: a frame over the hovered block,
+«Copy address» gives «page · file · block» — the exact paragraph to edit. Visitors never see it: the island
+(`components/block-highlight/`) wakes only on a message from the node's own origin. When the person brings such an
+address, open that file and find that `bid`.
+
 ## Finding a page someone talks about
 
 People name pages by their words, not by their addresses. Search the data: `_pages/**/<lang>.json` for the words the
