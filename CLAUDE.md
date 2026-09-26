@@ -1,74 +1,129 @@
 # Who you are
 
-You are the agent of the **root element** of a Fractera node: the site a visitor sees at the root of the
-domain (or an automation, if that is what the person builds here). You work in this folder only. On a node
-it is `AGI-ITEMS/core/root`; your terminal is the page «Root → Terminal» of the architect layer.
+You are the agent of one element of a Fractera node. This folder is the element: its site, its pages, its data. You work
+here only. The element was born from the Fractera item template, and the template gives it one thing above all: **a frame
+of routes that does not grow with the number of pages.** Grow the element inside that frame.
 
-The node around you has three required elements — `auth` (sign-in), `data` (stored data) and you — plus
-the **core**, which holds the architect pages and the installer. You are replaceable: another repository
-that keeps the contract below can take your place with one line in the node's
-`AGI-ITEMS-CONFIG/agi-items.json`.
+> Status (node step 314, 2026-09-26): the tree below is the target of the template. Parts of the code still follow the
+> older layout (role pages as separate route folders); they are being moved into this tree. Build new pages the new way.
 
-## 🔒 The contract — what makes this repository an element
+## The frame — Next 16.2, and why it is shaped like this
 
-| Rule | Why |
-|---|---|
-| `OWN-SERVICE-PROPS.json` in the root: id, desired port, env file, health path, build and start | the node reads it; without it it cannot install or watch you |
-| port from `PORT`; never a remembered number | the node assigns ports from the block 24680–24699 |
-| `GET /api/health` answers 200 without a session | the watchdog asks the capability, not the process |
-| sign-in only through the node's `auth` element; never your own | two sign-ins on one node are no sign-in |
-| `GET /api/me` answers the element subdomains `https://<id>.<this host>` with CORS + credentials, nobody else | their header asks it from the browser; without it a signed-in architect saw «Sign in» there (312) |
-| stored data only through the `data` element (`REMOTE_DATA_URL` + `DATA_SECRET`); never a database file of your own | one door to the data |
-| public pages stay static: no `force-dynamic`, no `cookies()`/`headers()` in a layout or page | search visibility dies silently |
-| `next.config.ts` names this folder as the build root (`outputFileTracingRoot`, `turbopack.root`) | inside a node Next otherwise takes the node for the project |
+A Next build compiles every route file (`page.tsx`, `route.ts`) as its own entry point, and the build time grows with the
+number of those files, not with the number of pages. Measured on this node (step 298): an empty site built in 103 s;
+with 300 extra `page.tsx` files, 1252 s; with the same 300 pages served by one dynamic template, 98 s. A site that adds
+pages as files ends up building for tens of minutes. So the code of a branch is only its root, and every page below the
+root is data.
 
-## 🔒 You own your settings, and you live without the core
+```
+<element>/
+├── .claude/
+│   ├── skills/*
+│   └── hooks/*
+├── lib/
+│   └── page-tree.ts
+├── scripts/
+│   └── check-routes.mjs
+└── app/[lang]/
+    ├── layout.tsx
+    │
+    ├── (publicLayer)/
+    │   ├── README.md
+    │   ├── page.tsx
+    │   ├── _data/ {meta,en,ru}.json
+    │   ├── [slug]/
+    │   │   ├── page.tsx
+    │   │   ├── index.md/route.ts
+    │   │   └── README.md
+    │   └── _pages/
+    │       ├── README.md
+    │       ├── privacy/       {meta,en,ru}.json
+    │       ├── terms/         {meta,en,ru}.json
+    │       ├── cookies/       {meta,en,ru}.json
+    │       └── accessibility/ {meta,en,ru}.json
+    │
+    ├── (protectedLayer)/
+    │   ├── layout.tsx
+    │   ├── README.md
+    │   ├── account/
+    │   │   ├── layout.tsx
+    │   │   ├── page.tsx
+    │   │   ├── _data/ {meta,en,ru}.json
+    │   │   ├── [slug]/page.tsx
+    │   │   ├── README.md
+    │   │   └── _pages/
+    │   │       ├── README.md
+    │   │       └── user/ · buyer/ · vip-user/ · subscriber-lite/ · subscriber-standard/ · subscriber-max/
+    │   ├── staff/
+    │   │   ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
+    │   │   └── _pages/ manager/ · senior-manager/ · support-manager/ · delivery-manager/ · content-editor/
+    │   ├── finance/
+    │   │   ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
+    │   │   └── _pages/ finance/
+    │   └── admin/
+    │       ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
+    │       └── _pages/ admin/
+    │
+    └── (guestLayer)/
+        └── guest/
+            ├── layout.tsx
+            ├── page.tsx
+            ├── _data/ {meta,en,ru}.json
+            ├── [slug]/page.tsx
+            ├── README.md
+            └── _pages/README.md
+```
 
-`APP-CONFIG`, `PLATFORM-CONFIG`, `DESIGN-CONFIG`, SEO settings and the `# kind: own` values of
-`.env.example` belong to you. The core may read, change and write them back through your settings door
-(the node's step 280-6) — it never hands you its own. If the core stops, you keep serving with your last
-settings. The installer gives you only neighbours (`AUTH_SERVICE_URL`, `REMOTE_DATA_URL`,
-`ARCHITECT_URL`, `NEXT_PUBLIC_AUTH_URL`) and the data key.
+`*` — the set is not fixed yet; it is filled as the element grows.
 
-**The node's settings element (`config`, `config.<zone>`) is a source you CHOSE, not a master** (node
-step 299-6). It keeps the owner's decisions and gives them over MCP (`settings_version`,
-`get_project_settings`). This site takes them of its own will: `lib/project-settings.ts` asks at server
-start (`instrumentation.ts`), fetches only when the fingerprint moved, and keeps
-the **last received copy** in
-`SERVICE_DATA_DIR/project-settings.json` (outside the build). The three readers (`config/app-config.ts`,
-`platform-config.ts`, `design-config.ts`) lay that copy over this site's defaults whenever it exists; the
-element is down or removed — the last copy keeps serving. No copy ever received — the site's own files apply.
-**The site is subscribed to the CONFIG signal** (node step 306, owner 2026-09-26: «строим уведомление от
-CONFIG»): after the architect saves, CONFIG POSTs «the version changed» to `/api/settings/changed`, and the site
-fetches the settings itself and refreshes its pages with `revalidatePath` — no restart, pages stay static. The
-module, how to carry it to another service and its limits — `lib/settings-listener.README.md`.
+**How to read it.** A branch is a folder with a `layout.tsx` and a `page.tsx` at its root — the only code the branch has.
+Its children live in `_pages/<slug>/` as data (`meta.json`, `en.json`, `ru.json`) and are all served by the one `[slug]`
+route of the branch. To add a page, add a folder of data. To add a branch, ask the person first: a branch is new code,
+and the list of route files is closed — `scripts/check-routes.mjs` fails the build on any route file it does not know.
 
-**The design is the node element `design`, not CONFIG** (node step 309, owner 2026-09-26: «любые микро сервисы … будут
-менять свой дизайн … в тот момент когда микро сервис дизайн будет вносить изменения»). `lib/design-follow.ts` takes
-the whole design (colours light/dark, fonts, type, shapes, blocks) from `DESIGN_SERVICE_URL` over MCP at start and on its
-signal, writes it into this site's own `DESIGN-CONFIG` and the signal door re-renders the pages. `config/design-config.ts`
-reads ONLY that file — the CONFIG copy carries no design any more. The same three pieces live in every service of the node
-(`fractera-design-starter/README.md` — how to connect one). A design element is absent — the site keeps its own file.
-🛑 Still no polling, no timers, no retries: action only in answer to a human save (the 2026-09-25 cancellation
-stands). A missed signal is caught up at the next start. Do not add self-acting behaviour the owner did not order.
+## Pages: static, drawn on the first visit, fresh every five minutes
 
-## 🔒 The first edit makes this site the person's own repository
+- **The build draws only the roots of the branches.** A child is drawn the first time someone opens it, kept on disk and
+  served from there; after five minutes the next visit refreshes it. That is why the build time does not depend on how
+  many pages the element has.
+- **Page text is read at run time.** `_pages/<slug>/<lang>.json` is read by `lib/page-tree.ts` while the site runs, not
+  baked into the build: a corrected paragraph shows up within those five minutes without a rebuild. Code changes still
+  need a rebuild.
+- **The site works without the internet.** Once drawn, a page is a file on this machine; nothing on it may depend on a
+  remote service to appear. Known gap, named so it is not mistaken for done: design fonts are still linked from
+  `fonts.googleapis.com` — offline the page opens with the system font (node step 315 will serve fonts from the node).
+- **The five-minute mechanism** (Next 16.2, from its own docs in `node_modules/next/dist/docs`): in the classic mode this
+  template uses today, `export const revalidate = 300` with `generateStaticParams` returning `[]` and `dynamicParams`
+  left on. Under Cache Components the same is `cacheLife({ revalidate: 300 })` — note that the `'minutes'` preset
+  revalidates every **one** minute, not five. Which mode the template settles on is an open decision of the node owner;
+  do not switch modes on your own.
+- **Every page has text in English and Russian**, in its own data folder: `en.json` is the base and is required,
+  `ru.json` overrides it. A language without its file falls back to English — a readable page, never a hole. No visible
+  string lives in code.
 
-This folder is a clone of the Fractera original at a pinned tag. It is outside the node's git, the person
-cannot push to the original, and a reinstall resets it to the tag — anything you change here is lost.
-So **before your first change**:
+## Role access
 
-1. fork this repository (or create one from it) on the person's GitHub account;
-2. set `origin` here to that fork and commit your work there;
-3. tag a version (`vX.Y.Z`) and push the tag;
-4. in the node, change the `root` line of `AGI-ITEMS-CONFIG/agi-items.json` to the fork and the tag;
-5. run `npm run services:install` in the node root.
+- **Four categories, four protected branches:** `account`, `staff`, `finance`, `admin`. The `layout.tsx` at the root of a
+  branch is the lock of the category: it admits the roles of that category (`lib/roles.ts` → `PROTECTED_GROUP_ROLES`).
+- **A child narrows it.** Its `meta.json` names the roles that open it; the `[slug]` template of the branch puts the
+  second lock on the page with exactly those roles. The page shows who it admits from the same list — one list, two
+  readers, so the lock and the text cannot disagree.
+- **The architect passes every lock.** `architect` is in every category and every child by default.
+- **The guest branch signs a visitor in by itself.** No session → the sign-in service's `/api/auth/guest` creates a user
+  with the role `guest` and brings the visitor back; one attempt per tab. Each guest visit is a new record in the
+  database: offer it only where it is truly needed.
+- **Protected and guest pages are closed to search engines**; only the public branch is indexed.
 
-Ask the person before creating a repository on their account: it is an action outside this machine.
+## Every route carries a README.md
 
-## Where things are
+Each route folder and each `_pages/` folder has a `README.md`: what the folder is, the rule of the frame it follows, and a
+full example of a page folder (`meta.json`, `en.json`, `ru.json`). An agent that opens only that README can add a page
+correctly without reading the rest of the code.
 
-- `/<lang>/architect/*` is not yours: it redirects to the core (`ARCHITECT_URL`).
-- The node's architect pages about you: `/architect/root` (Preview, subscription, terminal, Telegram,
-  External GitHub).
-- Build and run on your own: `npm install`, `npm run build`, `PORT=24683 node .next/standalone/server.js`.
+## Finding a page someone talks about
+
+People name pages by their words, not by their addresses. Search the data: `_pages/**/<lang>.json` for the words the
+person used; the folder that matches is the page. There is no hand-written list of pages — it would drift from the
+folders on the first new page. A machine map for outside agents, if ever needed, is generated from `lib/page-tree.ts`.
+
+<!-- The rest of this instruction is written in the next parts of node step 314. -->
