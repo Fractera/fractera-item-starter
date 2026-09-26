@@ -9,12 +9,14 @@
   "blocks": [
     {
       "kind": "p",
-      "text": "Visitors who open this page are registered automatically under a guest account."
+      "text": "Visitors who open this page are registered automatically under a guest account.",
+      "bid": "zytcl"
     },
     {
       "kind": "warning-card",
       "title": "Keep in mind",
-      "text": "Every guest visit adds a new record to the database. If you decide to offer this, be careful: it puts real load on your application. Use it only where it is truly necessary."
+      "text": "Every guest visit adds a new record to the database. If you decide to offer this, be careful: it puts real load on your application. Use it only where it is truly necessary.",
+      "bid": "o14e4"
     }
   ]
 }

@@ -6,15 +6,18 @@
     {
       "kind": "section-head",
       "id": "cookies-h1",
-      "title": "What belongs here"
+      "title": "What belongs here",
+      "bid": "t4l3z"
     },
     {
       "kind": "p",
-      "text": "Replace this placeholder with your own text. Until you do the page still works: it is fully static and indexable, and search engines receive its title, description and structured data exactly as they do for an article. Back to [%SITE%](/en)."
+      "text": "Replace this placeholder with your own text. Until you do the page still works: it is fully static and indexable, and search engines receive its title, description and structured data exactly as they do for an article. Back to [%SITE%](/en).",
+      "bid": "kgakq"
     },
     {
       "kind": "p",
-      "text": "A cookie policy lists the cookies the site sets, what each is for, and how consent is withdrawn."
+      "text": "A cookie policy lists the cookies the site sets, what each is for, and how consent is withdrawn.",
+      "bid": "wq0pw"
     }
   ]
 }

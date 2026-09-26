@@ -5,11 +5,13 @@
   "blocks": [
     {
       "kind": "p",
-      "text": "You are on a page protected by authorization. It grants access to the role **content_editor**."
+      "text": "You are on a page protected by authorization. It grants access to the role **content_editor**.",
+      "bid": "dfwpg"
     },
     {
       "kind": "p",
-      "text": "Roles allowed here: {roles}."
+      "text": "Roles allowed here: {roles}.",
+      "bid": "qhurd"
     }
   ]
 }

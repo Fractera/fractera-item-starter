@@ -6,15 +6,18 @@
     {
       "kind": "section-head",
       "id": "privacy-h1",
-      "title": "What belongs here"
+      "title": "What belongs here",
+      "bid": "wpj2y"
     },
     {
       "kind": "p",
-      "text": "Replace this placeholder with your own text. Until you do the page still works: it is fully static and indexable, and search engines receive its title, description and structured data exactly as they do for an article. Back to [%SITE%](/en)."
+      "text": "Replace this placeholder with your own text. Until you do the page still works: it is fully static and indexable, and search engines receive its title, description and structured data exactly as they do for an article. Back to [%SITE%](/en).",
+      "bid": "kns6w"
     },
     {
       "kind": "p",
-      "text": "A privacy policy names what data you collect, why, how long you keep it, and how a visitor can have it removed."
+      "text": "A privacy policy names what data you collect, why, how long you keep it, and how a visitor can have it removed.",
+      "bid": "xne9d"
     }
   ]
 }

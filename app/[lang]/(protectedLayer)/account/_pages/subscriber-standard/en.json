@@ -5,11 +5,13 @@
   "blocks": [
     {
       "kind": "p",
-      "text": "You are on a page protected by authorization. It grants access to the role **subscriber_standard**."
+      "text": "You are on a page protected by authorization. It grants access to the role **subscriber_standard**.",
+      "bid": "acwa2"
     },
     {
       "kind": "p",
-      "text": "Roles allowed here: {roles}."
+      "text": "Roles allowed here: {roles}.",
+      "bid": "l2g89"
     }
   ]
 }

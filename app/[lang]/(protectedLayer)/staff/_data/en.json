@@ -5,7 +5,8 @@
   "blocks": [
     {
       "kind": "p",
-      "text": "You are at the root of the staff branch. Its pages are protected by authorization."
+      "text": "You are at the root of the staff branch. Its pages are protected by authorization.",
+      "bid": "s2ghv"
     }
   ]
 }

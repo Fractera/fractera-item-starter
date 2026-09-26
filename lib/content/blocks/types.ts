@@ -11,11 +11,18 @@
 
 export type Link = { label: string; href: string }
 
-export type Block =
+/**
+ * Постоянный адрес блока (317-1): буква + 4 знака base36, один на всех языках. По нему подсветка в Preview называет блок,
+ * а агент находит его в файле. Ставит и проверяет `scripts/check-block-ids.mjs` (`npm run blocks:ids`).
+ */
+type Addressed = { bid?: string }
+
+export type Block = Addressed & (
   | { kind: 'p'; text: string }
   | { kind: 'section-head'; id: string; title: string; badge?: string }
   | { kind: 'hero-centered'; pill?: string; title: string; description: string; cta?: Link; secondary?: Link }
   | { kind: 'warning-card'; title: string; text: string }
+)
 
 /** Вопрос и ответ раздела FAQ — рисует блок `faq` из «Блоков», он же ставит разметку `FAQPage`. */
 export type FaqPair = { q: string; a: string }

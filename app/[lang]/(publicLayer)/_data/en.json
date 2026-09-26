@@ -15,11 +15,13 @@
       "secondary": {
         "label": "Open the terminal",
         "href": "/en/architect/build/terminal"
-      }
+      },
+      "bid": "j7tri"
     },
     {
       "kind": "p",
-      "text": "You are on the root page. It is not protected by any protocol."
+      "text": "You are on the root page. It is not protected by any protocol.",
+      "bid": "ww45e"
     }
   ]
 }
