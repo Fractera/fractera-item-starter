@@ -26,6 +26,8 @@ import { installUi } from "@/components/pwa/install-prompt.i18n";
 import { IosSplash } from "@/components/pwa/ios-splash";
 import { SignInNotice, SIGN_IN_TOASTER } from "@/components/auth/sign-in-notice.client";
 import { signInNoticeStrings } from "@/components/auth/sign-in-notice.i18n";
+import { BlockHighlight } from "@/components/block-highlight/block-highlight.client";
+import { blockHighlightWords } from "@/components/block-highlight/block-highlight.i18n";
 
 // Root layout for the localized public surface (step 131). This zone OWNS <html>/
 // <body> — the language comes from the [lang] route param (known at build), NOT from
@@ -206,6 +208,8 @@ export default async function LangLayout({
                 браузере. Кнопка появляется, только когда браузер сам сообщил,
                 что сайт устанавливаем. */}
             <InstallPrompt strings={installUi(lang)} />
+            {/* 317-3: подсветка блоков — спит, пока Preview ядра не включит её сообщением (только свой источник). */}
+            <BlockHighlight words={blockHighlightWords(lang)} />
           </DrawerProvider>
         </ThemeProvider>
       </body>

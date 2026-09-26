@@ -8,6 +8,7 @@ import type { Block } from '@/lib/content/blocks/types'
 import { branchChild, branchRoot, wordsIn, type TreePage } from '@/lib/page-tree'
 import { pageWidget } from '@/lib/page-widgets'
 import { ownId } from '@/lib/own-id'
+import { brand } from '@/lib/brand'
 
 // СТРАНИЦЫ ВЕТКИ ИЗ ДЕРЕВА ДАННЫХ (node step 314-2). Два файла маршрута на ветку и больше ни одного: корень
 // (`<ветка>/page.tsx` → `rootPage`) и ребёнок (`<ветка>/[slug]/page.tsx` → `childRoute`). Всё остальное — данные.
@@ -47,9 +48,14 @@ function allowedRoles(page: TreePage): string[] | null {
 function contentOf(page: TreePage, lang: string) {
   const w = wordsIn(page, lang)
   const roles = allowedRoles(page)?.join(', ')
-  const blocks = fillElementLinks(w.blocks).map((b) =>
-    roles && b.kind === 'p' && b.text.includes('{roles}') ? { ...b, text: b.text.replace('{roles}', roles) } : b,
-  )
+  // `%SITE%` в тексте — имя сайта (соглашение данных; прежний каталог подставлял его сам, блок `p` из «Блоков» — нет).
+  const site = brand().name
+  const blocks = fillElementLinks(w.blocks).map((b) => {
+    if (b.kind !== 'p') return b
+    let text = b.text.split('%SITE%').join(site)
+    if (roles) text = text.replace('{roles}', roles)
+    return text === b.text ? b : { ...b, text }
+  })
   return { title: w.title, description: w.description, keywords: w.keywords ?? '', blocks, faq: w.faq }
 }
 
