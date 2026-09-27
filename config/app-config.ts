@@ -108,8 +108,8 @@ export const getAppConfig = cache((): AppConfig => {
     const merged = deepMerge(DEFAULT_APP_CONFIG, own);
     const cfg = normalize(validateConfig(appConfigSchema, merged, DEFAULT_APP_CONFIG, "APP-CONFIG"));
     // 324-5: главный адрес, выданный узлом этому элементу, сильнее `url` проекта — canonical, sitemap, hreflang, og.
-    const own = ownSiteUrl();
-    return own ? { ...cfg, url: own, seo: { ...cfg.seo, canonicalBase: own } } : cfg;
+    const mainAddress = ownSiteUrl();
+    return mainAddress ? { ...cfg, url: mainAddress, seo: { ...cfg.seo, canonicalBase: mainAddress } } : cfg;
   } catch {
     return DEFAULT_APP_CONFIG;
   }
