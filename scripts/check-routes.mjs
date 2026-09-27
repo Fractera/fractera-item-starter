@@ -55,6 +55,7 @@ const ALLOWED = new Map([
   ['app/api/config-image/[slot]/route.ts', 'картинки настроек'],
   ['app/api/health/route.ts', 'жив ли элемент — для сторожа узла'],
   ['app/api/i18n/translate/route.ts', 'перевод строк'],
+  ['app/api/core-origin/route.ts', 'адрес ядра своего узла (324-6)'],
   ['app/api/me/route.ts', 'кто вошёл'],
   ['app/api/media-proxy/[...path]/route.ts', 'медиа через узел'],
   ['app/api/media/[id]/file/route.ts', 'файл медиа'],

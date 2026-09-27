@@ -38,6 +38,22 @@ function ownOrigin(origin: string): boolean {
   return url.hostname === zone || url.hostname.endsWith(`.${zone}`)
 }
 
+// 324-6: на собственном домене элемента ядро узла — в чужой зоне. Его точный адрес знает сервер элемента; спрашиваем один
+// раз и ждём ответа, прежде чем отбросить сообщение (первое сообщение Preview приходит сразу после загрузки окна).
+let coreOriginAsked: Promise<string | null> | null = null
+function coreOrigin(): Promise<string | null> {
+  coreOriginAsked ??= fetch("/api/core-origin", { cache: "no-store" })
+    .then((r) => r.json())
+    .then((j: { origin?: unknown }) => (typeof j.origin === "string" ? j.origin : null))
+    .catch(() => null)
+  return coreOriginAsked
+}
+
+/** Свой источник или ядро своего узла. */
+async function trusted(origin: string): Promise<boolean> {
+  return ownOrigin(origin) || origin === (await coreOrigin())
+}
+
 /** У обёртки `display: contents` своей коробки нет — рамка обнимает её детей. */
 function boxOf(el: Element): DOMRect | null {
   const rects = Array.from(el.children).map((c) => c.getBoundingClientRect()).filter((r) => r.width > 0 && r.height > 0)
@@ -78,9 +94,9 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
 
   // Включение и выключение — только сообщением от своего источника.
   useEffect(() => {
-    function onMessage(e: MessageEvent) {
+    async function onMessage(e: MessageEvent) {
       const d = e.data as { type?: string; on?: boolean } | null
-      if (!d || d.type !== "fractera:highlight" || !ownOrigin(e.origin) || !e.source) return
+      if (!d || d.type !== "fractera:highlight" || !e.source || !(await trusted(e.origin))) return
       setOn(Boolean(d.on))
       setParent({ source: e.source, origin: e.origin })
       if (!d.on) setTarget(null)
@@ -94,9 +110,9 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
   // FLASH_MS, погасить, ответить `fractera:locate-state { bid, found }`. Режим подсветки для этого не нужен. Посетитель
   // с `#block=` в адресе ничего не увидит: островок сам адрес не читает, действует только по сообщению ядра.
   useEffect(() => {
-    function onMessage(e: MessageEvent) {
+    async function onMessage(e: MessageEvent) {
       const d = e.data as { type?: string; bid?: unknown } | null
-      if (!d || d.type !== "fractera:locate" || !ownOrigin(e.origin) || !e.source) return
+      if (!d || d.type !== "fractera:locate" || !e.source || !(await trusted(e.origin))) return
       const bid = typeof d.bid === "string" ? d.bid : ""
       const el = bid ? document.querySelector(`[data-block="${CSS.escape(bid)}"]`) : null
       const anchor = el ? firstBoxed(el) : null
