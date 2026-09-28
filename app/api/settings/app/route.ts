@@ -53,12 +53,18 @@ export async function PATCH(req: NextRequest) {
   if (!isObj(patch)) return NextResponse.json({ ok: false, reason: "bad-body" }, { status: 400 })
   delete patch.url
   let current: unknown = {}
-  try { current = JSON.parse(readFileSync(FILE, "utf8")) } catch { /* нет файла — начинаем с пустого */ }
+  // Концы строк файла сохраняются: APP-CONFIG живёт в git элемента, смена CRLF на LF была бы правкой без содержания.
+  let eol = "\n"
+  try {
+    const text = readFileSync(FILE, "utf8")
+    current = JSON.parse(text)
+    if (text.includes("\r\n")) eol = "\r\n"
+  } catch { /* нет файла — начинаем с пустого */ }
   const next = mergePatch(current, patch)
   const tmp = `${FILE}.${process.pid}.${Date.now()}.tmp`
   try {
     mkdirSync(dirname(FILE), { recursive: true })
-    writeFileSync(tmp, JSON.stringify(next, null, 2) + "\n", "utf8")
+    writeFileSync(tmp, (JSON.stringify(next, null, 2) + "\n").replace(/\n/g, eol), "utf8")
     renameSync(tmp, FILE)
   } catch {
     return NextResponse.json({ ok: false, reason: "write-failed" }, { status: 500 })
