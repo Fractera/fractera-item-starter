@@ -11,7 +11,7 @@ import { Task, TaskContent, TaskItem, TaskTrigger } from "@/components/ai-elemen
 import { Confirmation, ConfirmationAccepted, ConfirmationTitle } from "@/components/ai-elements/confirmation"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import base from "./impeccable.module.css"
+import base from "./landing-agent.module.css"
 
 // ИМИТАЦИЯ ЧАТА АГЕНТОВ НА ПЕРВОМ ЭКРАНЕ (шаг 333-12). Слово владельца: «имитацию чата между агентами, которые создают
 // приложения … слева агент-регистратор, справа ему отвечают люди и агенты людей … как стрим»; «используй как можно больше

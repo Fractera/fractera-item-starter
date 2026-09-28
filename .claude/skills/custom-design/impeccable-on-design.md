@@ -50,7 +50,8 @@ fallback first (`--board: var(--primary); --board: oklch(from …);`) so an old 
 
 ## The reference maquette comes first (owner, 2026-09-28)
 
-The departure-board home page in its original colours — `components/landing-impeccable/` (`index.tsx`,
+The departure-board home page in its original colours — archived in git: template tag `v0.3.39`, folder
+`components/landing-impeccable/` (`index.tsx`,
 `impeccable.module.css`, `DIRECTION.md`) — is **the approved maquette**. Any page redrawn with impeccable for this element:
 
 - **keeps its world and composition**: station sign → departure board (origin, three destinations with flip letters,

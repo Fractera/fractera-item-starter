@@ -4,7 +4,7 @@ A branch of the element's frame (node step 314-2). Lock of the branch: none — 
 
 ## The home page is a landing (node step 330-4)
 
-`_data/meta.json` names the widget `landing-impeccable` with `widgetOnly: true`: `components/landing-impeccable/` draws the whole screen, the
+`_data/meta.json` names the widget `landing-agent` with `widgetOnly: true`: `components/landing-agent/` draws the whole screen, the
 blocks of `_data/<lang>.json` stay its words (and the text twin for agents), the field `landing` adds the tagline with its
 hint, card titles, the figure, the chips and the closing call. Remove `widget`/`widgetOnly` to go back to the blocks.
 

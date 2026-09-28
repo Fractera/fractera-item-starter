@@ -3,7 +3,7 @@ import { UsersTable } from '@/components/users-table/index.client'
 import { usersTableUi } from '@/components/users-table/ui.i18n'
 import { SiteSettings } from '@/components/site-settings'
 import { GuestAccount } from '@/components/guest-account'
-import { LandingImpeccable } from '@/components/landing-impeccable'
+import { LandingAgent } from '@/components/landing-agent'
 
 // РАБОЧИЕ ВИДЖЕТЫ СТРАНИЦ ДЕРЕВА (node step 314-2). Страница-данные, у которой кроме текста есть работа (таблица, форма),
 // называет свой виджет в `meta.json` → `"widget": "<имя>"`; ребёнок ветки рисует его под текстом. Так у рабочей страницы
@@ -16,8 +16,9 @@ const WIDGETS: Record<string, (lang: string) => ReactNode> = {
   'site-settings': (lang) => <SiteSettings lang={lang} />,
   // 331-2: гостевая страница — «Вернуться» туда, откуда пришёл, и «Удалить мою учётную запись и покинуть сайт».
   'guest-account': (lang) => <GuestAccount lang={lang} />,
-  // 330-8: главная — лендинг по навыку impeccable на весь экран (meta.widgetOnly), слова — поле `landing` данных главной.
-  'landing-impeccable': (lang) => <LandingImpeccable lang={lang} />,
+  // 333-15: главная — лендинг агента элемента (навык impeccable, цвета по формуле от «Дизайна»), на весь экран (meta.widgetOnly).
+  // Слово владельца: «зачем нам две страницы, оставь только главную … design-agent и должна стать главной».
+  'landing-agent': (lang) => <LandingAgent lang={lang} />,
 }
 
 export function pageWidget(name: string, lang: string): ReactNode {
