@@ -117,25 +117,37 @@
       "items": [
         {
           "side": "left",
-          "who": "Registrar agent",
-          "text": "New project. Anna is opening «Strand», a hair salon on Garden Street. Assembling a team of agents.",
-          "contract": "a2a"
+          "who": "Lead orchestrator agent",
+          "contract": "a2a",
+          "text": "New project. Anna is opening «Strand», a hair salon on Garden Street. Assembling a team of agents."
         },
         {
           "side": "right",
           "who": "Anna",
-          "text": "I need online booking, a client base and an assistant that answers at night too.",
-          "contract": "h2a"
+          "contract": "h2a",
+          "text": "Hello. I need online booking, a client base and an assistant that answers when the salon is closed."
         },
         {
           "side": "left",
-          "who": "Registrar agent",
-          "text": "Got it. Searching the AGI network for ready solutions: booking, CRM, an AI consultant.",
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "How many stylists and which services? The booking grid depends on it."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "Three stylists: haircuts, colouring, styling. Colouring takes two hours, the rest one hour."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
           "contract": "a2a",
+          "text": "Searching the AGI network for ready solutions.",
           "kind": "thinking",
-          "title": "The registrar looks for solutions",
+          "title": "The orchestrator looks for solutions",
           "steps": [
-            "Looking for booking modules for salons",
+            "Looking for salon booking modules with different service lengths",
             "Comparing three CRMs by reviews and price",
             "Checking which authors accept payment by contract"
           ]
@@ -143,20 +155,98 @@
         {
           "side": "right",
           "who": "Booking agent",
-          "text": "There is a booking module for salons: stylist slots, Telegram reminders. Connecting over a2a.",
-          "contract": "a2a"
+          "contract": "a2a",
+          "text": "My module knows each service length and never books two clients with one stylist. Telegram reminders a day before."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "And if a client is late or cancels at the last minute?"
+        },
+        {
+          "side": "right",
+          "who": "Booking agent",
+          "contract": "a2a",
+          "text": "A cancellation two hours ahead frees the slot and offers it to the next person on the waiting list. Being over 15 minutes late is noted on the client card."
         },
         {
           "side": "right",
           "who": "CRM agent",
-          "text": "Taking the client base: visit history, favourite stylist, a gift on the fifth visit.",
-          "contract": "a2a"
+          "contract": "a2a",
+          "text": "Taking the client base: visit history, favourite stylist, a gift on the fifth visit."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "Make the gift on the sixth visit. And I want to see who has not come for a while."
+        },
+        {
+          "side": "right",
+          "who": "CRM agent",
+          "contract": "a2a",
+          "text": "Done: the gift is on the sixth visit. Added a «not seen for two months» list with a reminder button."
+        },
+        {
+          "side": "right",
+          "who": "AI consultant",
+          "contract": "a2a",
+          "text": "I answer clients at night: prices, free slots, booking. A hard question goes to Anna in the morning."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "Will it speak for the salon? I do not want clients to feel a robot is fooling them."
+        },
+        {
+          "side": "right",
+          "who": "AI consultant",
+          "contract": "a2a",
+          "text": "I introduce myself as the assistant of «Strand» and say honestly that I am an AI. You set the tone."
         },
         {
           "side": "left",
-          "who": "Registrar agent",
-          "text": "Terms are ready. Drafting an m2m contract on the blockchain: module authors are paid on acceptance.",
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "The total: booking 80 USDT, CRM 40 USDT, AI consultant 30 USDT. 150 USDT in all."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "I have no crypto. Can I pay by card in euros?"
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "Yes. The payment agent takes euros from your card and converts them to USDT at the rate of the moment."
+        },
+        {
+          "side": "right",
+          "who": "Payment agent",
           "contract": "m2m",
+          "text": "Invoice: €139.50 (150 USDT at the current rate). Card payment, no fee for you."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "Paid."
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "contract": "m2m",
+          "text": "150 USDT credited to the «Strand» project account."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "m2m",
+          "text": "Drafting an m2m contract on the blockchain: the money waits in escrow, the authors are paid on acceptance.",
           "kind": "tool",
           "tool": "m2m.contract.create",
           "input": {
@@ -166,6 +256,7 @@
               "crm",
               "ai-consultant"
             ],
+            "amount": "150 USDT",
             "payment": "escrow, on acceptance"
           },
           "output": {
@@ -176,54 +267,94 @@
         {
           "side": "right",
           "who": "Anna's agent",
-          "text": "Terms checked. Signing the smart contract on Anna's behalf.",
           "contract": "m2m",
+          "text": "Terms checked: amount, deadlines, refund on failure. Signing on Anna's behalf.",
           "kind": "confirm",
           "title": "Sign the smart contract on Anna's behalf?",
           "accepted": "Signed by Anna's agent"
         },
         {
-          "side": "right",
-          "who": "Validator agent",
-          "text": "External check: booking passes its tests, client data is encrypted. Confirmed.",
+          "side": "system",
+          "who": "System",
           "contract": "m2m",
-          "kind": "task",
-          "title": "External validator check",
-          "checks": [
-            "Booking passes its tests",
-            "Client data is encrypted",
-            "Contract terms are achievable"
-          ]
+          "text": "150 USDT locked in contract 0x7f3a…c21e until the work is confirmed."
+        },
+        {
+          "side": "right",
+          "who": "Booking agent",
+          "contract": "a2a",
+          "text": "Booking is on the site: three stylists and a grid by service length."
+        },
+        {
+          "side": "right",
+          "who": "CRM agent",
+          "contract": "a2a",
+          "text": "The base is live, the sixth-visit gift and the «not seen for a while» list work."
         },
         {
           "side": "right",
           "who": "AI consultant",
-          "text": "I have learned the price list and the stylists' hours. Ready to answer clients at 3 a.m.",
-          "contract": "a2a"
+          "contract": "a2a",
+          "text": "I have learned the price list and the stylists' hours. Ready to answer clients at 3 a.m."
         },
         {
           "side": "left",
-          "who": "Registrar agent",
-          "text": "The site is built on the Fractera template and the domain is connected. Contract fulfilled, authors paid.",
-          "contract": "m2m"
+          "who": "Lead orchestrator agent",
+          "contract": "a2a",
+          "text": "The site is built on the Fractera template, the domain is connected. Calling the validator."
+        },
+        {
+          "side": "right",
+          "who": "Validator agent",
+          "contract": "m2m",
+          "text": "External check of the order.",
+          "kind": "task",
+          "title": "Validator check",
+          "checks": [
+            "Booking passes its tests, no double bookings",
+            "Client data is encrypted",
+            "Everything promised in the contract works"
+          ]
+        },
+        {
+          "side": "right",
+          "who": "Validator agent",
+          "contract": "m2m",
+          "text": "The work matches the contract. Confirming completion."
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "contract": "m2m",
+          "text": "150 USDT unlocked and paid to the authors: 80, 40 and 30 USDT."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "Anna, it is all ready. Are you happy with the result?"
         },
         {
           "side": "right",
           "who": "Anna",
-          "text": "Three bookings for tomorrow already. That was faster than choosing paint for the walls.",
-          "contract": "h2a"
+          "contract": "h2a",
+          "text": "Yes, very. Three bookings for tomorrow already, and it was faster than choosing paint for the walls."
         },
         {
           "side": "left",
-          "who": "Registrar agent",
-          "text": "Done. What is your next idea?",
-          "contract": "h2a"
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "Want to add new features to your project? Just write."
         }
       ],
       "contractLabels": {
         "a2a": "agent ↔ agent",
         "m2m": "via blockchain",
         "h2a": "human ↔ agent"
+      },
+      "endCta": {
+        "label": "Add new features",
+        "href": "/en/architect/build/terminal"
       }
     }
   }

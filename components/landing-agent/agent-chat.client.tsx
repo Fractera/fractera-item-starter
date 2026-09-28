@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { UserRound } from "lucide-react"
+import { ArrowRight, UserRound } from "lucide-react"
 import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ai-elements/conversation"
 import { Message, MessageContent } from "@/components/ai-elements/message"
 import { Shimmer } from "@/components/ai-elements/shimmer"
@@ -21,10 +21,13 @@ import base from "./landing-agent.module.css"
 // роль «плакат». Только широкий экран, без градиента.
 // 🔒 СТАТИКА ЦЕЛА: сервер отдаёт весь разговор; островок, увидев чат на экране, проигрывает его заново — по одной реплике,
 // с «печатает…» перед каждой. Ушёл с экрана — пауза, вернулся — продолжает. При «уменьшить движение» разговор стоит целиком.
+// 🔒 КОНЕЦ — ОСТАНОВКА, НЕ ПОВТОР (слово владельца, 333-17: «исчезает автоматически в конце … даже не могу прочитать»):
+// после последней реплики разговор стоит, прокручен до конца, под ним — кнопка `endCta`. Реплики `side: "system"` — не
+// левые и не правые: уведомление системы по центру (штамп в ленте), без аватара и без «печатает…».
 
 type Contract = "a2a" | "m2m" | "h2a"
 type Item = {
-  side: "left" | "right"
+  side: "left" | "right" | "system"
   who: string
   text: string
   contract: Contract
@@ -42,11 +45,16 @@ type Item = {
 export type AgentChatClass =
   | "chat" | "chatHead" | "chatDot" | "chatLog" | "chatContent" | "chatMsg" | "msgMeta" | "msgMetaRight" | "msgWho"
   | "msgAvatar" | "contract" | "msgText" | "msgTextRight" | "aeBlock" | "typing" | "typingRight"
+  | "system" | "systemStamp" | "systemBadge" | "endCta"
 type Classes = Record<AgentChatClass, string>
 
-const TYPING_MS = 1100
-const READ_MS = 1700
-const LOOP_MS = 6000
+// Темп на 33 реплики: «печатает…» короче, чтение — по длине реплики (блок AI Elements — дольше), системное — сразу.
+const TYPING_MS = 900
+const SYSTEM_MS = 500
+
+function readMs(item: Item): number {
+  return Math.min(2800, 900 + item.text.length * 14) + (item.kind ? 700 : 0)
+}
 
 function isHuman(item: Item): boolean {
   return item.contract === "h2a" && item.side === "right"
@@ -97,10 +105,11 @@ function Extra({ item, s }: { item: Item; s: Classes }) {
   return null
 }
 
-export function AgentChat({ label, items, contractLabels, classes }: {
+export function AgentChat({ label, items, contractLabels, endCta, classes }: {
   label: string
   items: Item[]
   contractLabels: Record<Contract, string>
+  endCta?: { label: string; href: string }
   classes?: Partial<Classes>
 }) {
   const s: Classes = { ...(base as Classes), ...classes }
@@ -118,14 +127,13 @@ export function AgentChat({ label, items, contractLabels, classes }: {
 
     const tick = () => {
       if (!visible.current) return
-      if (state.count >= items.length) {
-        timer = setTimeout(() => { state = { count: 0, typing: true }; setShown(state); tick() }, LOOP_MS)
-        return
-      }
+      // Последняя реплика показана — стоим. Повтора нет: разговор остаётся на экране для чтения.
+      if (state.count >= items.length || (state.count === items.length - 1 && !state.typing)) return
       if (state.typing) {
-        timer = setTimeout(() => { state = { count: state.count, typing: false }; setShown(state); tick() }, TYPING_MS)
+        const wait = items[state.count].side === "system" ? SYSTEM_MS : TYPING_MS
+        timer = setTimeout(() => { state = { count: state.count, typing: false }; setShown(state); tick() }, wait)
       } else {
-        timer = setTimeout(() => { state = { count: state.count + 1, typing: true }; setShown(state); tick() }, READ_MS)
+        timer = setTimeout(() => { state = { count: state.count + 1, typing: true }; setShown(state); tick() }, readMs(items[state.count]))
       }
     }
 
@@ -140,7 +148,8 @@ export function AgentChat({ label, items, contractLabels, classes }: {
 
   const count = shown === null ? items.length : shown.count + (shown.typing ? 0 : 1)
   const list = items.slice(0, count)
-  const typingItem = shown !== null && shown.typing ? items[shown.count] : null
+  const typingItem = shown !== null && shown.typing && items[shown.count]?.side !== "system" ? items[shown.count] : null
+  const done = count >= items.length
 
   return (
     <div ref={box} className={s.chat} aria-label={label}>
@@ -150,7 +159,14 @@ export function AgentChat({ label, items, contractLabels, classes }: {
       </p>
       <Conversation className={s.chatLog}>
         <ConversationContent className={s.chatContent}>
-          {list.map((m, i) => (
+          {list.map((m, i) => m.side === "system" ? (
+            <div key={i} className={s.system}>
+              <p className={s.systemStamp}>
+                <span className={s.systemBadge} title={contractLabels[m.contract]}>{`${m.who} · ${m.contract}`}</span>
+                <span>{m.text}</span>
+              </p>
+            </div>
+          ) : (
             <Message key={i} from={m.side === "right" ? "user" : "assistant"} className={s.chatMsg}>
               <div className={m.side === "right" ? s.msgMetaRight : s.msgMeta}>
                 {isHuman(m) && (
@@ -169,6 +185,12 @@ export function AgentChat({ label, items, contractLabels, classes }: {
             <div className={typingItem.side === "right" ? s.typingRight : s.typing}>
               <Shimmer as="span" duration={1.4}>{`${typingItem.who} …`}</Shimmer>
             </div>
+          )}
+          {done && endCta && (
+            <a href={endCta.href} className={s.endCta}>
+              {endCta.label}
+              <ArrowRight className="size-4" strokeWidth={2} aria-hidden="true" />
+            </a>
           )}
         </ConversationContent>
         <ConversationScrollButton />

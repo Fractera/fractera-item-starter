@@ -17,7 +17,7 @@ const chatClasses = {
   chat: s.chat, chatHead: s.chatHead, chatDot: s.chatDot, chatLog: s.chatLog, chatContent: s.chatContent,
   chatMsg: s.chatMsg, msgMeta: s.msgMeta, msgMetaRight: s.msgMetaRight, msgWho: s.msgWho, msgAvatar: s.msgAvatar,
   contract: s.contract, msgText: s.msgText, msgTextRight: s.msgTextRight, aeBlock: s.aeBlock, typing: s.typing,
-  typingRight: s.typingRight,
+  typingRight: s.typingRight, system: s.system, systemStamp: s.systemStamp, systemBadge: s.systemBadge, endCta: s.endCta,
 }
 
 // «ДИЗАЙН АГЕНТА» — ЛЕНДИНГ ГЛАВНОЙ, ПЕРЕРИСОВАННЫЙ АГЕНТОМ ЭЛЕМЕНТА ПО НАВЫКУ impeccable НА ЭТАЛОННОМ МАКЕТЕ
@@ -38,25 +38,33 @@ export function LandingAgent({ lang }: { lang: string }) {
 
   return (
     <div className={s.page}>
+      {/* Первый экран (слово владельца, 333-16): на широком — две колонки во всю высоту первого экрана; слева табличка
+          «Открытый код» в верхнем левом углу, название и подзаголовок; справа чат агентов прямо на фоне таблички. */}
       <section className={s.sign}>
-        <div className={s.wrap}>
-          <div className={s.signRow}>
-            <h1 className={s.signTitle}>{hero.title}</h1>
-            {openSource && (
-              // Эмалевая табличка на стене вокзала: белая эмаль, кант цвета табло, квадрат-«платформа» со знаком кода.
-              <p className={s.plate}>
-                <span className={s.plateMark} aria-hidden="true"><Code className="size-4" strokeWidth={2.5} /></span>
-                {openSource}
-              </p>
-            )}
+        <div className={`${s.wrap} ${s.signGrid}`}>
+          <div className={s.signMain}>
+            <div className={s.signRow}>
+              <h1 className={s.signTitle}>{hero.title}</h1>
+              {openSource && (
+                // Эмалевая табличка на стене вокзала: белая эмаль, кант цвета табло, квадрат-«платформа» со знаком кода.
+                <p className={s.plate}>
+                  <span className={s.plateMark} aria-hidden="true"><Code className="size-4" strokeWidth={2.5} /></span>
+                  {openSource}
+                </p>
+              )}
+            </div>
+            <p className={s.signSub}>{x.titleSub}</p>
           </div>
-          <p className={s.signSub}>{x.titleSub}</p>
+          {x.chat && (
+            <div className={s.signChat}>
+              <AgentChat label={x.chat.label} items={x.chat.items} contractLabels={x.chat.contractLabels} endCta={x.chat.endCta} classes={chatClasses} />
+            </div>
+          )}
         </div>
       </section>
 
       <section className={s.hall}>
-        <div className={`${s.wrap} ${s.hallWide}`}>
-          <div className={s.hallMain}>
+        <div className={s.wrap}>
             <div className={s.board} data-board data-shown="0">
               <div className={s.boardTop}>
                 <span className={s.boardLabel}>{b.from}</span>
@@ -109,10 +117,6 @@ export function LandingAgent({ lang }: { lang: string }) {
             {hero.secondary && <a href={hero.secondary.href} className={s.alt}>{hero.secondary.label}</a>}
           </div>
           <p className={s.lead}>{hero.description}</p>
-          </div>
-          {x.chat && (
-            <AgentChat label={x.chat.label} items={x.chat.items} contractLabels={x.chat.contractLabels} classes={chatClasses} />
-          )}
         </div>
       </section>
 

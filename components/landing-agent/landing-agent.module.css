@@ -54,6 +54,23 @@
 }
 .plateMark { display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; background: var(--board); color: var(--chalk); border-radius: var(--tile-corner); }
 @media (max-width: 640px) { .plate { order: -1; } }
+/* Первый экран на широком экране (333-16): высота — первый экран без шапки сайта. Шапка измерена по коду оболочки
+   (`components/shell/project-header.tsx`: `h-14` + `border-b`) — 3.5rem + 1px. Колонка чата не растит строку: чат лежит в ней
+   абсолютно и прокручивает только ленту. Табличка «Открытый код» — в верхнем левом углу, название и подзаголовок — по центру
+   высоты. На узком экране табличка как раньше, чата нет. */
+.signChat { display: none; }
+@media (min-width: 1024px) {
+  .sign { --site-header: calc(3.5rem + 1px); min-height: calc(100dvh - var(--site-header)); display: flex; flex-direction: column; padding-bottom: 2.2rem; }
+  /* 333-18, слово владельца: заголовки получают 60 % ширины первого экрана, чат 40 %. */
+  .signGrid { flex: 1; width: min(110rem, 100% - 4rem); display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 3rem; }
+  .signMain { display: flex; flex-direction: column; min-width: 0; }
+  .signMain { align-items: flex-start; }
+  .signRow { display: contents; }
+  .signMain .plate { order: -1; margin: 0 0 auto; }
+  .signMain .signTitle { margin-top: 2rem; }
+  .signMain .signSub { margin-bottom: auto; padding-bottom: 2rem; }
+  .signChat { display: block; position: relative; min-height: 0; }
+}
 .signSub { margin-top: 0.55rem; font-family: var(--display); font-weight: 500; font-size: clamp(1.3rem, 2.4vw, 1.9rem); color: color-mix(in oklab, var(--chalk) 78%, var(--board)); }
 
 /* Зал и табло. Табло висит на стене: не наклоняется, не следует за курсором, тень неподвижна. */
@@ -214,31 +231,41 @@
   .ticketStub { border-top: 0; border-left: 3px dashed var(--ink); }
 }
 
-/* Чат агентов (слово владельца, как 333-12 на главной): островок `AgentChat` главной с классами этого виджета. На широком
-   экране первый экран делится пополам — слева табло, справа чат целиком, без градиента; на узком чата нет. Реплики —
-   моноширинным, как код в Telegram (JetBrains Mono, если в «Дизайне» не выбран свой моноширинный), текст — роль «плакат». */
-.chat { display: none; }
-@media (min-width: 1024px) {
-  .hallWide { width: min(110rem, 100% - 4rem); display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: stretch; }
-  .hallMain { min-width: 0; }
-  .chat {
-    display: flex; flex-direction: column; min-height: 0; height: 100%; max-height: 48rem; overflow: hidden;
-    background: var(--flapc); color: var(--chalk); border: 4px solid var(--board-deep); border-radius: var(--corner);
-    box-shadow: 0 24px 50px -28px var(--shade);
-    font-family: var(--font-mono-user, "JetBrains Mono Variable"), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  }
+/* Чат агентов (слово владельца, 333-16): островок `AgentChat` главной с классами этого виджета, в правой колонке первого
+   экрана. Своего контейнера нет — ни рамки, ни фона, ни тени: чат лежит прямо на табличке станции (роль «табло»), а
+   карточки реплик — тёмная роль «флапы», поэтому они видны на табличке. Прокручивается только лента, полоса прокрутки
+   скрыта (колесо и палец работают). Реплики — моноширинным, как код в Telegram (JetBrains Mono, если в «Дизайне» не выбран
+   свой моноширинный).
+   🔒 Чёрного текста в чате нет: блоки AI Elements красят себя токенами темы (`text-foreground`, `text-muted-foreground`,
+   `bg-card`, `bg-secondary`, `bg-muted`, у Shimmer — `--color-muted-foreground` и `--color-background`), поэтому внутри чата
+   эти токены переопределены яркими ролями формулы — «плакат» и «мел» — на тёмной карточке; файлы `components/ai-elements/`
+   не правятся. */
+.chat {
+  --foreground: var(--poster); --color-foreground: var(--poster);
+  --muted-foreground: var(--chalk); --color-muted-foreground: var(--chalk);
+  --popover-foreground: var(--poster); --color-popover-foreground: var(--poster);
+  --card: var(--flapc); --color-card: var(--flapc);
+  --card-foreground: var(--poster); --color-card-foreground: var(--poster);
+  --secondary: var(--board); --color-secondary: var(--board);
+  --secondary-foreground: var(--poster); --color-secondary-foreground: var(--poster);
+  --muted: var(--board); --color-muted: var(--board);
+  --border: color-mix(in oklab, var(--chalk) 18%, transparent);
+  --color-border: color-mix(in oklab, var(--chalk) 18%, transparent);
+  position: absolute; inset: 0; display: flex; flex-direction: column; min-height: 0;
+  color: var(--chalk);
+  font-family: var(--font-mono-user, "JetBrains Mono Variable"), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
-.chatHead {
-  display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 1.1rem; border-bottom: 2px solid var(--board-deep);
-  background: var(--board); color: var(--chalk); font-size: 0.85rem; letter-spacing: 0.02em;
-}
+.chatHead { display: flex; align-items: center; gap: 0.55rem; padding: 0 0 0.9rem; color: var(--chalk); font-size: 0.85rem; letter-spacing: 0.02em; }
 .chatDot { flex: none; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--poster); box-shadow: 0 0 0 2px var(--board-deep); animation: lamp 1.6s ease-in-out infinite; }
 .chatLog { flex: 1; min-height: 0; }
-.chatContent { padding: 1.1rem; gap: 1rem; }
+.chatLog, .chatLog * { scrollbar-width: none; }
+.chatLog ::-webkit-scrollbar, .chatLog::-webkit-scrollbar { display: none; }
+.chatLog > button { background: var(--flapc); color: var(--poster); border-color: var(--poster); box-shadow: none; }
+.chatContent { padding: 0 0 1rem; gap: 1rem; }
 .chatMsg { max-width: 88%; }
 .msgMeta, .msgMetaRight { display: flex; align-items: center; gap: 0.45rem; font-size: 0.72rem; }
 .msgMetaRight { justify-content: flex-end; }
-.msgWho { color: color-mix(in oklab, var(--chalk) 70%, var(--flapc)); }
+.msgWho { color: var(--poster); }
 .msgAvatar { width: 1.4rem; height: 1.4rem; }
 .msgAvatar > * { background: var(--poster); color: var(--board-deep); }
 .contract {
@@ -247,7 +274,7 @@
 }
 .msgText, .msgTextRight {
   font-size: 0.9rem; line-height: 1.55; color: var(--poster); padding: 0.55rem 0.8rem; border-radius: 0;
-  background: color-mix(in oklab, var(--board) 70%, var(--flapc)); border-left: 3px solid var(--poster);
+  background: var(--flapc); border-left: 3px solid var(--poster);
   white-space: pre-wrap; overflow-wrap: anywhere;
 }
 .msgTextRight {
@@ -255,12 +282,36 @@
   color: color-mix(in oklab, var(--poster) 55%, var(--chalk));
 }
 .aeBlock {
-  font-size: 0.8rem; color: var(--chalk); border-color: color-mix(in oklab, var(--chalk) 18%, transparent);
-  background: color-mix(in oklab, var(--board-deep) 70%, var(--flapc)); border-radius: 0;
+  font-size: 0.8rem; color: var(--poster); border-color: color-mix(in oklab, var(--chalk) 18%, transparent);
+  background: var(--flapc); border-radius: 0;
 }
 .aeBlock pre { color: var(--poster); white-space: pre-wrap; }
-.typing, .typingRight { font-size: 0.8rem; color: var(--poster); }
+/* «печатает…» лежит на табличке: Shimmer рисует текст `--color-muted-foreground` (мел) и прогоняет по нему блик
+   `--color-background` — здесь это «плакат». */
+.typing, .typingRight { --color-background: var(--poster); font-size: 0.8rem; color: var(--poster); }
 .typingRight { align-self: flex-end; }
+/* Уведомление системы (333-17): не реплика, а запись в журнале табло — во всю ширину ленты, тонкая линия слева и справа,
+   посередине штамп с пунктирной рамкой цвета «плакат» и маленькой меткой «Система · m2m» (плакат на флапе); без аватара. */
+.system { align-self: stretch; display: flex; align-items: center; gap: 0.7rem; }
+.system::before, .system::after { content: ""; flex: 1; min-width: 1rem; height: 1px; background: color-mix(in oklab, var(--chalk) 28%, transparent); }
+.systemStamp {
+  display: flex; flex-direction: column; align-items: center; gap: 0.35rem; max-width: 78%; padding: 0.45rem 0.8rem;
+  border: 1px dashed color-mix(in oklab, var(--poster) 70%, transparent); border-radius: var(--tile-corner);
+  font-size: 0.78rem; line-height: 1.45; text-align: center; color: var(--chalk); text-wrap: balance;
+}
+.systemBadge {
+  padding: 0.05rem 0.4rem; background: var(--poster); color: var(--flapc); border-radius: var(--tile-corner);
+  font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+}
+/* Кнопка в конце разговора — в стиле чата: моноширинная, флап с кантом плаката; наведение — плакат с тёмным текстом. */
+.endCta {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.65rem 1rem;
+  background: var(--flapc); color: var(--poster); border: 2px solid var(--poster); border-radius: var(--tile-corner);
+  font-size: 0.9rem; font-weight: 600; text-decoration: none;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.endCta:hover { background: var(--poster); color: var(--flapc); }
+.endCta:focus-visible { outline: 3px solid var(--chalk); outline-offset: 3px; }
 
 /* Отправление */
 .depart { background: var(--board); color: var(--chalk); padding: 4rem 0 4.5rem; }
@@ -294,5 +345,5 @@
 /* «Уменьшить движение»: флапы стоят на своих буквах (островок ставит их сразу), лампа не дышит */
 @media (prefers-reduced-motion: reduce) {
   .lamp, .chatDot { animation: none; }
-  .platform, .go, .alt, .hint, .hintBtn { transition: none; }
+  .platform, .go, .alt, .hint, .hintBtn, .endCta { transition: none; }
 }

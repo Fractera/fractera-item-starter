@@ -24,11 +24,17 @@ compare with the home page. Reference: `components/landing-impeccable/` in its o
     (agent → application → automation) and writes `data-shown` on the board — the matching row's platform lights up;
   - without JavaScript the first word stands; under `prefers-reduced-motion` the island puts the letters on the target at
     once, no rattle, and the display stays on the first destination.
-- **Agents chat on the first screen** (owner, as 333-12 on the home page): ≥ 1024 px the hall is two halves — board left,
-  chat right, whole, no gradient; below that there is no chat. The island is the home page's `AgentChat`
-  (`components/landing-impeccable/agent-chat.client.tsx`), imported, not copied; this widget passes its own classes through
-  the optional `classes` prop. Monospace like code in Telegram (`--font-mono-user`, else JetBrains Mono), text in the poster
-  role, a2a / m2m / h2a on every line (Badge), a person with an avatar icon. Words: `landingWords(lang).x.chat`.
+- **The first screen is two columns** (owner, 333-16): ≥ 1024 px the station sign is `100dvh` minus the site header
+  (`components/shell/project-header.tsx`: `h-14` + `border-b` = 3.5rem + 1px — measured from the shell, change both
+  together); left — the «Open source» plate in the top-left corner, the title and the subtitle; right — the agents chat.
+  Below 1024 px the sign is as before and there is no chat. The departure board below takes the full width.
+- **Agents chat** (`agent-chat.client.tsx`, owner's word 333-12/333-16): no container of its own — no frame, background or
+  shadow; it lies on the sign (board role) and only the message list scrolls, its scrollbar hidden. Message cards are the
+  dark flaps role, so they stand out on the sign. No black text: AI Elements paint themselves with theme tokens, so inside
+  `.chat` the tokens (`--foreground`, `--muted-foreground`, `--card`, `--secondary`, `--muted`, `--border`, and the
+  `--color-*` pair Shimmer reads) are re-pointed at the poster and chalk roles; `components/ai-elements/` is not edited.
+  Monospace like code in Telegram (`--font-mono-user`, else JetBrains Mono), a2a / m2m / h2a on every line (Badge), a
+  person with an avatar icon. Words: `landingWords(lang).x.chat`.
 - **«Open source» plate** in the station sign: an enamel station plate (chalk enamel, double board-coloured rim, a platform
   square with the code sign); words `landing.openSource` of the home page data. On a narrow screen it stands above the title.
 - **Timetable rows are one grid:** `.timetable` owns the two columns (`max-content` of the longest title, then the text),

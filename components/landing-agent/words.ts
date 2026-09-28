@@ -25,10 +25,11 @@ export type LandingExtra = {
     label: string
     contractLabels: Record<"a2a" | "m2m" | "h2a", string>
     items: {
-      side: "left" | "right"; who: string; text: string; contract: "a2a" | "m2m" | "h2a"
+      side: "left" | "right" | "system"; who: string; text: string; contract: "a2a" | "m2m" | "h2a"
       kind?: "thinking" | "tool" | "confirm" | "task"; title?: string; steps?: string[]; checks?: string[]
       tool?: string; input?: unknown; output?: unknown; accepted?: string
     }[]
+    endCta?: Link
   }
   board: {
     from: string
