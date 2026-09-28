@@ -77,11 +77,12 @@
       "Sign-in and roles",
       "Multiple languages",
       "Open source code",
-      "web3 buy & sell"
+      "Buy & sell on WEB3"
     ],
     "closingTitle": "Your idea is the only thing missing",
     "closingText": "Use Claude Code, start building and describe what you want. The rest is already here.",
     "titleSub": "Built on blockchain technology, and beyond.",
+    "openSource": "Open source",
     "outcomes": [
       {
         "name": "Agent",

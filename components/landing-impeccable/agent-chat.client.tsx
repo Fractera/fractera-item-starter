@@ -11,7 +11,7 @@ import { Task, TaskContent, TaskItem, TaskTrigger } from "@/components/ai-elemen
 import { Confirmation, ConfirmationAccepted, ConfirmationTitle } from "@/components/ai-elements/confirmation"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import s from "./impeccable.module.css"
+import base from "./impeccable.module.css"
 
 // ИМИТАЦИЯ ЧАТА АГЕНТОВ НА ПЕРВОМ ЭКРАНЕ (шаг 333-12). Слово владельца: «имитацию чата между агентами, которые создают
 // приложения … слева агент-регистратор, справа ему отвечают люди и агенты людей … как стрим»; «используй как можно больше
@@ -38,6 +38,12 @@ type Item = {
   accepted?: string
 }
 
+/** Классы, которые страница может заменить своими («Дизайн агента», `components/landing-agent/`); без них — вид главной. */
+export type AgentChatClass =
+  | "chat" | "chatHead" | "chatDot" | "chatLog" | "chatContent" | "chatMsg" | "msgMeta" | "msgMetaRight" | "msgWho"
+  | "msgAvatar" | "contract" | "msgText" | "msgTextRight" | "aeBlock" | "typing" | "typingRight"
+type Classes = Record<AgentChatClass, string>
+
 const TYPING_MS = 1100
 const READ_MS = 1700
 const LOOP_MS = 6000
@@ -46,7 +52,7 @@ function isHuman(item: Item): boolean {
   return item.contract === "h2a" && item.side === "right"
 }
 
-function Extra({ item }: { item: Item }) {
+function Extra({ item, s }: { item: Item; s: Classes }) {
   if (item.kind === "thinking" && item.steps) {
     return (
       <ChainOfThought defaultOpen className={s.aeBlock}>
@@ -91,7 +97,13 @@ function Extra({ item }: { item: Item }) {
   return null
 }
 
-export function AgentChat({ label, items, contractLabels }: { label: string; items: Item[]; contractLabels: Record<Contract, string> }) {
+export function AgentChat({ label, items, contractLabels, classes }: {
+  label: string
+  items: Item[]
+  contractLabels: Record<Contract, string>
+  classes?: Partial<Classes>
+}) {
+  const s: Classes = { ...(base as Classes), ...classes }
   const box = useRef<HTMLDivElement>(null)
   // `null` — ещё не запускались: показан весь разговор, как его отдал сервер.
   const [shown, setShown] = useState<{ count: number; typing: boolean } | null>(null)
@@ -150,7 +162,7 @@ export function AgentChat({ label, items, contractLabels }: { label: string; ite
                 <Badge variant="outline" className={s.contract} title={contractLabels[m.contract]}>{m.contract}</Badge>
               </div>
               <MessageContent className={m.side === "right" ? s.msgTextRight : s.msgText}>{m.text}</MessageContent>
-              <Extra item={m} />
+              <Extra item={m} s={s} />
             </Message>
           ))}
           {typingItem && (
