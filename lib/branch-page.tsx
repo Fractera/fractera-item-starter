@@ -149,9 +149,11 @@ export function childRoute(opts: { segments: string[]; subPath: string }) {
     const { lang, slug } = await params
     const b = build(slug)
     if (!b) notFound()
+    // 330-5: ребёнок-виджет на весь экран (как корень с `widgetOnly`) — виджет рисует страницу сам.
+    const whole = b.page.meta.widget && b.page.meta.widgetOnly
     const body = (
       <PageAddress page={`/${lang}${opts.subPath}/${slug}`} file={dataFile(b.page, [...opts.segments, '_pages', slug], lang)}>
-        <b.factory.Page params={Promise.resolve({ lang })} />
+        {whole ? <main className="flex-1">{pageWidget(b.page.meta.widget as string, lang)}</main> : <b.factory.Page params={Promise.resolve({ lang })} />}
       </PageAddress>
     )
     const allowed = allowedRoles(b.page)

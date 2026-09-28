@@ -186,3 +186,5 @@
   .blobA, .blobB, .blobC, .dot, .claimText, .pill, .title, .lead, .claim { animation: none !important; }
   .card, .ctaPrimary, .ctaGhost, .hint { transition: none !important; }
 }
+
+.titleSub { display: block; margin-top: 0.4em; font-size: 0.42em; letter-spacing: -0.02em; line-height: 1.2; }

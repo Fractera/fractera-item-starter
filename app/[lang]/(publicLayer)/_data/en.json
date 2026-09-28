@@ -1,13 +1,13 @@
 {
-  "title": "Your AGI element starts here",
-  "description": "Not just a site template: an AGI element that quickly becomes what you need — an agent that solves your tasks, an application or business process automation. You bring the idea, Fractera AGI does the rest.",
+  "title": "We invite you on a journey into AGI solutions. On blockchain, and beyond",
+  "description": "We invite you on a journey into the world of AGI solutions built on blockchain technology, and beyond. You bring the idea, Fractera AGI does the rest.",
   "keywords": "",
   "blocks": [
     {
       "kind": "hero-centered",
       "pill": "AGI element",
-      "title": "Your AGI element starts here",
-      "description": "This is not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes — you decide. All you bring is the idea; Fractera AGI does the rest.",
+      "title": "We invite you on a journey into AGI solutions",
+      "description": "Not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes. You decide. All you bring is the idea; Fractera AGI does the rest.",
       "cta": {
         "label": "Sign in to subscription",
         "href": "/en/architect/build/subscription"
@@ -41,7 +41,7 @@
     },
     {
       "kind": "p",
-      "text": "You describe your idea — the agent works through the possible ways, agrees them with you, and you get a reliable result fast.",
+      "text": "You describe your idea. The agent works through the possible ways, agrees them with you, and you get a reliable result fast.",
       "bid": "zwcnk"
     },
     {
@@ -52,13 +52,13 @@
     },
     {
       "kind": "p",
-      "text": "A built-in database, sign-in with user roles and dozens of other solutions. All of their code is open right inside your application: fix it, improve it or remove it — it is up to you.",
+      "text": "A built-in database, sign-in with user roles and dozens of other solutions. All of their code is open right inside your application: fix it, improve it or remove it. It is up to you.",
       "bid": "tr7cu"
     }
   ],
   "landing": {
-    "claim": "From idea to enterprise product — 99% faster",
-    "claimHint": "You work inside an infrastructure that is already tuned for speed and surrounded by everything a product needs — before you need it: from sign-in and multiple languages to plugging in ready solutions of other developers.",
+    "claim": "From idea to enterprise product, 99% faster",
+    "claimHint": "You work inside an infrastructure that is already tuned for speed and surrounded by everything a product needs, before you need it: from sign-in and multiple languages to plugging in ready solutions of other developers.",
     "claimHintLabel": "Why 99% faster?",
     "cards": [
       "Builds with you",
@@ -77,6 +77,34 @@
       "Open source code"
     ],
     "closingTitle": "Your idea is the only thing missing",
-    "closingText": "Sign in, open the terminal and describe what you want. The rest is already here."
+    "closingText": "Sign in, open the terminal and describe what you want. The rest is already here.",
+    "titleSub": "On blockchain, and beyond.",
+    "short": "An agent, an application or business automation. You bring the idea, Fractera AGI builds the rest.",
+    "outcomesLabel": "What your element becomes",
+    "outcomes": [
+      {
+        "name": "Agent",
+        "text": "Takes a task in plain words and solves it for you, every day."
+      },
+      {
+        "name": "Application",
+        "text": "A site or a product with sign-in, roles and data already in place."
+      },
+      {
+        "name": "Automation",
+        "text": "Your business process running by itself, from the first request to the report."
+      }
+    ],
+    "board": {
+      "from": "Departing from",
+      "fromValue": "Your idea",
+      "destination": "Destination",
+      "platform": "Platform",
+      "departs": "Departs",
+      "when": "When you are ready",
+      "connections": "Connections",
+      "included": "Included in every ticket",
+      "closing": "Your train leaves the moment you describe the idea"
+    }
   }
 }

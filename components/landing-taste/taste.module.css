@@ -1,0 +1,134 @@
+/* «ДИЗАЙН 1» (навык taste). Один акцент на всей странице, pill у всего нажимаемого, 16px у поверхностей.
+   Тема — тема сайта: светлая по умолчанию, тёмная под классом .dark на <html>. */
+
+.page {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --tint: #f1f1ef;
+  --ink: #131316;
+  --muted: #56565e;
+  --line: #e4e4e0;
+  --accent: #2b59ff;
+  --on-accent: #ffffff;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01";
+}
+:global(.dark) .page {
+  --bg: #0c0c0e;
+  --surface: #141417;
+  --tint: #18181c;
+  --ink: #ececee;
+  --muted: #a1a1a9;
+  --line: #26262b;
+}
+.page ::selection { background: var(--accent); color: var(--on-accent); }
+
+/* Первый экран */
+.h1 {
+  font-size: clamp(2.5rem, 5.4vw, 4.5rem); line-height: 1.02; font-weight: 650; letter-spacing: -0.04em;
+  text-wrap: balance; max-width: 18ch;
+  animation: rise 0.7s var(--ease) both;
+}
+.h1Sub { display: block; color: var(--muted); font-weight: 500; }
+.lede {
+  margin-top: 1.5rem; max-width: 34rem; font-size: 1.2rem; line-height: 1.55; color: var(--muted);
+  animation: rise 0.7s 0.08s var(--ease) both;
+}
+.enter3 { animation: rise 0.7s 0.16s var(--ease) both; }
+.enter4 { animation: rise 0.8s 0.24s var(--ease) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.btnPrimary, .btnSecondary {
+  display: inline-flex; align-items: center; gap: 0.45rem; height: 2.9rem; padding: 0 1.3rem; border-radius: 9999px;
+  font-size: 0.97rem; font-weight: 550; white-space: nowrap; text-decoration: none;
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.btnPrimary { background: var(--accent); color: var(--on-accent); }
+.btnPrimary:hover { transform: translateY(-1px); background: color-mix(in oklab, var(--accent) 88%, black); }
+.btnSecondary { color: var(--ink); border: 1px solid var(--line); background: var(--surface); }
+.btnSecondary:hover { transform: translateY(-1px); border-color: color-mix(in oklab, var(--ink) 35%, var(--line)); }
+.btnPrimary:active, .btnSecondary:active { transform: scale(0.98); }
+.btnPrimary:focus-visible, .btnSecondary:focus-visible, .seg:focus-visible, .segOn:focus-visible, .hintBtn:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px;
+}
+
+/* Живой компонент первого экрана */
+.outcomes { border: 1px solid var(--line); border-radius: 16px; background: var(--surface); padding: 1.25rem; }
+.outcomesLabel { font-size: 0.9rem; color: var(--muted); }
+.segmented { margin-top: 0.9rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem; padding: 0.25rem; border-radius: 9999px; background: var(--tint); }
+.seg, .segOn {
+  height: 2.4rem; border-radius: 9999px; font-size: 0.92rem; font-weight: 550; color: var(--muted);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.seg:hover { color: var(--ink); }
+.segOn { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 12%, transparent); }
+.panel { margin-top: 1.4rem; min-height: 8.5rem; animation: rise 0.45s var(--ease) both; }
+.panelName { font-size: 2rem; font-weight: 650; letter-spacing: -0.03em; }
+.panelText { margin-top: 0.6rem; font-size: 1.05rem; line-height: 1.55; color: var(--muted); max-width: 32ch; }
+
+/* Утверждение */
+.statement { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface); }
+.claim {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+  font-size: clamp(1.9rem, 4vw, 3.25rem); line-height: 1.08; font-weight: 650; letter-spacing: -0.035em; max-width: 22ch;
+}
+.body { margin-top: 1.4rem; max-width: 62ch; font-size: 1.08rem; line-height: 1.65; color: var(--muted); }
+
+.hintWrap { position: relative; display: inline-flex; }
+.hintBtn {
+  width: 2rem; height: 2rem; border-radius: 9999px; cursor: help; font-size: 1rem; font-weight: 600; letter-spacing: 0;
+  color: var(--accent); border: 1.5px solid var(--accent); background: transparent;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.hintBtn:hover { background: var(--accent); color: var(--on-accent); }
+.hint {
+  position: absolute; z-index: 20; left: 0; top: calc(100% + 0.6rem);
+  width: min(24rem, 78vw); padding: 1rem 1.1rem; border-radius: 16px;
+  font-size: 0.95rem; font-weight: 400; line-height: 1.55; letter-spacing: 0; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line);
+  box-shadow: 0 18px 40px -18px color-mix(in oklab, var(--ink) 35%, transparent);
+  opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s;
+}
+.hintWrap:hover .hint, .hintWrap:focus-within .hint { opacity: 1; visibility: visible; transform: none; }
+
+/* Что умеет — четыре ячейки, четыре пункта */
+.h2 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.08; font-weight: 650; letter-spacing: -0.035em; max-width: 20ch; }
+.h3 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; }
+.cell {
+  display: flex; flex-direction: column; gap: 0.6rem; min-height: 15rem; padding: 1.75rem; border-radius: 16px;
+  border: 1px solid var(--line); background: var(--surface);
+  transition: transform 0.4s var(--ease);
+}
+.cell:hover { transform: translateY(-2px); }
+.cellText { margin-top: auto; max-width: 44ch; font-size: 1.02rem; line-height: 1.6; color: var(--muted); }
+.cellAccent { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.cellTextOn { font-size: 1rem; line-height: 1.55; color: color-mix(in oklab, var(--on-accent) 82%, var(--accent)); }
+.stat { font-size: clamp(3.2rem, 6vw, 4.6rem); line-height: 0.95; font-weight: 700; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.statLabel { font-size: 1rem; color: color-mix(in oklab, var(--on-accent) 82%, var(--accent)); }
+.cellPattern {
+  background-color: var(--surface);
+  background-image: radial-gradient(color-mix(in oklab, var(--ink) 16%, transparent) 1px, transparent 1.2px);
+  background-size: 14px 14px;
+}
+.cellPattern .h3, .cellPattern .cellText { background: var(--surface); box-shadow: 0 0 0 6px var(--surface); border-radius: 4px; }
+.cellTint { background: var(--tint); }
+
+/* Под капотом */
+.tile {
+  display: flex; flex-direction: column; gap: 1.6rem; padding: 1.25rem; border-radius: 16px;
+  border: 1px solid var(--line); background: var(--surface); font-size: 1.02rem; font-weight: 550;
+}
+.tile svg { color: var(--accent); }
+
+/* Финал */
+.closing { border-top: 1px solid var(--line); }
+.closingTitle { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.02; font-weight: 650; letter-spacing: -0.04em; max-width: 16ch; text-wrap: balance; }
+
+@media (prefers-reduced-motion: reduce) {
+  .h1, .lede, .enter3, .enter4, .panel { animation: none; }
+  .btnPrimary, .btnSecondary, .cell, .seg, .segOn, .hint, .hintBtn { transition: none; }
+}

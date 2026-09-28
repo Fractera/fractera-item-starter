@@ -1,5 +1,5 @@
 import { Bot, Boxes, Globe2, Sparkles, Database, KeyRound, Languages, Code2, ArrowRight, type LucideIcon } from "lucide-react"
-import { branchRoot } from "@/lib/page-tree"
+import { landingWords } from "./words"
 import s from "./landing.module.css"
 
 // ЛЕНДИНГ ГЛАВНОЙ ЭЛЕМЕНТА (узел, шаг 330-4). Слово владельца: «сбрось сейчас зависимость от блоков … рисуй так как будто тебя
@@ -12,43 +12,13 @@ import s from "./landing.module.css"
 // 🔒 СТАТИКА: серверный компонент, в браузер не уходит ни строки JavaScript; движение — только CSS и выключается при
 // `prefers-reduced-motion`. Подсказка «?» открывается наведением и фокусом клавиатуры, без скрипта.
 
-type Link = { label: string; href: string }
-type Block = { kind: string; id?: string; title?: string; text?: string; pill?: string; description?: string; cta?: Link; secondary?: Link }
-type Extra = {
-  claim: string
-  claimHint: string
-  claimHintLabel: string
-  cards: string[]
-  stat: { value: string; label: string }
-  chips: string[]
-  closingTitle: string
-  closingText: string
-}
-type Words = { blocks?: Block[]; landing?: Extra }
-
 const CARD_ICONS: LucideIcon[] = [Bot, Boxes, Globe2, Sparkles]
 const CHIP_ICONS: LucideIcon[] = [Database, KeyRound, Languages, Code2]
 
-function section(blocks: Block[], id: string): { title: string; texts: string[] } {
-  const at = blocks.findIndex((b) => b.kind === "section-head" && b.id === id)
-  if (at < 0) return { title: "", texts: [] }
-  const texts: string[] = []
-  for (const b of blocks.slice(at + 1)) {
-    if (b.kind !== "p") break
-    texts.push(b.text ?? "")
-  }
-  return { title: blocks[at].title ?? "", texts }
-}
-
 export function Landing({ lang }: { lang: string }) {
-  const root = branchRoot("(publicLayer)")
-  const words = { ...(root?.en as Words | undefined), ...(root?.overrides[lang] as Words | undefined) }
-  const blocks = words.blocks ?? []
-  const x = words.landing
-  const hero = blocks.find((b) => b.kind === "hero-centered")
-  if (!hero || !x) return null
-  const can = section(blocks, "what-it-can-do")
-  const hood = section(blocks, "under-the-hood")
+  const w = landingWords(lang)
+  if (!w) return null
+  const { hero, can, hood, x } = w
 
   return (
     <div className={s.page}>
@@ -67,7 +37,7 @@ export function Landing({ lang }: { lang: string }) {
               {hero.pill}
             </span>
           )}
-          <h1 className={s.title}>{hero.title}</h1>
+          <h1 className={s.title}>{hero.title}<span className={s.titleSub}>{x.titleSub}</span></h1>
           <p className={s.lead}>{hero.description}</p>
 
           <p className={s.claim}>

@@ -52,6 +52,9 @@ const ALLOWED_RAW_HEADINGS = new Set([
   // 330-4: лендинг главной — своя шкала по слову владельца («сбрось сейчас зависимость от блоков … дизайн сейчас этому
   // препятствует, поэтому отбросим зависимости от этих сущностей»). Размеры заголовков живут в его `landing.module.css`.
   path.join("components", "landing", "index.tsx"),
+  // 330-5: «Дизайн 1» и «Дизайн 2» — свои шкалы по навыкам taste и impeccable (навык-привратник `custom-design`).
+  path.join("components", "landing-taste", "index.tsx"),
+  path.join("components", "landing-impeccable", "index.tsx"),
 ])
 
 // 🔒 ПОЛЯ ВВОДА УМЕНЬШАЮТ ТЕКСТ НАМЕРЕННО — И ЭТО НЕ ТА ОШИБКА, ЧТО ИЩЕТ СТОРОЖ.

@@ -108,6 +108,11 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
   "widgetOnly": true`, and `components/landing/` draws the whole screen with its own look (not the Blocks, not the Design
   tokens — owner's word). Its words are still the page data: the blocks (hero, sections `what-it-can-do`,
   `under-the-hood`) plus the field `landing` for what blocks do not carry. Change the words there, not in the code.
+- **An own design goes through one of two design skills** (owner, node step 330-5). When the person refuses the Blocks
+  design and wants their own look, ask once which skill to use — **taste** (`design-taste-frontend`, Leon Lin) or
+  **impeccable** (Paul Bakaus) — then load it and design in its style. Which rules of this element win over the skill:
+  skill `custom-design`. The design lives in a whole-page widget; examples: `components/landing-taste/`,
+  `components/landing-impeccable/` (pages `/<lang>/design-1-taste-skill`, `/<lang>/design-2-impeccable`).
 - **Page text is read at run time.** `_pages/<slug>/<lang>.json` is read by `lib/page-tree.ts` while the site runs from `ELEMENT_DIR` (the
   element folder, written by the node's installer — node step 330-3; without it the built server read its own copy),
   not baked into the build: a corrected paragraph shows up within those five minutes without a rebuild. Code changes still
