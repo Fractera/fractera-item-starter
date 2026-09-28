@@ -2,6 +2,7 @@
   "id": "item",
   "name": "Fractera Item",
   "summary": "The template of a node element (step 314): the architecture of the site without its content. A new element is born from it; the birth writes the element's own id here, and every name the element uses at run time is read from this field.",
+  "designSkill": "impeccable",
   "kind": "microservice",
   "entry": "global",
   "port": {

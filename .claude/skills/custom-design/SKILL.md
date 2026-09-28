@@ -17,6 +17,7 @@ their own look (owner's decision 2026-09-28, node step 330-5), **ask once, befor
 > visual world, a craft floor)?»
 
 After the answer, load that skill (`design-taste-frontend` or `impeccable`) and design in its style, following it fully.
+Then write its name into `OWN-SERVICE-PROPS.json` → `designSkill` and run `npm run describe:publish` (node step 333-3).
 
 ## Where the design lives
 
@@ -34,6 +35,9 @@ Words stay in the page data (`_data` / `_pages/<slug>/<lang>.json`), never in co
 - **impeccable's launcher downloads a binary** (`scripts/impeccable`). Run it only with the person's yes in this conversation;
   otherwise follow the skill's «Launcher unavailable» path.
 - **Claims stay true.** A public page does not state what does not exist without the person's explicit yes.
+- **Colours, fonts and corners are Design tokens** (node step 333-2): map every role of the skill world to `--primary`,
+  `--accent`, `--destructive`, `--background`, `--muted`, `--foreground`, `--border`, `--font-heading`, `--font-body`,
+  `--radius` - never a hex value or a font name in the widget, so the Design element restyles the page.
 - **Fonts are local.** Add an `@fontsource*` package and import it in the widget; no Google Fonts link.
 - **Guards.** `check:typography` requires the shared scale: add the widget file to its named exceptions with the reason
   (the person asked for an own look). Run `check:routes check:content check:seo check:static check:typography`.
