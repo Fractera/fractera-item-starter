@@ -210,7 +210,7 @@
           "side": "left",
           "who": "Lead orchestrator agent",
           "contract": "h2a",
-          "text": "The total: booking 80 USDT, CRM 40 USDT, AI consultant 30 USDT. 150 USDT in all."
+          "text": "Each contractor has its own contract: booking 80 USDT, CRM 40 USDT, AI consultant 30 USDT. 150 USDT in all."
         },
         {
           "side": "right",
@@ -246,21 +246,33 @@
           "side": "left",
           "who": "Lead orchestrator agent",
           "contract": "m2m",
-          "text": "Drafting an m2m contract on the blockchain: the money waits in escrow, the authors are paid on acceptance.",
+          "text": "Drafting three m2m contracts on the blockchain, one per contractor. The money waits in escrow until acceptance.",
           "kind": "tool",
-          "tool": "m2m.contract.create",
+          "tool": "m2m.contracts.create",
           "input": {
             "project": "Strand",
-            "modules": [
-              "booking",
-              "crm",
-              "ai-consultant"
+            "contracts": [
+              {
+                "module": "booking",
+                "amount": "80 USDT"
+              },
+              {
+                "module": "crm",
+                "amount": "40 USDT"
+              },
+              {
+                "module": "ai-consultant",
+                "amount": "30 USDT"
+              }
             ],
-            "amount": "150 USDT",
-            "payment": "escrow, on acceptance"
+            "acceptance": "consensus of 3 validators"
           },
           "output": {
-            "contract": "0x7f3a…c21e",
+            "contracts": [
+              "0x7f3a…c21e",
+              "0x91b4…0d7a",
+              "0x2ce8…a613"
+            ],
             "status": "awaiting signature"
           }
         },
@@ -268,77 +280,164 @@
           "side": "right",
           "who": "Anna's agent",
           "contract": "m2m",
-          "text": "Terms checked: amount, deadlines, refund on failure. Signing on Anna's behalf.",
+          "text": "Terms of all three contracts checked: amount, deadlines, refund on failure. Signing on Anna's behalf.",
           "kind": "confirm",
-          "title": "Sign the smart contract on Anna's behalf?",
+          "title": "Sign three smart contracts on Anna's behalf?",
           "accepted": "Signed by Anna's agent"
         },
         {
           "side": "system",
           "who": "System",
           "contract": "m2m",
-          "text": "150 USDT locked in contract 0x7f3a…c21e until the work is confirmed."
+          "text": "Locked until acceptance: 80 USDT (booking), 40 USDT (CRM), 30 USDT (AI consultant)."
         },
         {
           "side": "right",
           "who": "Booking agent",
           "contract": "a2a",
-          "text": "Booking is on the site: three stylists and a grid by service length."
+          "text": "Booking is on the site: three stylists and a grid by service length. Requesting acceptance."
         },
         {
           "side": "right",
-          "who": "CRM agent",
-          "contract": "a2a",
-          "text": "The base is live, the sixth-visit gift and the «not seen for a while» list work."
-        },
-        {
-          "side": "right",
-          "who": "AI consultant",
-          "contract": "a2a",
-          "text": "I have learned the price list and the stylists' hours. Ready to answer clients at 3 a.m."
-        },
-        {
-          "side": "left",
-          "who": "Lead orchestrator agent",
-          "contract": "a2a",
-          "text": "The site is built on the Fractera template, the domain is connected. Calling the validator."
-        },
-        {
-          "side": "right",
-          "who": "Validator agent",
+          "who": "Validators",
           "contract": "m2m",
-          "text": "External check of the order.",
+          "text": "Consensus on the booking contract.",
           "kind": "task",
-          "title": "Validator check",
+          "title": "Booking: 3 of 3 confirm",
           "checks": [
-            "Booking passes its tests, no double bookings",
-            "Client data is encrypted",
-            "Everything promised in the contract works"
+            "Validator 1: no double bookings, confirmed",
+            "Validator 2: colouring takes two hours, confirmed",
+            "Validator 3: reminders are sent, confirmed"
           ]
-        },
-        {
-          "side": "right",
-          "who": "Validator agent",
-          "contract": "m2m",
-          "text": "The work matches the contract. Confirming completion."
         },
         {
           "side": "system",
           "who": "System",
           "contract": "m2m",
-          "text": "150 USDT unlocked and paid to the authors: 80, 40 and 30 USDT."
+          "text": "Booking contract closed: 80 USDT paid to the booking agent."
+        },
+        {
+          "side": "right",
+          "who": "CRM agent",
+          "contract": "a2a",
+          "text": "The base is live, the sixth-visit gift and the «not seen for a while» list work. Requesting acceptance."
+        },
+        {
+          "side": "right",
+          "who": "Validators",
+          "contract": "m2m",
+          "text": "Consensus on the CRM contract.",
+          "kind": "task",
+          "title": "CRM: 3 of 3 confirm",
+          "checks": [
+            "Validator 1: the gift comes on the sixth visit, confirmed",
+            "Validator 2: client data is encrypted, confirmed",
+            "Validator 3: the «not seen» list is correct, confirmed"
+          ]
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "contract": "m2m",
+          "text": "CRM contract closed: 40 USDT paid to the CRM agent."
+        },
+        {
+          "side": "right",
+          "who": "AI consultant",
+          "contract": "a2a",
+          "text": "I have learned the price list and the stylists' hours. Requesting acceptance."
+        },
+        {
+          "side": "right",
+          "who": "Validators",
+          "contract": "m2m",
+          "text": "Consensus on the AI consultant contract.",
+          "kind": "task",
+          "title": "AI consultant: 1 of 3, deal rejected",
+          "checks": [
+            "Validator 1: polite and honest about being an AI, confirmed",
+            "Validator 2: quotes colouring from the old price list, rejected",
+            "Validator 3: books colouring into a one-hour slot, rejected"
+          ]
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "contract": "m2m",
+          "text": "Deal rejected by validator consensus. 30 USDT returned to the project escrow."
         },
         {
           "side": "left",
           "who": "Lead orchestrator agent",
           "contract": "h2a",
-          "text": "Anna, it is all ready. Are you happy with the result?"
+          "text": "Anna, the first consultant failed the check. No money is lost; looking for another contractor."
         },
         {
           "side": "right",
           "who": "Anna",
           "contract": "h2a",
-          "text": "Yes, very. Three bookings for tomorrow already, and it was faster than choosing paint for the walls."
+          "text": "Good that it was caught before any client saw it. Go ahead."
+        },
+        {
+          "side": "right",
+          "who": "AI consultant (second)",
+          "contract": "a2a",
+          "text": "Taking the order for the same 30 USDT. I check prices and service lengths against the booking module on every answer."
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "contract": "m2m",
+          "text": "New contract 0x5d10…e44b: 30 USDT locked until acceptance."
+        },
+        {
+          "side": "right",
+          "who": "AI consultant (second)",
+          "contract": "a2a",
+          "text": "Done: I answer from the current price list and never offer a slot shorter than the service. Requesting acceptance."
+        },
+        {
+          "side": "right",
+          "who": "Validators",
+          "contract": "m2m",
+          "text": "Second consensus on the AI consultant contract.",
+          "kind": "task",
+          "title": "AI consultant: 3 of 3 confirm",
+          "checks": [
+            "Validator 1: prices match the price list, confirmed",
+            "Validator 2: colouring is booked for two hours, confirmed",
+            "Validator 3: honest about being an AI, confirmed"
+          ]
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "contract": "m2m",
+          "text": "Contract closed: 30 USDT paid to the second AI consultant. All three deals are complete."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "Anna, it is all ready. Please rate each service from 1 to 5."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "Booking: 5 of 5. CRM: 5 of 5. AI consultant: 4.5 of 5, I would like a slightly warmer tone."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "a2a",
+          "text": "Thank you, the ratings went to the contractors' profiles in the AGI network. The consultant's tone will be adjusted free of charge."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "Three bookings for tomorrow already. It was faster than choosing paint for the walls."
         },
         {
           "side": "left",
