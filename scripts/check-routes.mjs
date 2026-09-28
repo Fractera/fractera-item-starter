@@ -56,6 +56,7 @@ const ALLOWED = new Map([
   ['app/api/health/route.ts', 'жив ли элемент — для сторожа узла'],
   ['app/api/i18n/translate/route.ts', 'перевод строк'],
   ['app/api/auth/callback/route.ts', 'возврат из центра единого входа (328-3)'],
+  ['app/api/auth/guest-leave/route.ts', 'гость удаляет свою запись и уходит (331-2)'],
   ['app/api/core-origin/route.ts', 'адрес ядра своего узла (324-6)'],
   ['app/api/me/route.ts', 'кто вошёл'],
   ['app/api/media-proxy/[...path]/route.ts', 'медиа через узел'],

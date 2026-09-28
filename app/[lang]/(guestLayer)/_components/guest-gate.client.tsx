@@ -26,6 +26,14 @@ export function GuestGate({ children, signingIn, failed }: { children: ReactNode
 
   useEffect(() => {
     let alive = true
+    // 331-2: ОТКУДА ПРИШЁЛ — запомнить ДО ухода на вход: после круга через службу входа `document.referrer` уже не страница
+    // сайта. Только путь этого же сайта, не гостевая ветка и не дверь `/api/*`. Читает кнопка «Вернуться».
+    try {
+      const ref = document.referrer ? new URL(document.referrer) : null
+      if (ref && ref.origin === window.location.origin && !/\/guest(\/|$)/.test(ref.pathname) && !ref.pathname.startsWith("/api/")) {
+        sessionStorage.setItem("guest-came-from", `${ref.pathname}${ref.search}`)
+      }
+    } catch { /* нет адреса или хранилища — «Вернуться» ведёт на главную */ }
     fetch("/api/me", { cache: "no-store", credentials: "include" })
       .then((r) => (r.ok ? r.json() : null))
       .then((me: { userId?: string } | null) => {

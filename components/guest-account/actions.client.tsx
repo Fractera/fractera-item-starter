@@ -1,0 +1,71 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { Button, buttonVariants } from "@/components/ui/button"
+
+// «ВЕРНУТЬСЯ» И «УДАЛИТЬ МОЮ УЧЁТНУЮ ЗАПИСЬ» (узел, шаг 331-2).
+// Вернуться — туда, откуда человек пришёл на гостевую страницу (корзина, чат): `?from=<путь>` в адресе, иначе путь, который
+// замок ветки запомнил до ухода на вход (`sessionStorage` `guest-came-from`), иначе главная. Только путь этого сайта.
+// Удалить — после подтверждения: сервер узнаёт гостя сам (`/api/auth/guest-leave`), запись удаляется, куки гаснут, и браузер
+// уходит на google.com — сайт человек покидает, как и просил.
+
+export type GuestAccountWords = {
+  back: string
+  leave: string
+  confirm: string
+  confirmYes: string
+  cancel: string
+  leaving: string
+  failed: string
+}
+
+export const CAME_FROM = "guest-came-from"
+const LEAVE_TO = "https://www.google.com/"
+
+const localPath = (v: string | null): string | null => (v && v.startsWith("/") && !v.startsWith("//") ? v : null)
+
+export function GuestAccountActions({ lang, words }: { lang: string; words: GuestAccountWords }) {
+  const [back, setBack] = useState(`/${lang}`)
+  const [state, setState] = useState<"idle" | "confirm" | "leaving" | "failed">("idle")
+
+  useEffect(() => {
+    let stored: string | null = null
+    try { stored = sessionStorage.getItem(CAME_FROM) } catch { /* хранилище недоступно — главная */ }
+    const fromParam = new URLSearchParams(window.location.search).get("from")
+    setBack(localPath(fromParam) ?? localPath(stored) ?? `/${lang}`)
+  }, [lang])
+
+  async function leave() {
+    setState("leaving")
+    try {
+      const r = await fetch("/api/auth/guest-leave", { method: "POST", credentials: "include", cache: "no-store" })
+      if (!r.ok) return setState("failed")
+      try { sessionStorage.removeItem(CAME_FROM); sessionStorage.removeItem("guest-login-tried") } catch { /* нечего чистить */ }
+      window.location.replace(LEAVE_TO)
+    } catch {
+      setState("failed")
+    }
+  }
+
+  return (
+    <div className="mt-8 flex flex-col gap-4" data-guest-account={state}>
+      {state === "confirm" ? (
+        <div className="flex flex-col gap-3 rounded-lg border border-destructive/40 p-4">
+          <p className="text-sm">{words.confirm}</p>
+          <div className="flex flex-wrap gap-3">
+            <Button variant="destructive" onClick={leave}>{words.confirmYes}</Button>
+            <Button variant="outline" onClick={() => setState("idle")}>{words.cancel}</Button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-3">
+          <a href={back} className={buttonVariants({ variant: "default" })}>{words.back}</a>
+          <Button variant="outline" disabled={state === "leaving"} onClick={() => setState("confirm")}>
+            {state === "leaving" ? words.leaving : words.leave}
+          </Button>
+        </div>
+      )}
+      {state === "failed" && <p className="text-sm text-destructive" role="alert">{words.failed}</p>}
+    </div>
+  )
+}

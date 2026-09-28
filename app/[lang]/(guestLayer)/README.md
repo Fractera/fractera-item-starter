@@ -23,6 +23,18 @@ in the database without signing in: a visitor who opens it becomes a guest autom
 - back here and still no session → the page says so (`gate.failed`) and **does not go again**: one attempt per tab
   (`sessionStorage` mark `guest-login-tried`), otherwise every circle would create one more guest in the database.
 
+## The root page: «Go back» and «Delete my account and leave» (node step 331-2)
+
+`guest/_data/meta.json` names the widget `guest-account` (`components/guest-account/`); its words are the field `account` in
+`guest/_data/<lang>.json`.
+- **Go back** returns the visitor to the page they came from (a cart, a chat): `?from=<path>` in the address first, then the
+  path the lock remembered before leaving for the sign-in (`sessionStorage` `guest-came-from`, same site, not the guest
+  branch, not `/api/*`), then the home page. A page that sends a visitor here may add `?from=` itself.
+- **Delete my account and leave** — after a confirmation: `POST /api/auth/guest-leave` (same-site `Origin` only). The server
+  finds the guest by the session itself, the sign-in service deletes the record over the loopback
+  (`/api/auth/guest/leave` — guests only, their sign-in tickets end on every domain), the site's cookies are cleared, and
+  the browser goes to google.com.
+
 The decision is taken in the browser; the server does not read the session, so the pages stay static. The lock's words
 are the field `gate` (`signingIn`, `failed`) in `guest/_data/<lang>.json`.
 

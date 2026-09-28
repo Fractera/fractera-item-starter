@@ -87,6 +87,8 @@ export function rootPage(opts: { segments: string[]; subPath: string; titleInBod
       data: { overrides: page.overrides },
       meta: { subPath: opts.subPath, ogImage: page.meta.ogImage ?? '/og-default.png' },
       resolve: (lang) => contentOf(page, lang),
+      // 331-2: корень ветки тоже может назвать виджет в `_data/meta.json` (как ребёнок в `_pages/<slug>/meta.json`).
+      afterBody: page.meta.widget ? (lang) => pageWidget(page.meta.widget as string, lang) : undefined,
       titleInBody: opts.titleInBody,
       chrome: opts.crumbs === false ? undefined : (_lang, c) => ({ breadcrumbs: [{ label: c.title }] }),
     })
