@@ -17,6 +17,8 @@ their own look (owner's decision 2026-09-28, node step 330-5), **ask once, befor
 > visual world, a craft floor)?»
 
 After the answer, load that skill (`design-taste-frontend` or `impeccable`) and design in its style, following it fully.
+**With impeccable, read `impeccable-on-design.md` next to this file before building:** it marries the skill to the Design
+element (roles as relations to `--primary` in OKLCH, a measured formula per world), so every preset gets its own palette.
 Then write its name into `OWN-SERVICE-PROPS.json` → `designSkill` and run `npm run describe:publish` (node step 333-3).
 
 ## Where the design lives
