@@ -132,7 +132,10 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
 - **The guest branch signs a visitor in by itself.** No session → the site's own `/guest-in`, and the proxy sends it where a
   guest is made (the node's sign-in centre on an own domain, the sign-in service's `/api/auth/guest` elsewhere, node step
   331): a user with the role `guest` is created and the visitor comes back; one attempt per tab. Its root page offers «Go back» (to the page the visitor came from) and «Delete my account and leave»
-  (widget `guest-account`, door `/api/auth/guest-leave`, node step 331-2) — see `(guestLayer)/README.md`. Each guest visit is a new record in the
+  (widget `guest-account`, door `/api/auth/guest-leave`, node step 331-2) — see `(guestLayer)/README.md`.
+- **Guests are bounded by the node** (node step 331): the sign-in service limits new guests per address and keeps at most
+  a ceiling of guest records, evicting the longest inactive. If you keep data per user (a cart, a chat), treat a user id
+  the session no longer returns as gone: never resurrect it, never wait for it; the visitor comes back as a new guest. Each guest visit is a new record in the
   database: offer it only where it is truly needed.
 - **Protected and guest pages are closed to search engines**; only the public branch is indexed.
 
