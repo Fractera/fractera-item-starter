@@ -64,6 +64,31 @@ The departure-board home page in its original colours — `components/landing-im
   at the same x in every row. A column sized per row makes the whole section «dance». Put the grid on the list (not on each
   row) or use `subgrid`, and let the title column be `max-content` of the widest title.
 
+## Split-flap letters — animate the machine, not an effect (owner, 2026-09-28)
+
+A departure board is a split-flap (Solari) display. Animate the real mechanism, never a generic «flip» or a fade:
+
+- **One character cell = a drum of flaps** on an axle. Each flap carries the upper half of one character on its face and the
+  lower half of the previous character on its back. You always see two halves: the upper half on the standing flap and the
+  lower half on the flap that has already fallen. The thin line across the middle is the axle and the gap.
+- **One step = the upper flap falls down** around the axle (`rotateX` 0 → −180°, perspective, `transform-origin` at the middle
+  line): behind it the upper half of the NEXT character appears, and the fallen flap covers the lower half with the lower half
+  of the next character. A step lasts about 60–80 ms; a real drum makes 10–20 steps a second.
+- **The drum turns one way only.** The character set is a fixed ordered list, data, not code: blank first, then the letters in
+  alphabet order (Cyrillic А–Я with Ё in its place, Latin A–Z), digits, a few signs. The number of steps from the current
+  character to the target is `(index(target) − index(current) + length) mod length`: from «А» to «Б» is one step, from «Б» to
+  «А» is the whole drum.
+- **All cells start together and each stops on its own character**, so the word settles as a ripple: short trips land first,
+  long ones keep rattling. Shorter words are padded with blanks to the board's width.
+- **It starts when the board comes into view** (IntersectionObserver). Leaving the screen resets it; coming back starts the
+  rattle again. Changing the destination (agent → application → automation) is the same rattle from the current letters to
+  the new ones.
+- **The board does not move.** No tilt, no parallax, no following the cursor: a station board is fixed to the wall.
+- Build the cell from four layers — static upper half of the next character, static lower half of the current one, the
+  falling flap (face = upper half of the current, back = lower half of the next, `backface-visibility: hidden`), the axle line —
+  in a small `"use client"` island that advances steps with timers or `requestAnimationFrame`, no React state per frame if it
+  can be avoided (CSS variables / class toggles). Under `prefers-reduced-motion` the letters stand on the target at once.
+
 ## How the agent works with this
 
 1. The person asks for an own design → skill `custom-design` asks «taste or impeccable?» → load impeccable.
