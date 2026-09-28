@@ -6,6 +6,7 @@ import "@fontsource/barlow/500.css"
 import "@fontsource/barlow/600.css"
 import { ArrowRight } from "lucide-react"
 import { landingWords } from "./words"
+import { StaticImage } from "@/components/media/static-image.server"
 import s from "./impeccable.module.css"
 
 // ГЛАВНАЯ ЭЛЕМЕНТА — ЛЕНДИНГ ПО НАВЫКУ impeccable (Paul Bakaus, `.claude/skills/impeccable`), шаги 330-5, 330-8.
@@ -128,6 +129,13 @@ export function LandingImpeccable({ lang }: { lang: string }) {
       </section>
 
       <section className={s.depart}>
+        {x.closingImage && (
+          // 333-11, слово владельца: на широком экране картинка справа во всю высоту экрана, ширина — по её пропорции;
+          // правая половина видна целиком, левая уходит в градиент. Размытое превью (base64) и webp/avif — StaticImage.
+          <div className={s.departArt}>
+            <StaticImage src={x.closingImage.src} alt={x.closingImage.alt} fill sizes="(min-width: 1024px) 180vh, 1px" className={s.departImg} />
+          </div>
+        )}
         <div className={s.wrap}>
           <h2 className={s.departTitle}>{b.closing}</h2>
           <p className={s.departText}>{x.closingText}</p>

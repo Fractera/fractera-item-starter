@@ -17,6 +17,7 @@ export type LandingExtra = {
   chips: string[]
   closingTitle: string
   closingText: string
+  closingImage?: { src: string; alt: string }
   short: string
   outcomesLabel: string
   outcomes: { name: string; text: string }[]

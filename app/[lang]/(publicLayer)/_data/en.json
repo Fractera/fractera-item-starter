@@ -104,7 +104,11 @@
       "when": "Now boarding",
       "connections": "Connections",
       "included": "Included in every ticket",
-      "closing": "Your train leaves the moment you describe the idea"
+      "closing": "Your adventure in the world of AGI solutions starts now"
+    },
+    "closingImage": {
+      "src": "/images/landing/agi-journey.jpg",
+      "alt": "A station of AI agents, services and routes in space, joined by glowing lines"
     }
   }
 }

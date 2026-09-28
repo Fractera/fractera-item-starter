@@ -154,6 +154,20 @@
 .departTitle { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: clamp(2.1rem, 4.8vw, 3.8rem); line-height: 1; max-width: 22ch; text-wrap: balance; }
 .departText { margin: 1rem 0 1.8rem; max-width: 56ch; font-size: 1.12rem; line-height: 1.6; color: color-mix(in oklab, var(--chalk) 82%, var(--blue)); }
 .depart .go:focus-visible { outline-color: var(--chalk); }
+/* 333-11, слово владельца: картинка только на широком экране, справа, во всю высоту экрана; ширина — по её пропорции;
+   правая половина видна полностью, левая уходит в градиент к цвету табло. На узком экране картинки нет. */
+.depart { position: relative; overflow: hidden; isolation: isolate; }
+.depart .wrap { position: relative; z-index: 1; }
+.departArt { display: none; }
+@media (min-width: 1024px) {
+  .depart { min-height: 100dvh; display: flex; align-items: center; }
+  .departArt {
+    display: block; position: absolute; z-index: 0; top: 0; right: 0; height: 100%; aspect-ratio: 1280 / 714;
+    -webkit-mask-image: linear-gradient(to left, #000 50%, transparent 100%);
+    mask-image: linear-gradient(to left, #000 50%, transparent 100%);
+  }
+  .departImg { object-fit: cover; object-position: right center; }
+}
 
 @media (max-width: 640px) {
   .boardHead, .row { grid-template-columns: 1fr 3rem; }
