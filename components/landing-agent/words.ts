@@ -23,9 +23,9 @@ export type LandingExtra = {
   outcomes: { name: string; text: string }[]
   chat?: {
     label: string
-    contractLabels: Record<"a2a" | "m2m" | "h2a", string>
+    contractLabels: Record<"a2a" | "h2a" | "m2m" | "h2m" | "h2h", string>
     items: {
-      side: "left" | "right" | "system"; who: string; text: string; contract: "a2a" | "m2m" | "h2a"
+      side: "left" | "right" | "system"; who: string; text: string; contract: "a2a" | "h2a" | "m2m" | "h2m" | "h2h"
       kind?: "thinking" | "tool" | "confirm" | "task"; title?: string; steps?: string[]; checks?: string[]
       tool?: string; input?: unknown; output?: unknown; accepted?: string
     }[]

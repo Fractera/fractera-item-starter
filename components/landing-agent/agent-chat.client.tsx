@@ -25,7 +25,7 @@ import base from "./landing-agent.module.css"
 // после последней реплики разговор стоит, прокручен до конца, под ним — кнопка `endCta`. Реплики `side: "system"` — не
 // левые и не правые: уведомление системы по центру (штамп в ленте), без аватара и без «печатает…».
 
-type Contract = "a2a" | "m2m" | "h2a"
+type Contract = "a2a" | "h2a" | "m2m" | "h2m" | "h2h"
 type Item = {
   side: "left" | "right" | "system"
   who: string
@@ -57,7 +57,8 @@ function readMs(item: Item): number {
 }
 
 function isHuman(item: Item): boolean {
-  return item.contract === "h2a" && item.side === "right"
+  // 333-21: человек пишет по любому протоколу «h2…» (h2a своему агенту, h2m внешнему, h2h человеку) — у него аватар.
+  return item.contract.startsWith("h2") && item.side === "right"
 }
 
 function Extra({ item, s }: { item: Item; s: Classes }) {

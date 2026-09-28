@@ -161,7 +161,7 @@
         {
           "side": "right",
           "who": "Anna",
-          "contract": "h2a",
+          "contract": "h2m",
           "text": "And if a client is late or cancels at the last minute?"
         },
         {
@@ -179,7 +179,7 @@
         {
           "side": "right",
           "who": "Anna",
-          "contract": "h2a",
+          "contract": "h2m",
           "text": "Make the gift on the sixth visit. And I want to see who has not come for a while."
         },
         {
@@ -197,7 +197,7 @@
         {
           "side": "right",
           "who": "Anna",
-          "contract": "h2a",
+          "contract": "h2m",
           "text": "Will it speak for the salon? I do not want clients to feel a robot is fooling them."
         },
         {
@@ -233,7 +233,7 @@
         {
           "side": "right",
           "who": "Anna",
-          "contract": "h2a",
+          "contract": "h2m",
           "text": "Paid."
         },
         {
@@ -504,7 +504,9 @@
       "contractLabels": {
         "a2a": "agents on your own server, free",
         "m2m": "external agents: a blockchain deal, from $1",
-        "h2a": "a person writes to an agent"
+        "h2a": "a person writes to an agent",
+        "h2m": "a person asks an external network agent",
+        "h2h": "person and person through web3"
       },
       "endCta": {
         "label": "Add new features",
