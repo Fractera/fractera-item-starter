@@ -11,6 +11,8 @@ import { TopMenu } from "@/components/menu/top/top-menu.server";
 import { FooterMenu } from "@/components/menu/footer/footer-menu.server";
 import { DrawerMenu } from "@/components/menu/drawer/drawer-menu.server";
 import { ViewportBadge } from "@/components/dev/viewport-badge.client";
+import { viewportBadgeWords } from "@/components/dev/viewport-badge.i18n";
+import { designSkill } from "@/lib/design-skill";
 import { bodyFontClass } from "@/lib/fonts";
 import { getAppConfig } from "@/config/app-config";
 import { constructMetadata } from "@/lib/construct-metadata";
@@ -187,7 +189,7 @@ export default async function LangLayout({
                 🔒 ПРОВЕРКА ЗДЕСЬ, А НЕ ВНУТРИ ЗНАЧКА: `featureOn` читает конфиг
                 на сервере, а значок — островок. Спроси он сам — конфиг уехал бы
                 в браузер вместе с ним. */}
-            {featureOn("viewportBadge") && <ViewportBadge />}
+            {featureOn("viewportBadge") && <ViewportBadge skill={designSkill()} closeLabel={viewportBadgeWords(lang).close} />}
             {/* Cookie-consent banner (step 305) — on every public page via this layout. Strings are
                 server-provided per language (readBannerConfig, ISR) so anonymous visitors get a fully
                 localized banner without hitting the gated /api. */}
