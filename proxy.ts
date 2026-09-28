@@ -438,6 +438,30 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     // такой cookie не примет, и вход на петле «прошёл бы», оставив человека
     // неузнанным. Хозяину за клавиатурой вход не нужен (его узнаёт правило
     // хозяина), но если он пошёл входить — ведём туда, где вход работает.
+    // 🔒 328: СОБСТВЕННЫЙ ДОМЕН ЭЛЕМЕНТА — ВХОД И ВЫХОД ЧЕРЕЗ ЦЕНТР УЗЛА. ✗ Найдено владельцем 2026-09-28: на aifa.dev
+    // «Войти» и «Выйти» шапки уводили на `http://127.0.0.1:24681` (запасная ветка ниже) — петлю машины ПОСЕТИТЕЛЯ, а выход
+    // возвращал на зону узла. Здесь: вход — через код центра (`/api/auth/sso` → наш `/api/auth/callback`), выход — выход
+    // центра с возвратом на этот домен, и свой билет стирается сразу.
+    {
+      const center = connectedDomainAuthBase();
+      const zone = center ? new URL(center).hostname.replace(/^auth\./, "") : "";
+      const here = (host ?? "").split(":")[0].toLowerCase();
+      const ownDomain = !!center && !!here && here !== zone && !here.endsWith(`.${zone}`)
+        && here !== "localhost" && !/^\d{1,3}(\.\d{1,3}){3}$/.test(here);
+      if (ownDomain && (pathname === "/login" || pathname === "/register" || pathname === "/logout")) {
+        const q = new URLSearchParams(request.nextUrl.search);
+        const langRaw = q.get("lang") ?? request.cookies.get(LOCALE_COOKIE)?.value ?? DEFAULT_LANGUAGE;
+        const lang = SUPPORTED_LANGUAGES.includes(langRaw) ? langRaw : DEFAULT_LANGUAGE;
+        if (pathname === "/logout") {
+          const out = NextResponse.redirect(`${center}/logout?redirectUrl=${encodeURIComponent(`https://${here}/${lang}`)}`);
+          out.cookies.set("fractera-ticket", "", { path: "/", maxAge: 0, httpOnly: true, secure: true, sameSite: "lax" });
+          return out;
+        }
+        const next = `/${lang}?signed-in=1`;
+        const ret = `https://${here}/api/auth/callback?next=${encodeURIComponent(next)}`;
+        return NextResponse.redirect(`${center}/api/auth/sso?return=${encodeURIComponent(ret)}&requireRole=${q.get("requireRole") ?? "user"}`);
+      }
+    }
     const domainAuth = connectedDomainAuthBase();
     if (domainAuth && isOwnerAtMachine(request)) {
       return NextResponse.redirect(`${domainAuth}${pathname}${request.nextUrl.search}`);
