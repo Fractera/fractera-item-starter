@@ -8,6 +8,8 @@ Claude Code reads the skills of the agent that works in this folder from here: o
 | `custom-design` | ours | the gatekeeper: when the person wants an own design instead of the Blocks — ask taste or impeccable, then which rules win |
 | `design-taste-frontend` | vendored, Leon Lin, MIT | anti-generic landing design — `SOURCE.md` |
 | `impeccable` | vendored, Paul Bakaus, Apache-2.0 | design direction from the audience's world — `SOURCE.md` (without hooks and agents) |
+| `copywriting` | vendored, Corey Haines, MIT | writes page copy: headlines, value, calls to action — `SOURCE.md` |
+| `copy-editing` | vendored, Corey Haines, MIT | edits existing copy line by line — `SOURCE.md` |
 
 Vendored skills are copies, never symbolic links, and are never edited by hand: `SOURCE.md` next to each says where it came
 from and how to update it.

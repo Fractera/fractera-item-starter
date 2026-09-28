@@ -117,6 +117,10 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
   `design-taste-frontend`, or `blocks` for the default) and publish it with `npm run describe:publish`: the node registry
   carries it, and the core's library `AGI-ITEMS-CONFIG/design-skills.json` explains the name (node step 333-3). A design
   skill's colours, fonts and corners are always Design tokens, never values in the widget (333-2).
+- **Page words are written and edited with two vendored skills** (node step 333): `copywriting` for new copy (headlines,
+  value, calls to action), `copy-editing` for improving existing copy. Load them whenever you write or rewrite visible text
+  of a page; the words still live in the page data, in `en` and `ru`, and a public page states nothing that does not exist
+  without the person's yes.
 - **Page text is read at run time.** `_pages/<slug>/<lang>.json` is read by `lib/page-tree.ts` while the site runs from `ELEMENT_DIR` (the
   element folder, written by the node's installer — node step 330-3; without it the built server read its own copy),
   not baked into the build: a corrected paragraph shows up within those five minutes without a rebuild. Code changes still
