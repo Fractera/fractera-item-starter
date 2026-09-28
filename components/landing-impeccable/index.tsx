@@ -66,7 +66,10 @@ export function LandingImpeccable({ lang }: { lang: string }) {
                     <span className={s.via}>{o.text}</span>
                   </div>
                   <span className={s.platform} aria-label={`${b.platform} ${i + 1}`}>{i + 1}</span>
-                  <span className={s.departs}>{b.when}</span>
+                  <span className={s.departs}>
+                    <span className={s.lamp} aria-hidden="true" />
+                    {b.when}
+                  </span>
                 </li>
               ))}
             </ol>

@@ -51,7 +51,18 @@
   display: inline-grid; place-items: center; width: 2.6rem; height: 2.6rem; background: var(--chalk); color: var(--blue);
   font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1.6rem; font-variant-numeric: tabular-nums;
 }
-.departs { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.15rem; line-height: 1.2; color: var(--yellow); }
+.departs { display: inline-flex; align-items: center; gap: 0.55rem; font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.15rem; line-height: 1.2; color: var(--yellow); }
+/* 333-9, слово владельца: «посадка началась … пульсировал не текст, а лампочка-индикатор слева от текста в стиле дизайна».
+   Сигнальная лампа табло: жёлтая линза с тёмным ободком и мягким свечением, дышит раз в 1,6 с. */
+.lamp {
+  position: relative; flex: none; width: 0.7rem; height: 0.7rem; border-radius: 50%;
+  background: var(--yellow); box-shadow: 0 0 0 2px var(--blue-deep), 0 0 0 0 rgba(255, 212, 0, 0.55);
+  animation: lamp 1.6s ease-in-out infinite;
+}
+@keyframes lamp {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 2px var(--blue-deep), 0 0 0 0 rgba(255, 212, 0, 0.55); }
+  50% { opacity: 0.55; box-shadow: 0 0 0 2px var(--blue-deep), 0 0 10px 3px rgba(255, 212, 0, 0.45); }
+}
 
 /* Буквы табло */
 .flapWord { display: inline-flex; flex-wrap: wrap; gap: 3px; }
@@ -152,6 +163,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flap { animation: none; }
+  .flap, .lamp { animation: none; }
   .go, .alt, .hint, .hintBtn { transition: none; }
 }
