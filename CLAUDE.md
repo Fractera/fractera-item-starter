@@ -184,3 +184,13 @@ folders on the first new page. A machine map for outside agents, if ever needed,
   one-time code back to `/api/auth/callback`, and the element keeps a ticket cookie (`fractera-ticket`) that
   `lib/auth/ticket.ts` checks with the centre on every request. Signing out in the centre ends it on every domain.
   Never set or read the node's own session cookie here, and never widen `next` of the callback beyond a local path.
+
+## Describing this element to the node (node steps 325-2, 329)
+
+The element has two descriptions that must agree: its own passport `OWN-SERVICE-PROPS.json` (`summary` — 2-3 plain
+sentences on what it does and for whom; `provides` — 1-20 capability names like `order-form`) and its record in the
+node's common registry in the core. When the owner sends the task «Describe this AGI element…» (the core's «Generate»):
+write the two passport fields, commit that one file, then run **`npm run describe:publish`** — it hands the passport to the
+core over the machine's loopback (the core's port is asked from the node, never remembered), and the core checks the
+shape and writes the registry record. `DESCRIBE_FAILED` names what to fix; fix it and run again. A future skill
+`describe-element` will carry this procedure; while it does not exist, the task text is the procedure.
