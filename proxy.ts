@@ -253,9 +253,12 @@ async function apiAuthGate(request: NextRequest): Promise<NextResponse> {
     if (!shouldBypassAuthEdge()) {
       const agentIdentity = request.headers.get("x-agent-identity");
       if (!agentIdentity) {
+        // 328-3: на собственном домене элемента вместо куки службы входа — билет единого входа; подлинность билета
+        // проверяет `getSession` у центра, ворота смотрят только на наличие (как и для куки службы).
         const sessionToken =
           request.cookies.get("authjs.session-token") ??
-          request.cookies.get("__Secure-authjs.session-token");
+          request.cookies.get("__Secure-authjs.session-token") ??
+          request.cookies.get("fractera-ticket");
 
         if (!sessionToken) {
           return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
