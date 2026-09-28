@@ -63,6 +63,7 @@ const ALLOWED = new Map([
   ['app/api/media/upload/route.ts', 'загрузка медиа'],
   ['app/api/menu/[lang]/route.ts', 'меню проекта'],
   ['app/api/revalidate/route.ts', 'перерисовать страницы'],
+  ['app/api/settings/app/route.ts', 'свои настройки элемента (324-8)'],
   ['app/api/settings/changed/route.ts', 'сигнал CONFIG и «Дизайна»'],
   ['app/api/settings/design/route.ts', 'дверь дизайна элемента'],
   ['app/api/shell/[lang]/route.ts', 'шапка и подвал для служб узла'],

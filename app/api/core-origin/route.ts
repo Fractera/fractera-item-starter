@@ -1,4 +1,4 @@
-// @api tell the browser the origin of this node's core (the only outside origin the element trusts)
+// @api tell the browser the origin of its node core
 import { NextResponse } from "next/server"
 import { nodeCoreOrigin } from "@/lib/own-site"
 
