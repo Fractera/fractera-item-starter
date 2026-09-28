@@ -30,6 +30,7 @@ in the database without signing in: a visitor who opens it becomes a guest autom
 - **Go back** returns the visitor to the page they came from (a cart, a chat): `?from=<path>` in the address first, then the
   path the lock remembered before leaving for the sign-in (`sessionStorage` `guest-came-from`, same site, not the guest
   branch, not `/api/*`), then the home page. A page that sends a visitor here may add `?from=` itself.
+- A signed-in member (not a guest) opening the page sees `account.notGuest` and «Go back» only — no delete (331-7).
 - **Delete my account and leave** — after a confirmation: `POST /api/auth/guest-leave` (same-site `Origin` only). The server
   finds the guest by the session itself, the sign-in service deletes the record over the loopback
   (`/api/auth/guest/leave` — guests only, their sign-in tickets end on every domain), the site's cookies are cleared, and

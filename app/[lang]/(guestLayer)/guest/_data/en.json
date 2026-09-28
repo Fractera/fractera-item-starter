@@ -47,6 +47,7 @@
     "confirmYes": "Yes, delete and leave",
     "cancel": "Cancel",
     "leaving": "Deleting…",
-    "failed": "The account could not be deleted right now. Please try again in a minute."
+    "failed": "The account could not be deleted right now. Please try again in a minute.",
+    "notGuest": "You are signed in with your own account, so you do not need a guest account."
   }
 }

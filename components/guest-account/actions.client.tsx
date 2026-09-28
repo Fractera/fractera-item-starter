@@ -17,6 +17,7 @@ export type GuestAccountWords = {
   cancel: string
   leaving: string
   failed: string
+  notGuest: string
 }
 
 export const CAME_FROM = "guest-came-from"
@@ -27,12 +28,22 @@ const localPath = (v: string | null): string | null => (v && v.startsWith("/") &
 export function GuestAccountActions({ lang, words }: { lang: string; words: GuestAccountWords }) {
   const [back, setBack] = useState(`/${lang}`)
   const [state, setState] = useState<"idle" | "confirm" | "leaving" | "failed">("idle")
+  // 331-7: страницу видит и вошедший человек (замок пускает любую сессию) — удалять можно только гостя.
+  // ✗ Найдено владельцем: архитектор на aifa.dev видел «удалить» и получал отказ двери (она удаляет только гостя).
+  const [who, setWho] = useState<"unknown" | "guest" | "member">("unknown")
 
   useEffect(() => {
     let stored: string | null = null
     try { stored = sessionStorage.getItem(CAME_FROM) } catch { /* хранилище недоступно — главная */ }
     const fromParam = new URLSearchParams(window.location.search).get("from")
     setBack(localPath(fromParam) ?? localPath(stored) ?? `/${lang}`)
+    fetch("/api/me", { cache: "no-store", credentials: "include" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((me: { roles?: string[] } | null) => {
+        const roles = me?.roles ?? []
+        setWho(roles.length === 1 && roles[0] === "guest" ? "guest" : "member")
+      })
+      .catch(() => setWho("member"))
   }, [lang])
 
   async function leave() {
@@ -47,6 +58,15 @@ export function GuestAccountActions({ lang, words }: { lang: string; words: Gues
     }
   }
 
+  if (who === "unknown") return null
+  if (who === "member") {
+    return (
+      <div className="mt-8 flex flex-col gap-4" data-guest-account="member">
+        <p className="text-sm text-muted-foreground">{words.notGuest}</p>
+        <div><a href={back} className={buttonVariants({ variant: "default" })}>{words.back}</a></div>
+      </div>
+    )
+  }
   return (
     <div className="mt-8 flex flex-col gap-4" data-guest-account={state}>
       {state === "confirm" ? (
