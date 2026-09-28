@@ -1,19 +1,19 @@
 {
-  "title": "We invite you on a journey into AGI solutions. On blockchain, and beyond",
+  "title": "Join us on a journey through the world of AGI solutions. Built on blockchain technology, and beyond",
   "description": "We invite you on a journey into the world of AGI solutions built on blockchain technology, and beyond. You bring the idea, Fractera AGI does the rest.",
   "keywords": "",
   "blocks": [
     {
       "kind": "hero-centered",
       "pill": "AGI element",
-      "title": "We invite you on a journey into AGI solutions",
+      "title": "Join us on a journey through the world of AGI solutions",
       "description": "Not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes. You decide. All you bring is the idea; Fractera AGI does the rest.",
       "cta": {
-        "label": "Sign in to subscription",
+        "label": "Claude Code subscription",
         "href": "/en/architect/build/subscription"
       },
       "secondary": {
-        "label": "Open the terminal",
+        "label": "Start building",
         "href": "/en/architect/build/terminal"
       },
       "bid": "j7tri"
@@ -66,10 +66,6 @@
       "Ready solutions in AGI-web3",
       "You bring the idea"
     ],
-    "stat": {
-      "value": "2,000+",
-      "label": "skills, plugins and MCP servers"
-    },
     "chips": [
       "Database",
       "Sign-in and roles",
@@ -77,10 +73,8 @@
       "Open source code"
     ],
     "closingTitle": "Your idea is the only thing missing",
-    "closingText": "Sign in, open the terminal and describe what you want. The rest is already here.",
-    "titleSub": "On blockchain, and beyond.",
-    "short": "An agent, an application or business automation. You bring the idea, Fractera AGI builds the rest.",
-    "outcomesLabel": "What your element becomes",
+    "closingText": "Connect the Claude Code subscription, start building and describe what you want. The rest is already here.",
+    "titleSub": "Built on blockchain technology, and beyond.",
     "outcomes": [
       {
         "name": "Agent",
@@ -105,6 +99,10 @@
       "connections": "Connections",
       "included": "Included in every ticket",
       "closing": "Your train leaves the moment you describe the idea"
+    },
+    "stat": {
+      "value": "2,000+",
+      "label": "skills, plugins and MCP servers"
     }
   }
 }

@@ -22,8 +22,8 @@ After the answer, load that skill (`design-taste-frontend` or `impeccable`) and 
 
 A page with its own look is a **widget** that takes the whole page: its data folder's `meta.json` names
 `"widget": "<name>", "widgetOnly": true`, the widget lives in `components/<name>/` and is listed in `lib/page-widgets.tsx`.
-Words stay in the page data (`_data` / `_pages/<slug>/<lang>.json`), never in code. Example: `components/landing/`,
-`components/landing-taste/`, `components/landing-impeccable/`.
+Words stay in the page data (`_data` / `_pages/<slug>/<lang>.json`), never in code. Example: `components/landing-impeccable/`
+(the home page, made with impeccable).
 
 ## What this element's rules override in both skills
 
