@@ -102,7 +102,11 @@ export function signInRedirectUrl(callbackUrl: string, requireRole: "user" | "ar
       return `${center}/api/auth/sso?return=${encodeURIComponent(ret)}&requireRole=${requireRole}`;
     }
   }
-  const url = new URL(`${authBase()}/login`);
+  // 328 (долг): на машине узла (localhost, голый IP) `authBase()` строит `<хост>:3001` — порт серверной линии, а служба входа
+  // узла стоит на своём порту из реестра. Здесь ссылка ведёт на собственный `/login` сайта: прокси элемента знает и вход
+  // подключённого домена, и порт службы из реестра (AUTH_FORM_PATHS) — порт в браузере не угадывается.
+  const onMachine = typeof window !== "undefined" && isIpHost(window.location.hostname);
+  const url = new URL(`${onMachine ? window.location.origin : authBase()}/login`);
   // Метка `signed-in` — та же, что ставит прокси (260-3): вернувшись, человек увидит
   // плашку «вы вошли» и на этом пути тоже.
   let back = callbackUrl;
