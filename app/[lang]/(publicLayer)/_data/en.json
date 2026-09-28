@@ -1,13 +1,13 @@
 {
-  "title": "Your element starts here",
-  "description": "This is the starter template of a node element. Your Claude Code agent will build it into your product.",
+  "title": "Your AGI element starts here",
+  "description": "Not just a site template: an AGI element that quickly becomes what you need — an agent that solves your tasks, an application or business process automation. You bring the idea, Fractera AGI does the rest.",
   "keywords": "",
   "blocks": [
     {
       "kind": "hero-centered",
-      "pill": "Element template",
-      "title": "Your element starts here",
-      "description": "This is the starter template of a node element. Your Claude Code agent builds it into your product: sign in to the subscription, open the terminal and describe what you need.",
+      "pill": "AGI element",
+      "title": "Your AGI element starts here",
+      "description": "This is not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes — you decide. All you bring is the idea; Fractera AGI does the rest.",
       "cta": {
         "label": "Sign in to subscription",
         "href": "/en/architect/build/subscription"
@@ -19,9 +19,41 @@
       "bid": "j7tri"
     },
     {
+      "kind": "section-head",
+      "id": "what-it-can-do",
+      "title": "What Fractera AGI can do",
+      "bid": "zy6l4"
+    },
+    {
       "kind": "p",
-      "text": "You are on the root page. It is not protected by any protocol.",
-      "bid": "ww45e"
+      "text": "It builds the application with you: the Claude Code agent of this element writes the code from your description.",
+      "bid": "e9c1g"
+    },
+    {
+      "kind": "p",
+      "text": "It takes what is ready from the built-in Store: more than 2,000 reliable, continuously updated skills, plugins and MCP servers.",
+      "bid": "elv0d"
+    },
+    {
+      "kind": "p",
+      "text": "It finds ready solutions in the AGI-web3 infrastructure, so you can buy them and plug them in.",
+      "bid": "rb6u8"
+    },
+    {
+      "kind": "p",
+      "text": "You describe your idea — the agent works through the possible ways, agrees them with you, and you get a reliable result fast.",
+      "bid": "zwcnk"
+    },
+    {
+      "kind": "section-head",
+      "id": "under-the-hood",
+      "title": "Already working under the hood",
+      "bid": "ubj4n"
+    },
+    {
+      "kind": "p",
+      "text": "A built-in database, sign-in with user roles and dozens of other solutions. All of their code is open right inside your application: fix it, improve it or remove it — it is up to you.",
+      "bid": "tr7cu"
     }
   ]
 }
