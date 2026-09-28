@@ -64,7 +64,7 @@ root is data.
     │   │   └── _pages/ finance/
     │   └── admin/
     │       ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
-    │       └── _pages/ admin/ · users/
+    │       └── _pages/ admin/ · users/ · site-settings/
     │
     └── (guestLayer)/
         └── guest/
@@ -155,3 +155,19 @@ person used; the folder that matches is the page. There is no hand-written list 
 folders on the first new page. A machine map for outside agents, if ever needed, is generated from `lib/page-tree.ts`.
 
 <!-- The rest of this instruction is written in the next parts of node step 314. -->
+
+## Your address and your links to the node (node step 324)
+
+- **Your main address is given by the node, not by settings.** When the owner connects an own domain to this element and
+  picks the main address (subdomain or domain), the node writes `SERVICE_DATA_DIR/domain.json`; `lib/own-site.ts` makes
+  `getAppConfig().url` (and `seo.canonicalBase`) that address — canonical, sitemap, hreflang and og follow it. Never
+  write the address into APP-CONFIG yourself: the project settings and the node would overwrite it.
+- **Links to CONFIG and Design can be off** (`SERVICE_DATA_DIR/links.json`, `linkOn()`): off, the project settings are not
+  laid over this element's own `APP-CONFIG` / `PLATFORM-CONFIG` / `DESIGN-CONFIG`, and the design is not pulled. With the
+  CONFIG link off, the architect edits the site's name, texts, SEO, images and languages on the page
+  `/<lang>/admin/site-settings` (`components/site-settings/`, door `/api/settings/app`); with it on, that door answers 409.
+  The Blocks link off removes the `@fractera` registry from `components.json` — write your own blocks then.
+- **Languages are built in.** A new language set chosen on that page reaches the site after a rebuild of the element
+  (the owner: core → the element → Deployments). Until then the site keeps its current languages — say so.
+- **The node's core is the one outside origin this element trusts** (`/api/core-origin`): the Preview highlight works on
+  any main address. Do not widen `lib/sibling-origin.ts` or the highlight island beyond it.
