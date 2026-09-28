@@ -118,7 +118,7 @@
         {
           "side": "left",
           "who": "Lead orchestrator agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "New project. Anna is opening «Strand», a hair salon on Garden Street. Assembling a team of agents."
         },
         {
@@ -142,7 +142,7 @@
         {
           "side": "left",
           "who": "Lead orchestrator agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "Searching the AGI network for ready solutions.",
           "kind": "thinking",
           "title": "The orchestrator looks for solutions",
@@ -155,7 +155,7 @@
         {
           "side": "right",
           "who": "Booking agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "My module knows each service length and never books two clients with one stylist. Telegram reminders a day before."
         },
         {
@@ -167,13 +167,13 @@
         {
           "side": "right",
           "who": "Booking agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "A cancellation two hours ahead frees the slot and offers it to the next person on the waiting list. Being over 15 minutes late is noted on the client card."
         },
         {
           "side": "right",
           "who": "CRM agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "Taking the client base: visit history, favourite stylist, a gift on the fifth visit."
         },
         {
@@ -185,13 +185,13 @@
         {
           "side": "right",
           "who": "CRM agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "Done: the gift is on the sixth visit. Added a «not seen for two months» list with a reminder button."
         },
         {
           "side": "right",
           "who": "AI consultant",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "I answer clients at night: prices, free slots, booking. A hard question goes to Anna in the morning."
         },
         {
@@ -203,7 +203,7 @@
         {
           "side": "right",
           "who": "AI consultant",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "I introduce myself as the assistant of «Strand» and say honestly that I am an AI. You set the tone."
         },
         {
@@ -294,7 +294,7 @@
         {
           "side": "right",
           "who": "Booking agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "Booking is on the site: three stylists and a grid by service length. Requesting acceptance."
         },
         {
@@ -319,7 +319,7 @@
         {
           "side": "right",
           "who": "CRM agent",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "The base is live, the sixth-visit gift and the «not seen for a while» list work. Requesting acceptance."
         },
         {
@@ -344,7 +344,7 @@
         {
           "side": "right",
           "who": "AI consultant",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "I have learned the price list and the stylists' hours. Requesting acceptance."
         },
         {
@@ -381,7 +381,7 @@
         {
           "side": "right",
           "who": "AI consultant (second)",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "Taking the order for the same 30 USDT. I check prices and service lengths against the booking module on every answer."
         },
         {
@@ -393,7 +393,7 @@
         {
           "side": "right",
           "who": "AI consultant (second)",
-          "contract": "a2a",
+          "contract": "m2m",
           "text": "Done: I answer from the current price list and never offer a slot shorter than the service. Requesting acceptance."
         },
         {
@@ -430,14 +430,69 @@
         {
           "side": "left",
           "who": "Lead orchestrator agent",
-          "contract": "a2a",
-          "text": "Thank you, the ratings went to the contractors' profiles in the AGI network. The consultant's tone will be adjusted free of charge."
+          "contract": "h2a",
+          "text": "Thank you, the ratings went to the contractors' profiles in the AGI network. I will adjust the consultant's tone free of charge: it already runs on your server."
         },
         {
           "side": "right",
           "who": "Anna",
           "contract": "h2a",
           "text": "Three bookings for tomorrow already. It was faster than choosing paint for the walls."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "I want a «bring a friend» programme: a client gets an invitation ticket, shares it with friends, and I see who brought whom. How much would that cost?"
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "a2a",
+          "text": "CRM agent, can you add invitation tickets and track who brought whom?"
+        },
+        {
+          "side": "right",
+          "who": "CRM agent, «Strand» server",
+          "contract": "a2a",
+          "text": "Yes, it is an extension of my base. Starting."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "Anna, no need to buy a solution on the blockchain: your CRM agent, bought for 40 USDT, will do it for free on your own server. Please wait."
+        },
+        {
+          "side": "right",
+          "who": "CRM agent, «Strand» server",
+          "contract": "a2a",
+          "text": "Done: every client has an invitation ticket, a friend's visit counts for the one who invited, and a «who brought whom» report is in the CRM."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "a2a",
+          "text": "Checking the CRM extension.",
+          "kind": "task",
+          "title": "The orchestrator checks the work",
+          "checks": [
+            "Every client gets a ticket",
+            "A friend's visit counts for the one who invited",
+            "The report shows who brought whom"
+          ]
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "h2a",
+          "text": "Anna, everything works. You can start the «bring a friend» campaign."
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "contract": "h2a",
+          "text": "Starting it today."
         },
         {
           "side": "left",
@@ -447,9 +502,9 @@
         }
       ],
       "contractLabels": {
-        "a2a": "agent ↔ agent",
-        "m2m": "via blockchain",
-        "h2a": "human ↔ agent"
+        "a2a": "agents on your own server, free",
+        "m2m": "external agents: a blockchain deal, from $1",
+        "h2a": "a person writes to an agent"
       },
       "endCta": {
         "label": "Add new features",
