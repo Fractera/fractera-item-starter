@@ -7,6 +7,14 @@ of routes that does not grow with the number of pages.** Grow the element inside
 > Status (node step 314-2, 2026-09-26): the code follows this tree. `scripts/check-routes.mjs` keeps the list of route
 > files closed; the only working page that is more than text (`admin/users`) is a folder of data naming its widget.
 
+
+## 🛑 Multi-agent development is forbidden — all development is sequential (owner, 2026-09-28)
+
+The owner, verbatim: «a categorical ban on multi-agent development … all development is sequential only». One agent, one
+task at a time, step by step: no sub-agents, no parallel agents, no agent teams, no background agents splitting the work.
+Long work is a sequence of steps with its state written down, never a fan-out. This holds for every agent of the project —
+the core, the element template and every element.
+
 ## The frame — Next 16.2, and why it is shaped like this
 
 A Next build compiles every route file (`page.tsx`, `route.ts`) as its own entry point, and the build time grows with the
