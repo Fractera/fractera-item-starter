@@ -15,26 +15,27 @@ in the database without signing in: a visitor who opens it becomes a guest autom
 `guest/layout.tsx` wraps the branch in `_components/guest-gate.client.tsx`. In the browser it asks `/api/me`:
 
 - session exists → the page is shown;
-- no session → the browser goes to `<sign-in service>/api/auth/guest?redirectUrl=<this page>`; the service creates a user with
-  the role `guest`, sets the session and returns here;
+- no session → the browser goes to the site's own `/guest-in?redirectUrl=<this page>`, and `proxy.ts` sends it where a guest
+  is made (node step 331): on the element's own domain — the node's sign-in centre (`/api/auth/sso?…&guest=1`), which
+  creates the guest and returns a one-time code to `/api/auth/callback` (ticket cookie, as for «Sign in», step 328);
+  anywhere else — the sign-in service's `/api/auth/guest` by the same address rule as `/login`. A user with the role
+  `guest` is created, and the visitor comes back here;
 - back here and still no session → the page says so (`gate.failed`) and **does not go again**: one attempt per tab
   (`sessionStorage` mark `guest-login-tried`), otherwise every circle would create one more guest in the database.
 
 The decision is taken in the browser; the server does not read the session, so the pages stay static. The lock's words
 are the field `gate` (`signingIn`, `failed`) in `guest/_data/<lang>.json`.
 
-## Under which conditions it works — measured by reading the code, node step 330
+## Under which conditions it works (node step 331)
 
-The sign-in service address comes from `authBase()` in `lib/runtime-urls.ts`: bare IP / `localhost` → `<host>:3001`,
-a domain → `auth.<apex of the address>`.
-
-| Where the element is opened | Guest sign-in goes to | Works |
+| Where the element is opened | Where the guest is made | Works |
 |---|---|---|
-| a subdomain of the node's zone (`<id>.<zone>`) | `auth.<zone>` — the node's sign-in service | yes: its cookie is on the zone |
-| the element's own domain (`<domain>`, step 324) | `auth.<domain>` — does not exist | **no** — the single sign-in centre of step 328 covers «Sign in», not the guest door |
-| the node machine (`localhost`, bare IP) | `<host>:3001` — not the node's sign-in port | **no** — the step 328 fix covers «Sign in», not the guest door |
+| a subdomain of the node's zone (`<id>.<zone>`) | `auth.<zone>/api/auth/guest` — its cookie is on the zone | yes |
+| the element's own domain (step 324) | the node's centre with `guest=1` → code → ticket cookie of this site | yes |
+| the node machine (`localhost`) | nowhere: the owner at the machine is recognised by the owner rule and never meets the lock | — |
 
-The two «no» rows are a debt, named here until the guest door goes through the same centre as «Sign in».
+The browser does not know the node's sign-in port or centre; the proxy does. Never send the lock to a sign-in address
+built in the browser.
 
 ## The rule of the frame
 

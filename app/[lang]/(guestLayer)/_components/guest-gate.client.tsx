@@ -1,11 +1,10 @@
 "use client"
 
 import { useEffect, useState, type ReactNode } from "react"
-import { authBase } from "@/lib/runtime-urls"
 
 // ЗАМОК ГОСТЕВОЙ ГРУППЫ (шаг 314-2, слово владельца: «пользователи которые зашли на эту страницу автоматически
-// зарегистрировались под гостевым аккаунтом»). Сессия есть — страница показывается. Сессии нет — браузер уходит на дверь
-// службы входа `/api/auth/guest`: она создаёт пользователя с ролью `guest`, ставит сессию и возвращает сюда.
+// зарегистрировались под гостевым аккаунтом»). Сессия есть — страница показывается. Сессии нет — браузер уходит на свой `/guest-in`,
+// прокси ведёт к двери, где делают гостя (331): она создаёт пользователя с ролью `guest`, ставит сессию и возвращает сюда.
 //
 // 🔒 ОДНА ПОПЫТКА НА ВКЛАДКУ. Если после возврата сессии всё ещё нет (кука не легла на этот адрес, служба вернула не
 // сюда), страница говорит об этом и НЕ уходит снова: иначе каждый круг создавал бы в базе ещё одного гостя.
@@ -38,7 +37,9 @@ export function GuestGate({ children, signingIn, failed }: { children: ReactNode
         if (tried()) return setState("failed")
         markTried()
         setState("redirecting")
-        window.location.href = `${authBase()}/api/auth/guest?redirectUrl=${encodeURIComponent(window.location.href)}`
+        // 331: свой `/guest-in` — прокси этого сайта знает, где делают гостя (центр узла на своём домене, служба входа
+        // зоны, порт службы из реестра на машине); браузер этого не знает.
+        window.location.href = `/guest-in?redirectUrl=${encodeURIComponent(window.location.href)}`
       })
       .catch(() => alive && setState("failed"))
     return () => { alive = false }

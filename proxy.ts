@@ -26,7 +26,11 @@ import {
 // /logout (step 169): the account drawer's sign-out is a relative /logout link, routed to the
 // auth service the same way — the auth service clears the session cookie and redirects back
 // here (Job 0 attaches the absolute redirectUrl, since the auth host can't guess this origin).
-const AUTH_FORM_PATHS = new Set(["/login", "/register", "/guest-login", "/logout"]);
+// /guest-in (node step 331): the guest lock of `(guestLayer)` — the proxy sends it where a guest can be made: the node centre on an
+// own domain, the auth service's `/api/auth/guest` everywhere else (the same address rule as /login).
+const AUTH_FORM_PATHS = new Set(["/login", "/register", "/guest-login", "/logout", "/guest-in"]);
+// The path on the sign-in service: every form keeps its name, the guest lock is the service's guest door.
+const authPathOf = (pathname: string): string => (pathname === "/guest-in" ? "/api/auth/guest" : pathname);
 
 // ──────────────────────────────────────────────────────────────────────────
 // This proxy does TWO jobs, branched by path:
@@ -448,8 +452,19 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
       const here = (host ?? "").split(":")[0].toLowerCase();
       const ownDomain = !!center && !!here && here !== zone && !here.endsWith(`.${zone}`)
         && here !== "localhost" && !/^\d{1,3}(\.\d{1,3}){3}$/.test(here);
-      if (ownDomain && (pathname === "/login" || pathname === "/register" || pathname === "/logout")) {
+      if (ownDomain && (pathname === "/login" || pathname === "/register" || pathname === "/logout" || pathname === "/guest-in")) {
         const q = new URLSearchParams(request.nextUrl.search);
+        // 🔒 331: ГОСТЬ НА СВОЁМ ДОМЕНЕ — ТЕМ ЖЕ КОДОМ ЦЕНТРА. Центр с `guest=1` создаёт гостя вместо формы входа; вернуться —
+        // на ту же страницу (только путь этого сайта: `next` принимает лишь локальный путь).
+        if (pathname === "/guest-in") {
+          let next = "/";
+          try {
+            const u = new URL(q.get("redirectUrl") ?? "/", `https://${here}`);
+            if (u.hostname === here) next = `${u.pathname}${u.search}`;
+          } catch { /* не адрес — главная */ }
+          const ret = `https://${here}/api/auth/callback?next=${encodeURIComponent(next)}`;
+          return NextResponse.redirect(`${center}/api/auth/sso?return=${encodeURIComponent(ret)}&guest=1`);
+        }
         const langRaw = q.get("lang") ?? request.cookies.get(LOCALE_COOKIE)?.value ?? DEFAULT_LANGUAGE;
         const lang = SUPPORTED_LANGUAGES.includes(langRaw) ? langRaw : DEFAULT_LANGUAGE;
         if (pathname === "/logout") {
@@ -464,7 +479,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     }
     const domainAuth = connectedDomainAuthBase();
     if (domainAuth && isOwnerAtMachine(request)) {
-      return NextResponse.redirect(`${domainAuth}${pathname}${request.nextUrl.search}`);
+      return NextResponse.redirect(`${domainAuth}${authPathOf(pathname)}${request.nextUrl.search}`);
     }
 
     const assignedAuth = nodeAuthUrl();
@@ -472,7 +487,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
       const authPort = new URL(assignedAuth).port;
       const ownHost = (host ?? "localhost").split(":")[0];
       const qsOwn = request.nextUrl.search;
-      return NextResponse.redirect(`${proto}://${ownHost}:${authPort}${pathname}${qsOwn}`);
+      return NextResponse.redirect(`${proto}://${ownHost}:${authPort}${authPathOf(pathname)}${qsOwn}`);
     }
 
     if (isOwnerAtMachine(request)) {
@@ -502,7 +517,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
       if (!search.has("requireRole")) search.set("requireRole", "user");
     }
     const qs = search.toString();
-    const target = `${authBaseFromHost(host, proto)}${pathname}${qs ? `?${qs}` : ""}`;
+    const target = `${authBaseFromHost(host, proto)}${authPathOf(pathname)}${qs ? `?${qs}` : ""}`;
     return NextResponse.redirect(target);
   }
 
