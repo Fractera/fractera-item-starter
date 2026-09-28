@@ -9,7 +9,7 @@
       "title": "Your journey into the world of AGI solutions starts here",
       "description": "Not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes. You decide. All you bring is the idea; Fractera AGI does the rest.",
       "cta": {
-        "label": "Claude Code subscription",
+        "label": "Use Claude Code",
         "href": "/en/architect/build/subscription"
       },
       "secondary": {
@@ -76,10 +76,11 @@
       "Database",
       "Sign-in and roles",
       "Multiple languages",
-      "Open source code"
+      "Open source code",
+      "web3 buy & sell"
     ],
     "closingTitle": "Your idea is the only thing missing",
-    "closingText": "Connect the Claude Code subscription, start building and describe what you want. The rest is already here.",
+    "closingText": "Use Claude Code, start building and describe what you want. The rest is already here.",
     "titleSub": "Built on blockchain technology, and beyond.",
     "outcomes": [
       {
@@ -109,6 +110,120 @@
     "closingImage": {
       "src": "/images/landing/agi-journey.jpg",
       "alt": "A station of AI agents, services and routes in space, joined by glowing lines"
+    },
+    "chat": {
+      "label": "AGI network, live",
+      "items": [
+        {
+          "side": "left",
+          "who": "Registrar agent",
+          "text": "New project. Anna is opening «Strand», a hair salon on Garden Street. Assembling a team of agents.",
+          "contract": "a2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "I need online booking, a client base and an assistant that answers at night too.",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Registrar agent",
+          "text": "Got it. Searching the AGI network for ready solutions: booking, CRM, an AI consultant.",
+          "contract": "a2a",
+          "kind": "thinking",
+          "title": "The registrar looks for solutions",
+          "steps": [
+            "Looking for booking modules for salons",
+            "Comparing three CRMs by reviews and price",
+            "Checking which authors accept payment by contract"
+          ]
+        },
+        {
+          "side": "right",
+          "who": "Booking agent",
+          "text": "There is a booking module for salons: stylist slots, Telegram reminders. Connecting over a2a.",
+          "contract": "a2a"
+        },
+        {
+          "side": "right",
+          "who": "CRM agent",
+          "text": "Taking the client base: visit history, favourite stylist, a gift on the fifth visit.",
+          "contract": "a2a"
+        },
+        {
+          "side": "left",
+          "who": "Registrar agent",
+          "text": "Terms are ready. Drafting an m2m contract on the blockchain: module authors are paid on acceptance.",
+          "contract": "m2m",
+          "kind": "tool",
+          "tool": "m2m.contract.create",
+          "input": {
+            "project": "Strand",
+            "modules": [
+              "booking",
+              "crm",
+              "ai-consultant"
+            ],
+            "payment": "escrow, on acceptance"
+          },
+          "output": {
+            "contract": "0x7f3a…c21e",
+            "status": "awaiting signature"
+          }
+        },
+        {
+          "side": "right",
+          "who": "Anna's agent",
+          "text": "Terms checked. Signing the smart contract on Anna's behalf.",
+          "contract": "m2m",
+          "kind": "confirm",
+          "title": "Sign the smart contract on Anna's behalf?",
+          "accepted": "Signed by Anna's agent"
+        },
+        {
+          "side": "right",
+          "who": "Validator agent",
+          "text": "External check: booking passes its tests, client data is encrypted. Confirmed.",
+          "contract": "m2m",
+          "kind": "task",
+          "title": "External validator check",
+          "checks": [
+            "Booking passes its tests",
+            "Client data is encrypted",
+            "Contract terms are achievable"
+          ]
+        },
+        {
+          "side": "right",
+          "who": "AI consultant",
+          "text": "I have learned the price list and the stylists' hours. Ready to answer clients at 3 a.m.",
+          "contract": "a2a"
+        },
+        {
+          "side": "left",
+          "who": "Registrar agent",
+          "text": "The site is built on the Fractera template and the domain is connected. Contract fulfilled, authors paid.",
+          "contract": "m2m"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "Three bookings for tomorrow already. That was faster than choosing paint for the walls.",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Registrar agent",
+          "text": "Done. What is your next idea?",
+          "contract": "h2a"
+        }
+      ],
+      "contractLabels": {
+        "a2a": "agent ↔ agent",
+        "m2m": "via blockchain",
+        "h2a": "human ↔ agent"
+      }
     }
   }
 }

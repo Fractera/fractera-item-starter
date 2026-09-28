@@ -74,6 +74,11 @@ const EXEMPT = [
     why: "исходник shadcn: чужой код, автор этих же правил",
   },
   {
+    file: "components/ai-elements/",
+    rule: "*",
+    why: "AI Elements (Vercel, реестр @ai-elements, шаг 333-12): чужой исходник shadcn-формата, ставится `shadcn add`; наши правки в нём — только облегчение (без streamdown и shiki) и цвет текста",
+  },
+  {
     file: "lib/blocks/tone.ts",
     rule: "no-literal-colour",
     why: "карта тонов блока «Блоков» ПЕРЕЧИСЛЯЕТ классы намеренно — именно так класс попадает в сборку Tailwind (урок шага 54)",

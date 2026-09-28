@@ -7,6 +7,8 @@ import "@fontsource/barlow/600.css"
 import { ArrowRight } from "lucide-react"
 import { landingWords } from "./words"
 import { StaticImage } from "@/components/media/static-image.server"
+import { AgentChat } from "./agent-chat.client"
+import "@fontsource-variable/jetbrains-mono"
 import s from "./impeccable.module.css"
 
 // ГЛАВНАЯ ЭЛЕМЕНТА — ЛЕНДИНГ ПО НАВЫКУ impeccable (Paul Bakaus, `.claude/skills/impeccable`), шаги 330-5, 330-8.
@@ -48,7 +50,8 @@ export function LandingImpeccable({ lang }: { lang: string }) {
       </section>
 
       <section className={s.hall}>
-        <div className={s.wrap}>
+        <div className={`${s.wrap} ${s.hallWide}`}>
+          <div className={s.hallMain}>
           <div className={s.board}>
             <div className={s.boardTop}>
               <span className={s.boardLabel}>{b.from}</span>
@@ -93,6 +96,8 @@ export function LandingImpeccable({ lang }: { lang: string }) {
             {hero.secondary && <a href={hero.secondary.href} className={s.alt}>{hero.secondary.label}</a>}
           </div>
           <p className={s.lead}>{hero.description}</p>
+          </div>
+          {x.chat && <AgentChat label={x.chat.label} items={x.chat.items} contractLabels={x.chat.contractLabels} />}
         </div>
       </section>
 

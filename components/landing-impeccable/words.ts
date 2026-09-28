@@ -21,6 +21,15 @@ export type LandingExtra = {
   short: string
   outcomesLabel: string
   outcomes: { name: string; text: string }[]
+  chat?: {
+    label: string
+    contractLabels: Record<"a2a" | "m2m" | "h2a", string>
+    items: {
+      side: "left" | "right"; who: string; text: string; contract: "a2a" | "m2m" | "h2a"
+      kind?: "thinking" | "tool" | "confirm" | "task"; title?: string; steps?: string[]; checks?: string[]
+      tool?: string; input?: unknown; output?: unknown; accepted?: string
+    }[]
+  }
   board: {
     from: string
     fromValue: string
