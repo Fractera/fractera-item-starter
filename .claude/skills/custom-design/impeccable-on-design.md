@@ -48,6 +48,22 @@ presets before finishing. Faces: `--font-heading` for everything set on the boar
 Browser support: relative colour syntax works in current Chrome, Edge, Safari and Firefox; give each role a plain token
 fallback first (`--board: var(--primary); --board: oklch(from …);`) so an old browser still shows a coherent page.
 
+## The reference maquette comes first (owner, 2026-09-28)
+
+The departure-board home page in its original colours — `components/landing-impeccable/` (`index.tsx`,
+`impeccable.module.css`, `DIRECTION.md`) — is **the approved maquette**. Any page redrawn with impeccable for this element:
+
+- **keeps its world and composition**: station sign → departure board (origin, three destinations with flip letters,
+  platform squares, departure time) → yellow ticker with the «?» hint → the two actions → the timetable poster «What it can
+  do» → the ticket «under the hood» → the closing band;
+- **keeps its contrast**: a dark board, a light complementary poster, one bright signal, a pale floor. When colours come from
+  the formula above, the relations are the ones measured on this maquette; with a primary of hue ≈ 272 the page must look
+  like the maquette itself. Check contrast ≥ 4.5:1 for text on every pair;
+- **aligns table-like rows on one grid**: when a section has a left column of titles and a right column of text (the
+  timetable), the left column has ONE fixed width for all rows — the width of the longest title — so the right column starts
+  at the same x in every row. A column sized per row makes the whole section «dance». Put the grid on the list (not on each
+  row) or use `subgrid`, and let the title column be `max-content` of the widest title.
+
 ## How the agent works with this
 
 1. The person asks for an own design → skill `custom-design` asks «taste or impeccable?» → load impeccable.
