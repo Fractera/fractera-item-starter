@@ -14,7 +14,6 @@ export type LandingExtra = {
   claimHint: string
   claimHintLabel: string
   cards: string[]
-  stat: { value: string; label: string }
   chips: string[]
   closingTitle: string
   closingText: string

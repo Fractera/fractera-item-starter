@@ -94,10 +94,7 @@ export function LandingImpeccable({ lang }: { lang: string }) {
             {can.texts.map((t, i) => (
               <li key={i} className={s.tRow}>
                 <span className={s.tName}>{x.cards[i]}</span>
-                <span className={s.tText}>
-                  {t}
-                  {i === 1 && <span className={s.tStat}><strong>{x.stat.value}</strong> {x.stat.label}</span>}
-                </span>
+                <span className={s.tText}>{t}</span>
               </li>
             ))}
           </ol>

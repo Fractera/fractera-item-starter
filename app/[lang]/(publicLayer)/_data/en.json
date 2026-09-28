@@ -26,23 +26,28 @@
     },
     {
       "kind": "p",
-      "text": "It builds the application with you: the Claude Code agent of this element writes the code from your description.",
-      "bid": "e9c1g"
+      "text": "The AGI and web3 core installs on your computer in seconds, and your site is live on the internet at a temporary address right away. Your own domain takes a couple of minutes more. Need a server? Rent a VPS and move in ten minutes.",
+      "bid": "r9fm4"
     },
     {
       "kind": "p",
-      "text": "It takes what is ready from the built-in Store: more than 2,000 reliable, continuously updated skills, plugins and MCP servers.",
-      "bid": "elv0d"
+      "text": "Tell the agent your idea. It asks a few sharp questions and builds the project on the Fractera starter for Next 16, an architecture made for heavy load from day one, with nothing to rebuild later.",
+      "bid": "eyhxg"
     },
     {
       "kind": "p",
-      "text": "It finds ready solutions in the AGI-web3 infrastructure, so you can buy them and plug them in.",
-      "bid": "rb6u8"
+      "text": "Your knowledge graph already holds thousands of proven skills, plugins and MCP servers, chosen on the advice of leading AI developers. The agent finds the right one the moment it is needed.",
+      "bid": "g2vkq"
     },
     {
       "kind": "p",
-      "text": "You describe your idea. The agent works through the possible ways, agrees them with you, and you get a reliable result fast.",
-      "bid": "zwcnk"
+      "text": "Take any ready solution and make it stronger with your own experience and craft. That makes a digital product with real value. We find buyers for it, and a smart contract guarantees every deal.",
+      "bid": "r4of5"
+    },
+    {
+      "kind": "p",
+      "text": "You come with an idea and tell it to your agent. It builds the product from skills and other people's expertise. Use it yourself or sell it: buyers find you through the AGI network, and you move on to the next idea.",
+      "bid": "xh0ym"
     },
     {
       "kind": "section-head",
@@ -61,10 +66,11 @@
     "claimHint": "You work inside an infrastructure that is already tuned for speed and surrounded by everything a product needs, before you need it: from sign-in and multiple languages to plugging in ready solutions of other developers.",
     "claimHintLabel": "Why 99% faster?",
     "cards": [
-      "Builds with you",
-      "A store of ready parts",
-      "Ready solutions in AGI-web3",
-      "You bring the idea"
+      "Servers and domains",
+      "The magic of Claude Code",
+      "Community expertise",
+      "Solution exchange on web3",
+      "The result"
     ],
     "chips": [
       "Database",
@@ -99,10 +105,6 @@
       "connections": "Connections",
       "included": "Included in every ticket",
       "closing": "Your train leaves the moment you describe the idea"
-    },
-    "stat": {
-      "value": "2,000+",
-      "label": "skills, plugins and MCP servers"
     }
   }
 }

@@ -129,11 +129,11 @@
 .posterTitle { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4.4vw, 3.4rem); line-height: 1; }
 .posterSub { margin-top: 0.4rem; font-family: var(--display); font-weight: 600; font-size: 1.3rem; }
 .timetable { list-style: none; margin: 2rem 0 0; padding: 0; border-top: 3px solid var(--poster-ink); }
-.tRow { display: grid; grid-template-columns: minmax(10rem, 17rem) 1fr; gap: 0.5rem 2rem; padding: 1.2rem 0; border-bottom: 1px solid color-mix(in oklch, var(--poster-ink) 35%, transparent); }
-.tName { font-family: var(--display); font-weight: 700; font-size: 1.45rem; line-height: 1.15; }
-.tText { font-size: 1.08rem; line-height: 1.55; max-width: 60ch; }
-.tStat { display: block; margin-top: 0.4rem; font-family: var(--display); font-weight: 600; font-size: 1.25rem; }
-.tStat strong { font-weight: 700; font-size: 1.9rem; font-variant-numeric: tabular-nums; }
+/* 330-9, слово владельца: слева заголовок в одну строку одним шрифтом, справа ровный текст без выделений, около четырёх строк.
+   Колонка заголовков — по самому длинному из них, поэтому ни один не переносится. */
+.tRow { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.5rem 3rem; padding: 1.2rem 0; border-bottom: 1px solid color-mix(in oklch, var(--poster-ink) 35%, transparent); }
+.tName { font-family: var(--display); font-weight: 700; font-size: 1.45rem; line-height: 1.2; white-space: nowrap; }
+.tText { font-family: var(--text); font-weight: 400; font-size: 1.08rem; line-height: 1.6; max-width: 58ch; }
 
 /* Билет */
 .ticket { display: grid; grid-template-columns: 1fr; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: var(--corner); overflow: hidden; }
@@ -160,6 +160,7 @@
   .boardHead, .row { grid-template-columns: 1fr 3rem; }
   .colDeparts, .departs { display: none; }
   .tRow { grid-template-columns: 1fr; }
+  .tName { white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {
