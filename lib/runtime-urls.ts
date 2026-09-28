@@ -84,6 +84,24 @@ export function designBase(): string {
 // регистрацию, когда пользователей ещё нет (первый станет архитектором), и сама
 // подскажет «впервые здесь?» устройству, с которого ещё не входили.
 export function signInRedirectUrl(callbackUrl: string, requireRole: "user" | "architect"): string {
+  // 🔒 328-3: СОБСТВЕННЫЙ ДОМЕН ЭЛЕМЕНТА — ВХОД ЧЕРЕЗ ЦЕНТР УЗЛА. `auth.<этот домен>` не существует, а кука центра сюда
+  // не дойдёт; поэтому центр (`NEXT_PUBLIC_AUTH_URL` — адрес службы входа узла) выдаёт одноразовый код, и он возвращается
+  // в дверь этого сайта `/api/auth/callback` вместе с путём страницы. Своя зона узла и машина — прежний путь ниже.
+  const center = process.env.NEXT_PUBLIC_AUTH_URL?.trim();
+  if (typeof window !== "undefined" && center) {
+    const centerZone = new URL(center).hostname.replace(/^auth\./, "");
+    const here = window.location.hostname;
+    if (!isIpHost(here) && here !== centerZone && !here.endsWith(`.${centerZone}`)) {
+      let next = "/";
+      try {
+        const u = new URL(callbackUrl, window.location.origin);
+        u.searchParams.set("signed-in", "1");
+        next = `${u.pathname}${u.search}`;
+      } catch { /* не адрес — главная */ }
+      const ret = `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(next)}`;
+      return `${center}/api/auth/sso?return=${encodeURIComponent(ret)}&requireRole=${requireRole}`;
+    }
+  }
   const url = new URL(`${authBase()}/login`);
   // Метка `signed-in` — та же, что ставит прокси (260-3): вернувшись, человек увидит
   // плашку «вы вошли» и на этом пути тоже.

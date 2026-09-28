@@ -171,3 +171,8 @@ folders on the first new page. A machine map for outside agents, if ever needed,
   (the owner: core → the element → Deployments). Until then the site keeps its current languages — say so.
 - **The node's core is the one outside origin this element trusts** (`/api/core-origin`): the Preview highlight works on
   any main address. Do not widen `lib/sibling-origin.ts` or the highlight island beyond it.
+- **Sign-in on the element's own domain goes through the node's sign-in centre** (node step 328). The node's sign-in
+  cookie does not live on another domain, so «Sign in» there leads to `<node auth>/api/auth/sso`, the centre sends a
+  one-time code back to `/api/auth/callback`, and the element keeps a ticket cookie (`fractera-ticket`) that
+  `lib/auth/ticket.ts` checks with the centre on every request. Signing out in the centre ends it on every domain.
+  Never set or read the node's own session cookie here, and never widen `next` of the callback beyond a local path.
