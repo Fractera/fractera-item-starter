@@ -1,9 +1,3 @@
-import "@fontsource/barlow-condensed/500.css"
-import "@fontsource/barlow-condensed/600.css"
-import "@fontsource/barlow-condensed/700.css"
-import "@fontsource/barlow/400.css"
-import "@fontsource/barlow/500.css"
-import "@fontsource/barlow/600.css"
 import { ArrowRight } from "lucide-react"
 import { landingWords } from "./words"
 import s from "./impeccable.module.css"
@@ -11,7 +5,7 @@ import s from "./impeccable.module.css"
 // ГЛАВНАЯ ЭЛЕМЕНТА — ЛЕНДИНГ ПО НАВЫКУ impeccable (Paul Bakaus, `.claude/skills/impeccable`), шаги 330-5, 330-8.
 // Владелец выбрал его из трёх вариантов («design-2-impeccable to root, another to trash»); варианты taste и первый удалены.
 // Мир — швейцарское табло отправлений: идея — вокзал, элемент — поезд, который от него отходит. Договор направления —
-// `DIRECTION.md` рядом (только для разработки). Серверный компонент: единственное движение — перелистывание букв табло
+// `DIRECTION.md` рядом (только для разработки). Цвета, шрифты и углы — токены «Дизайна» (333-2, `impeccable.module.css`). Серверный компонент: единственное движение — перелистывание букв табло
 // на CSS, один раз при загрузке, выключено при «уменьшить движение». Слова — данные главной (`./words.ts`).
 
 function Flap({ text, row }: { text: string; row: number }) {
