@@ -98,8 +98,16 @@ export function rootPage(opts: { segments: string[]; subPath: string; titleInBod
   }
   async function Page({ params }: { params: Promise<{ lang: string }> }) {
     const { lang } = await params
-    const P = build().Page
     const tree = branchRoot(...opts.segments)
+    // 330-4: страница-виджет (лендинг) — виджет рисует весь экран сам.
+    if (tree?.meta.widget && tree.meta.widgetOnly) {
+      return (
+        <PageAddress page={`/${lang}${opts.subPath}`} file={dataFile(tree, [...opts.segments, '_data'], lang)}>
+          <main className="flex-1">{pageWidget(tree.meta.widget, lang)}</main>
+        </PageAddress>
+      )
+    }
+    const P = build().Page
     return (
       <PageAddress page={`/${lang}${opts.subPath}`} file={tree ? dataFile(tree, [...opts.segments, '_data'], lang) : ''}>
         <P params={Promise.resolve({ lang })} />

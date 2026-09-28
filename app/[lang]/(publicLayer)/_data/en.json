@@ -55,5 +55,28 @@
       "text": "A built-in database, sign-in with user roles and dozens of other solutions. All of their code is open right inside your application: fix it, improve it or remove it — it is up to you.",
       "bid": "tr7cu"
     }
-  ]
+  ],
+  "landing": {
+    "claim": "From idea to enterprise product — 99% faster",
+    "claimHint": "You work inside an infrastructure that is already tuned for speed and surrounded by everything a product needs — before you need it: from sign-in and multiple languages to plugging in ready solutions of other developers.",
+    "claimHintLabel": "Why 99% faster?",
+    "cards": [
+      "Builds with you",
+      "A store of ready parts",
+      "Ready solutions in AGI-web3",
+      "You bring the idea"
+    ],
+    "stat": {
+      "value": "2,000+",
+      "label": "skills, plugins and MCP servers"
+    },
+    "chips": [
+      "Database",
+      "Sign-in and roles",
+      "Multiple languages",
+      "Open source code"
+    ],
+    "closingTitle": "Your idea is the only thing missing",
+    "closingText": "Sign in, open the terminal and describe what you want. The rest is already here."
+  }
 }
