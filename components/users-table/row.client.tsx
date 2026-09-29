@@ -67,13 +67,13 @@ export function UsersRow(
   return (
     <tr className={`border-b border-border last:border-0 align-top ${striped ? "bg-muted/20" : ""}`}>
       <td className="px-4 py-2.5">
-        <div className="font-medium text-foreground">{row.email}</div>
-        {row.nickname && <div className="text-muted-foreground">{row.nickname}</div>}
+        <div data-block="vi0tx" className="font-medium text-foreground">{row.email}</div>
+        {row.nickname && <div data-block="i9fjt" className="text-muted-foreground">{row.nickname}</div>}
       </td>
       <td className="px-4 py-2.5">
         {editing ? (
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-wrap gap-x-3 gap-y-1">
+          <div data-block="ghnso" className="flex flex-col gap-2">
+            <div data-block="wq1jc" className="flex flex-wrap gap-x-3 gap-y-1">
               {ALL_ROLES.map(role => (
                 <label key={role} className="flex items-center gap-1.5">
                   <input
@@ -86,8 +86,8 @@ export function UsersRow(
                 </label>
               ))}
             </div>
-            {next.length === 0 && <p className="text-destructive">{ui.rolesRequired}</p>}
-            <div className="flex gap-2">
+            {next.length === 0 && <p data-block="xa93l" className="text-destructive">{ui.rolesRequired}</p>}
+            <div data-block="c4th5" className="flex gap-2">
               <Button size="sm" onClick={save} disabled={saving || next.length === 0}>{ui.save}</Button>
               <Button size="sm" variant="ghost" onClick={() => { setNext(current); setEditing(false) }}>
                 {ui.cancel}
@@ -95,7 +95,7 @@ export function UsersRow(
             </div>
           </div>
         ) : (
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div data-block="ih2kv" className="flex flex-wrap items-center gap-1.5">
             {current.map(r => <Badge key={r} variant="secondary">{r}</Badge>)}
             <Button size="sm" variant="ghost" onClick={() => setEditing(true)}>{ui.edit}</Button>
           </div>

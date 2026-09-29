@@ -56,14 +56,14 @@ export function UsersTable({ lang, ui }: { lang: string; ui: UsersTableUi }) {
               заголовки. Форма загрузки, не совпадающая с формой ответа, даёт
               скачок разметки в момент прихода данных. */}
           <UsersTableSkeleton labels={cols} />
-          {!revealed && <p className="mt-3 text-xs text-muted-foreground">{ui.revealHint}</p>}
+          {!revealed && <p data-block="ixsa0" className="mt-3 text-xs text-muted-foreground">{ui.revealHint}</p>}
         </>
       ) : rows.length === 0 ? (
         <EmptyState title={ui.empty} />
       ) : (
         <>
-          <div className="overflow-hidden rounded-xl border border-border">
-            <table className="w-full text-xs">
+          <div data-block="b6pcb" className="overflow-hidden rounded-xl border border-border">
+            <table data-block="ersn1" className="w-full text-xs">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
                   <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">{ui.colAccount}</th>

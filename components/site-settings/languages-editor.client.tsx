@@ -204,18 +204,18 @@ export function LanguagesEditor({
   }
 
   return (
-    <div data-languages-editor className="flex flex-col gap-8">
+    <div data-block="jocsc" data-languages-editor className="flex flex-col gap-8">
       {/* Цена — до списка. Она и есть решение, которое здесь принимают. */}
       <AdviceNote probe="lang-cost" title={t.costTitle} text={t.cost} />
 
       {/* Строка про пересборку — не украшение: без неё «Сохранено» лжёт. */}
-      <div data-lang-rebuild={pending ? "pending" : "clean"} className="flex flex-col gap-1">
+      <div data-block="nq70d" data-lang-rebuild={pending ? "pending" : "clean"} className="flex flex-col gap-1">
         <P className="text-[length:var(--fs-body)] font-medium">{t.rebuildTitle}</P>
         <Small className="max-w-2xl">{t.rebuild}</Small>
       </div>
 
-      <section className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
+      <section data-block="a5c0n" className="flex flex-col gap-4">
+        <div data-block="z0476" className="flex flex-col gap-1">
           <H3 variant="ui">{t.title}</H3>
           <Small className="max-w-2xl">{t.hint}</Small>
           <Small data-lang-count className="font-medium text-foreground">
@@ -236,7 +236,7 @@ export function LanguagesEditor({
             Поле с жёстким направлением показало бы такой запрос задом наперёд:
             курсор слева, знаки препинания не на своей стороне. `auto` отдаёт
             направление первой значащей букве набранного. */}
-        <div className="relative max-w-xl">
+        <div data-block="lsl07" className="relative max-w-xl">
           <Search
             className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
             aria-hidden
@@ -269,17 +269,17 @@ export function LanguagesEditor({
         <Separator />
 
         {shown.length === 0 ? (
-          <div data-lang-empty className="flex flex-col gap-1 rounded-lg border border-border px-4 py-6">
+          <div data-block="tcv66" data-lang-empty className="flex flex-col gap-1 rounded-lg border border-border px-4 py-6">
             <P className="text-[length:var(--fs-body)] font-medium">{t.nothingFound}</P>
             <Small>{t.nothingFoundHint}</Small>
           </div>
         ) : (
-          <ul className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+          <ul data-block="ti6z4" className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
             {shown.map(row => {
               const on = selected.includes(row.code)
               const isDefault = row.code === def
               return (
-                <li
+                <li data-block="c7wt0"
                   key={row.code}
                   data-lang={row.code}
                   data-on={on ? "true" : "false"}
@@ -348,7 +348,7 @@ export function LanguagesEditor({
         )}
       </section>
 
-      <div className="flex items-center gap-3">
+      <div data-block="hvaek" className="flex items-center gap-3">
         <Button type="button" onClick={save} disabled={busy || !changed} data-save className="h-10 px-5">
           {busy && <Loader2 className="size-4 animate-spin" aria-hidden />}
           {busy ? ui.saving : ui.save}

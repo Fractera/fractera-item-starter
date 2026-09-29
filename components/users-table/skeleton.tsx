@@ -28,8 +28,8 @@ export function UsersTableSkeleton(
   },
 ) {
   return (
-    <div className="overflow-hidden rounded-xl border border-border">
-      <table className="w-full text-xs">
+    <div data-block="gmegg" className="overflow-hidden rounded-xl border border-border">
+      <table data-block="v7enf" className="w-full text-xs">
         <thead>
           <tr className="border-b border-border bg-muted/40">
             <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">{labels.colAccount}</th>

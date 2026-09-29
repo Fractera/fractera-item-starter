@@ -37,55 +37,55 @@ export function LandingAgent({ lang }: { lang: string }) {
   const openSource = (x as LandingExtra & { openSource?: string }).openSource
 
   return (
-    <div className={s.page}>
+    <div data-block="cjguc" className={s.page}>
       {/* Первый экран (слово владельца, 333-16): на широком — две колонки во всю высоту первого экрана; слева табличка
           «Открытый код» в верхнем левом углу, название и подзаголовок; справа чат агентов прямо на фоне таблички. */}
-      <section className={s.sign}>
-        <div className={`${s.wrap} ${s.signGrid}`}>
-          <div className={s.signMain}>
-            <div className={s.signRow}>
-              <h1 className={s.signTitle}>{hero.title}</h1>
+      <section data-block="adzil" className={s.sign}>
+        <div data-block="d0prw" className={`${s.wrap} ${s.signGrid}`}>
+          <div data-block="b4u43" className={s.signMain}>
+            <div data-block="r9ng5" className={s.signRow}>
+              <h1 data-block="akqbz" className={s.signTitle}>{hero.title}</h1>
               {openSource && (
                 // Эмалевая табличка на стене вокзала: белая эмаль, кант цвета табло, квадрат-«платформа» со знаком кода.
-                <p className={s.plate}>
+                <p data-block="eehho" className={s.plate}>
                   <span className={s.plateMark} aria-hidden="true"><Code className="size-4" strokeWidth={2.5} /></span>
                   {openSource}
                 </p>
               )}
             </div>
-            <p className={s.signSub}>{x.titleSub}</p>
+            <p data-block="fh05d" className={s.signSub}>{x.titleSub}</p>
           </div>
           {x.chat && (
-            <div className={s.signChat}>
+            <div data-block="hs2dv" className={s.signChat}>
               <AgentChat label={x.chat.label} items={x.chat.items} contractLabels={x.chat.contractLabels} endCta={x.chat.endCta} classes={chatClasses} />
             </div>
           )}
         </div>
       </section>
 
-      <section className={s.hall}>
-        <div className={s.wrap}>
-            <div className={s.board} data-board data-shown="0">
-              <div className={s.boardTop}>
+      <section data-block="hbbfq" className={s.hall}>
+        <div data-block="rkprp" className={s.wrap}>
+            <div data-block="qvj57" className={s.board} data-board data-shown="0">
+              <div data-block="n0hnr" className={s.boardTop}>
                 <span className={s.boardLabel}>{b.from}</span>
                 <span className={s.origin}>
                   <span className={s.srOnly}>{b.fromValue}</span>
                   <SplitFlap words={[b.fromValue]} className={s.flapWord} />
                 </span>
               </div>
-              <div className={s.display} aria-hidden="true">
+              <div data-block="jm9w0" className={s.display} aria-hidden="true">
                 <span className={s.displayLabel}>{b.destination}</span>
                 <SplitFlap words={outcomes.map((o) => o.name)} className={s.displayField} announce />
               </div>
-              <div className={s.boardHead} aria-hidden="true">
+              <div data-block="nmzw1" className={s.boardHead} aria-hidden="true">
                 <span>{b.destination}</span>
                 <span className={s.colPlatform}>{b.platform}</span>
                 <span className={s.colDeparts}>{b.departs}</span>
               </div>
-              <ol className={s.rows}>
+              <ol data-block="d6ywe" className={s.rows}>
                 {outcomes.map((o, i) => (
-                  <li key={o.name} className={s.row}>
-                    <div className={s.dest}>
+                  <li data-block="mpdyz" key={o.name} className={s.row}>
+                    <div data-block="n5go1" className={s.dest}>
                       <span className={s.srOnly}>{o.name}</span>
                       <SplitFlap words={[o.name]} className={s.flapWord} />
                       <span className={s.via}>{o.text}</span>
@@ -98,7 +98,7 @@ export function LandingAgent({ lang }: { lang: string }) {
                   </li>
                 ))}
               </ol>
-              <div className={s.ticker}>
+              <div data-block="mdkza" className={s.ticker}>
                 <span>{x.claim}</span>
                 <span className={s.hintWrap}>
                   <button type="button" className={s.hintBtn} aria-label={x.claimHintLabel} aria-describedby="agent-claim-hint">?</button>
@@ -107,7 +107,7 @@ export function LandingAgent({ lang }: { lang: string }) {
               </div>
             </div>
 
-          <div className={s.actions}>
+          <div data-block="b5dcb" className={s.actions}>
             {hero.cta && (
               <a href={hero.cta.href} className={s.go}>
                 {hero.cta.label}
@@ -116,17 +116,17 @@ export function LandingAgent({ lang }: { lang: string }) {
             )}
             {hero.secondary && <a href={hero.secondary.href} className={s.alt}>{hero.secondary.label}</a>}
           </div>
-          <p className={s.lead}>{hero.description}</p>
+          <p data-block="selaf" className={s.lead}>{hero.description}</p>
         </div>
       </section>
 
-      <section className={s.poster}>
-        <div className={s.wrap}>
-          <h2 className={s.posterTitle}>{can.title}</h2>
-          <p className={s.posterSub}>{b.connections}</p>
-          <ol className={s.timetable}>
+      <section data-block="n4m2k" className={s.poster}>
+        <div data-block="b2qaq" className={s.wrap}>
+          <h2 data-block="va2hr" className={s.posterTitle}>{can.title}</h2>
+          <p data-block="zil1z" className={s.posterSub}>{b.connections}</p>
+          <ol data-block="rd7fv" className={s.timetable}>
             {can.texts.map((t, i) => (
-              <li key={i} className={s.tRow}>
+              <li data-block="xuoap" key={i} className={s.tRow}>
                 <span className={s.tName}>{x.cards[i]}</span>
                 <span className={s.tText}>{t}</span>
               </li>
@@ -135,34 +135,34 @@ export function LandingAgent({ lang }: { lang: string }) {
         </div>
       </section>
 
-      <section className={s.hall}>
-        <div className={s.wrap}>
-          <div className={s.ticket}>
-            <div className={s.ticketMain}>
-              <h2 className={s.ticketTitle}>{hood.title}</h2>
-              {hood.texts.map((t, i) => <p key={i} className={s.ticketText}>{t}</p>)}
+      <section data-block="hedd3" className={s.hall}>
+        <div data-block="c1jfw" className={s.wrap}>
+          <div data-block="xud3c" className={s.ticket}>
+            <div data-block="jc5dc" className={s.ticketMain}>
+              <h2 data-block="lm51s" className={s.ticketTitle}>{hood.title}</h2>
+              {hood.texts.map((t, i) => <p data-block="zw1b0" key={i} className={s.ticketText}>{t}</p>)}
             </div>
-            <div className={s.ticketStub}>
-              <p className={s.stubHead}>{b.included}</p>
-              <ul className={s.stubList}>
-                {x.chips.map((c) => <li key={c}>{c}</li>)}
+            <div data-block="o8d2u" className={s.ticketStub}>
+              <p data-block="znlj8" className={s.stubHead}>{b.included}</p>
+              <ul data-block="va0ro" className={s.stubList}>
+                {x.chips.map((c) => <li data-block="tzbzi" key={c}>{c}</li>)}
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      <section className={s.depart}>
+      <section data-block="xsind" className={s.depart}>
         {x.closingImage && (
           // Как на главной (333-11): на широком экране картинка справа во всю высоту экрана, ширина — по её пропорции;
           // правая половина видна целиком, левая уходит в цвет табло. Размытое превью (base64) и webp/avif — StaticImage.
-          <div className={s.departArt}>
+          <div data-block="do4s8" className={s.departArt}>
             <StaticImage src={x.closingImage.src} alt={x.closingImage.alt} fill sizes="(min-width: 1024px) 180vh, 1px" className={s.departImg} />
           </div>
         )}
-        <div className={s.wrap}>
-          <h2 className={s.departTitle}>{b.closing}</h2>
-          <p className={s.departText}>{x.closingText}</p>
+        <div data-block="j6lny" className={s.wrap}>
+          <h2 data-block="cxgfo" className={s.departTitle}>{b.closing}</h2>
+          <p data-block="tanth" className={s.departText}>{x.closingText}</p>
           {hero.cta && (
             <a href={hero.cta.href} className={s.go}>
               {hero.cta.label}

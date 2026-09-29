@@ -61,31 +61,31 @@ export function GuestAccountActions({ lang, words }: { lang: string; words: Gues
   if (who === "unknown") return null
   if (who === "member") {
     return (
-      <div className="mt-8 flex flex-col gap-4" data-guest-account="member">
-        <p className="text-sm text-muted-foreground">{words.notGuest}</p>
-        <div><a href={back} className={buttonVariants({ variant: "default" })}>{words.back}</a></div>
+      <div data-block="cbb8z" className="mt-8 flex flex-col gap-4" data-guest-account="member">
+        <p data-block="d00f0" className="text-sm text-muted-foreground">{words.notGuest}</p>
+        <div data-block="gcmr4"><a href={back} className={buttonVariants({ variant: "default" })}>{words.back}</a></div>
       </div>
     )
   }
   return (
-    <div className="mt-8 flex flex-col gap-4" data-guest-account={state}>
+    <div data-block="txpel" className="mt-8 flex flex-col gap-4" data-guest-account={state}>
       {state === "confirm" ? (
-        <div className="flex flex-col gap-3 rounded-lg border border-destructive/40 p-4">
-          <p className="text-sm">{words.confirm}</p>
-          <div className="flex flex-wrap gap-3">
+        <div data-block="sx68m" className="flex flex-col gap-3 rounded-lg border border-destructive/40 p-4">
+          <p data-block="mgygi" className="text-sm">{words.confirm}</p>
+          <div data-block="kc4va" className="flex flex-wrap gap-3">
             <Button variant="destructive" onClick={leave}>{words.confirmYes}</Button>
             <Button variant="outline" onClick={() => setState("idle")}>{words.cancel}</Button>
           </div>
         </div>
       ) : (
-        <div className="flex flex-wrap gap-3">
+        <div data-block="i8xez" className="flex flex-wrap gap-3">
           <a href={back} className={buttonVariants({ variant: "default" })}>{words.back}</a>
           <Button variant="outline" disabled={state === "leaving"} onClick={() => setState("confirm")}>
             {state === "leaving" ? words.leaving : words.leave}
           </Button>
         </div>
       )}
-      {state === "failed" && <p className="text-sm text-destructive" role="alert">{words.failed}</p>}
+      {state === "failed" && <p data-block="qoy28" className="text-sm text-destructive" role="alert">{words.failed}</p>}
     </div>
   )
 }

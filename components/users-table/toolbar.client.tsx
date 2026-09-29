@@ -32,7 +32,7 @@ export function UsersToolbar(
 ) {
   return (
     <>
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+      <div data-block="rhpwj" className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <H4 variant="ui">{ui.tableTitle}</H4>
         {!revealed && (
           <Button size="sm" onClick={onReveal} disabled={loading}>
@@ -42,7 +42,7 @@ export function UsersToolbar(
         )}
       </div>
 
-      <div className="mb-3 flex gap-2">
+      <div data-block="uliyu" className="mb-3 flex gap-2">
         <Input
           value={query}
           onChange={e => onQuery(e.target.value)}

@@ -63,13 +63,13 @@ export function AdviceNote({
   const c = TONE[tone]
   const Icon = tone === "warning" ? Info : tone === "recommended" ? ThumbsUp : AlertTriangle
   return (
-    <div
+    <div data-block="i1kjp"
       data-advice={probe}
       data-tone={tone}
       className={"flex items-start gap-2 rounded-lg border p-4 " + c.box}
     >
       <Icon className={"mt-0.5 size-4 shrink-0 " + c.icon} aria-hidden />
-      <div className="flex flex-col gap-1">
+      <div data-block="lc3bb" className="flex flex-col gap-1">
         <P className={"text-[length:var(--fs-body)] font-medium " + c.title}>{title}</P>
         <Small className={c.text}>{text}</Small>
       </div>

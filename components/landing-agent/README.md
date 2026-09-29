@@ -40,6 +40,11 @@ compare with the home page. Reference: `components/landing-impeccable/` in its o
 - **Timetable rows are one grid:** `.timetable` owns the two columns (`max-content` of the longest title, then the text),
   each row is a `subgrid` of it, so the text column starts at the same x in every row.
 
+## Highlight addresses
+
+Every container here carries `data-block` stamped by `npm run widgets:ids` (node step 335). After any edit of this widget run
+it again; `prebuild` fails on a container without an address.
+
 ## Colours: relations to `--primary` (impeccable-on-design.md, measured on the maquette)
 
 | Role | Maquette | Relation | Fallback |

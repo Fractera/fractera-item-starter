@@ -85,7 +85,7 @@ export function SocialsField({
   }
 
   return (
-    <div data-socials-field className="flex flex-col gap-4">
+    <div data-block="mh1st" data-socials-field className="flex flex-col gap-4">
       {links.length === 0 && <Small>{ui.socialsEmpty}</Small>}
 
       {links.map((link, index) => {
@@ -94,9 +94,9 @@ export function SocialsField({
         const uploaded = isUploadedIcon(link.icon)
         const Icon = socialIcon(uploaded ? undefined : link.icon)
         return (
-          <div key={link.id || index} data-social-row className="rounded-md border border-border p-3">
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-[auto_1fr_1fr_1fr]">
-              <div className="flex flex-col gap-1">
+          <div data-block="xoi9j" key={link.id || index} data-social-row className="rounded-md border border-border p-3">
+            <div data-block="h2rod" className="grid grid-cols-1 gap-3 md:grid-cols-[auto_1fr_1fr_1fr]">
+              <div data-block="bv1tk" className="flex flex-col gap-1">
                 <Label className="text-[length:var(--fs-small)]">{ui.socialIcon}</Label>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -144,7 +144,7 @@ export function SocialsField({
                 </DropdownMenu>
               </div>
 
-              <div className="flex flex-col gap-1">
+              <div data-block="fnip1" className="flex flex-col gap-1">
                 <Label className="text-[length:var(--fs-small)]">{ui.socialName}</Label>
                 <Input
                   value={link.name ?? ""}
@@ -153,7 +153,7 @@ export function SocialsField({
                   className="text-[length:var(--fs-body)] md:text-[length:var(--fs-body)]"
                 />
               </div>
-              <div className="flex flex-col gap-1">
+              <div data-block="p8db8" className="flex flex-col gap-1">
                 <Label className="text-[length:var(--fs-small)]">{ui.socialValue}</Label>
                 <Input
                   value={link.value ?? ""}
@@ -163,7 +163,7 @@ export function SocialsField({
                   className="text-[length:var(--fs-body)] md:text-[length:var(--fs-body)]"
                 />
               </div>
-              <div className="flex flex-col gap-1">
+              <div data-block="cghxm" className="flex flex-col gap-1">
                 <Label className="text-[length:var(--fs-small)]">{ui.socialTemplate}</Label>
                 <Input
                   value={link.urlTemplate ?? ""}
@@ -175,7 +175,7 @@ export function SocialsField({
               </div>
             </div>
 
-            <div className="mt-2 flex items-center justify-between gap-3">
+            <div data-block="y6h04" className="mt-2 flex items-center justify-between gap-3">
               {/* Итоговый адрес показывается сразу: правило, посчитанное на глазах,
                   избавляет от «сохранил и пошёл проверять в подвал». */}
               <Small data-social-href className="truncate">
@@ -200,7 +200,7 @@ export function SocialsField({
           без всякого искусственного интеллекта». Прежде (2026-08-29) — ДВЕ КНОПКИ РЯДОМ, А НЕ ОДНА С РЕЖИМАМИ.
           Ручное добавление обязано остаться первым и работать без ключа модели:
           помощник необязателен, а сети заводят всегда. */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div data-block="vamqv" className="flex flex-wrap items-center gap-2">
         <Button
           type="button"
           variant="outline"

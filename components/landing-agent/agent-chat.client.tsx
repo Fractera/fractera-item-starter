@@ -153,23 +153,23 @@ export function AgentChat({ label, items, contractLabels, endCta, classes }: {
   const done = count >= items.length
 
   return (
-    <div ref={box} className={s.chat} aria-label={label}>
-      <p className={s.chatHead}>
+    <div data-block="fh1tp" ref={box} className={s.chat} aria-label={label}>
+      <p data-block="j8uli" className={s.chatHead}>
         <span className={s.chatDot} aria-hidden="true" />
         {label}
       </p>
       <Conversation className={s.chatLog}>
         <ConversationContent className={s.chatContent}>
           {list.map((m, i) => m.side === "system" ? (
-            <div key={i} className={s.system}>
-              <p className={s.systemStamp}>
+            <div data-block="t647q" key={i} className={s.system}>
+              <p data-block="j2lc9" className={s.systemStamp}>
                 <span className={s.systemBadge} title={contractLabels[m.contract]}>{`${m.who} · ${m.contract}`}</span>
                 <span>{m.text}</span>
               </p>
             </div>
           ) : (
             <Message key={i} from={m.side === "right" ? "user" : "assistant"} className={s.chatMsg}>
-              <div className={m.side === "right" ? s.msgMetaRight : s.msgMeta}>
+              <div data-block="tvc5g" className={m.side === "right" ? s.msgMetaRight : s.msgMeta}>
                 {isHuman(m) && (
                   <Avatar className={s.msgAvatar}>
                     <AvatarFallback><UserRound className="size-3.5" aria-hidden="true" /></AvatarFallback>
@@ -183,7 +183,7 @@ export function AgentChat({ label, items, contractLabels, endCta, classes }: {
             </Message>
           ))}
           {typingItem && (
-            <div className={typingItem.side === "right" ? s.typingRight : s.typing}>
+            <div data-block="y2bup" className={typingItem.side === "right" ? s.typingRight : s.typing}>
               <Shimmer as="span" duration={1.4}>{`${typingItem.who} …`}</Shimmer>
             </div>
           )}

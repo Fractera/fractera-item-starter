@@ -37,11 +37,11 @@ export function UsersPager(
   },
 ) {
   return (
-    <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+    <div data-block="bh4z6" className="mt-3 flex flex-wrap items-center justify-between gap-2">
       <Small>{ui.count.replace("{count}", String(total))}</Small>
 
-      <div className="flex items-center gap-1.5 sm:gap-3">
-        <div className="flex items-center gap-1">
+      <div data-block="m15q0" className="flex items-center gap-1.5 sm:gap-3">
+        <div data-block="fdil0" className="flex items-center gap-1">
           {/* Подпись уходит на узком экране: рядом стоит число, и что оно значит,
               видно из соседства с пагинацией. Место дороже слова. */}
           <span className="hidden text-[10px] text-muted-foreground sm:inline">{ui.perPage}</span>

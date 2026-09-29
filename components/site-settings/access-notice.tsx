@@ -10,7 +10,7 @@ export function AccessNotice({ access, words, loginHref }: { access: Access; wor
     : access === 'unavailable' ? words.unavailable
     : words.error
   return (
-    <div className="rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground" role="status">
+    <div data-block="zsl0a" className="rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground" role="status">
       {text}{' '}
       {access === 'signin' && loginHref && (
         <a href={loginHref} className="font-medium text-primary hover:underline">{words.signinLink}</a>

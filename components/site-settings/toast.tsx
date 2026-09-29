@@ -50,14 +50,14 @@ export function SettingsToaster({ deployHref, deployLabel, closeLabel }: { deplo
   }, [])
   if (!message) return null
   return (
-    <div
+    <div data-block="jifzw"
       role="status"
       aria-live="polite"
       className={`fixed left-1/2 top-4 z-50 w-[min(92vw,28rem)] -translate-x-1/2 rounded-xl border bg-card px-4 py-3 text-sm shadow-lg transition-all duration-300 ${shown ? 'translate-y-0 opacity-100' : '-translate-y-6 opacity-0 pointer-events-none'} ${message.kind === 'error' ? 'border-destructive text-destructive' : message.kind === 'deploy' ? 'border-amber-500' : 'border-border'}`}
     >
-      <p>{message.text}</p>
+      <p data-block="kk8qe">{message.text}</p>
       {message.kind === 'deploy' && (
-        <div className="mt-3 flex items-center gap-3">
+        <div data-block="xvmnq" className="mt-3 flex items-center gap-3">
           {deployHref && (
             <a href={deployHref} className="rounded-md bg-primary px-3 py-1.5 text-primary-foreground hover:opacity-90">
               {deployLabel}

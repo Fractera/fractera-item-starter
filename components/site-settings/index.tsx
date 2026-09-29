@@ -28,15 +28,15 @@ export function SiteSettings({ lang }: { lang: string }) {
     .sort((a, b) => a.englishName.localeCompare(b.englishName))
   const linked = linkOn("config")
   return (
-    <div className="flex flex-col gap-8" data-site-settings={linked ? "linked" : "own"}>
-      <p className={linked ? "rounded-md border border-warning/50 bg-warning/10 px-3 py-2 text-sm text-foreground" : "text-sm text-muted-foreground"}>
+    <div data-block="aeyz7" className="flex flex-col gap-8" data-site-settings={linked ? "linked" : "own"}>
+      <p data-block="kf3nt" className={linked ? "rounded-md border border-warning/50 bg-warning/10 px-3 py-2 text-sm text-foreground" : "text-sm text-muted-foreground"}>
         {linked ? w.linked : w.own}
       </p>
       {GROUPS.map((group) => (
         <SettingsEditorIsland key={group} group={group} lang={lang} langs={langs} defaultLang={def} editLangLabel={w.editLang} ui={fieldsUi(lang)} words={w.access} />
       ))}
-      <section className="flex flex-col gap-3" aria-label={w.languagesTitle}>
-        <p className="text-sm text-muted-foreground">{w.languagesNote}</p>
+      <section data-block="a1did" className="flex flex-col gap-3" aria-label={w.languagesTitle}>
+        <p data-block="dqvkk" className="text-sm text-muted-foreground">{w.languagesNote}</p>
         <LanguagesIsland catalogue={catalogue} built={langs} builtDefault={def} ui={groupsUi(lang)} words={w.access} />
       </section>
     </div>

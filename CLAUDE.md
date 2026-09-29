@@ -173,6 +173,12 @@ branch page wraps itself in `data-page` / `data-file`, and `page-body` (from the
 (`components/block-highlight/`) wakes only on a message from the node's own origin. When the person brings such an
 address, open that file and find that `bid`.
 
+**Widgets are code, not page data — they get their addresses by a procedure (node step 335).** A widget named in
+`lib/page-widgets.tsx` (a whole-page landing, a table, a form) bypasses `page-body`, so without it Highlight shows nothing.
+After you write or rewrite any widget run `npm run widgets:ids`: it stamps `data-block="<id>"` on every container element
+(`section`, `div`, `h1`–`h6`, `p`, `li`…) that has none and never touches an existing one; `prebuild` fails on a container
+without one. An address from «Copy address» that is not in page data is in code: `git grep 'data-block="<id>"' components/`.
+
 **The way back (node step 318): when you finish editing a block, end your answer with its link**
 `/<lang>/<path>#block=<bid>` — the `Link` line of the address you got, or built from the page path and the `bid` — and
 tell the person: "Open Preview, paste the link into «Find block» and press Find". The Preview opens that page, scrolls to

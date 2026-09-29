@@ -66,8 +66,8 @@ export function FieldRow({
   const id = `field-${field.path.replace(/\./g, "-")}`
 
   return (
-    <div data-field={field.path} data-field-type={field.type} className="flex flex-col gap-1.5">
-      <div className="flex flex-wrap items-center gap-2">
+    <div data-block="u9w88" data-field={field.path} data-field-type={field.type} className="flex flex-col gap-1.5">
+      <div data-block="qjf18" className="flex flex-wrap items-center gap-2">
         <Label htmlFor={id} className="text-[length:var(--fs-small)] font-medium text-foreground">
           {words.label}
         </Label>
@@ -96,7 +96,7 @@ export function FieldRow({
         )}
       </div>
 
-      <div className="flex items-start gap-2">
+      <div data-block="sdiot" className="flex items-start gap-2">
         {field.type === "textarea" || field.type === "text" || field.type === "number" ? (
           /* 🔒 ПОЛЕ, МИКРОФОН, ПОЛОСА И РАСШИФРОВКА — ОДИН ЭЛЕМЕНТ НА ТРИ МЕСТА
              (32-8). Здесь стояли Input/Textarea рядом с отдельной кнопкой голоса;

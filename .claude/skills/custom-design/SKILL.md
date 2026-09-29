@@ -43,4 +43,7 @@ Words stay in the page data (`_data` / `_pages/<slug>/<lang>.json`), never in co
 - **Fonts are local.** Add an `@fontsource*` package and import it in the widget; no Google Fonts link.
 - **Guards.** `check:typography` requires the shared scale: add the widget file to its named exceptions with the reason
   (the person asked for an own look). Run `check:routes check:content check:seo check:static check:typography`.
+- **Highlight addresses after every generation** (node step 335): written or rewritten a widget → `npm run widgets:ids`. It
+  puts `data-block="<id>"` on every container (`section`, `div`, `h1`–`h6`, `p`, `li`…) that has none, keeps the existing ones;
+  the build fails on a container without one. Never write or change these ids by hand.
 - **taste's icon rule** (no lucide) yields to this project: lucide-react is already the project's library.

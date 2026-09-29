@@ -46,7 +46,7 @@ export function ColorField({
       : "#ffffff"
 
   return (
-    <div data-color-field className="flex w-full items-center gap-2">
+    <div data-block="p98j9" data-color-field className="flex w-full items-center gap-2">
       <input
         type="color"
         aria-hidden

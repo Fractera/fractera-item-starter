@@ -11,7 +11,8 @@ import type { BlockHighlightWords } from "./block-highlight.i18n"
 // узла (то же правило, что `lib/sibling-origin.ts` на сервере). Посетитель сайта подсветку не увидит: его страница не
 // открыта в окне ядра, и сообщения ему никто не пошлёт.
 // 🔒 АДРЕС = СТРАНИЦА · ФАЙЛ · БЛОК: `data-page` / `data-file` ставит страница ветки (`lib/branch-page.tsx`), `data-block`
-// (постоянный `bid`) и `data-kind` — фабрика `page-body` из «Блоков». Блоку ничего знать не нужно.
+// (постоянный `bid`) и `data-kind` — фабрика `page-body` из «Блоков». Блоку ничего знать не нужно. Код виджетов (`lib/page-widgets.tsx`)
+// получает `data-block` процедурой `npm run widgets:ids` (335) — на каждом контейнере.
 // 🔒 АДРЕС УХОДИТ И В БУФЕР, И В ЯДРО: в окне чужого источника браузер может закрыть буфер обмена, и тогда адрес покажет и
 // даст скопировать сама панель Preview.
 
@@ -54,8 +55,13 @@ async function trusted(origin: string): Promise<boolean> {
   return ownOrigin(origin) || origin === (await coreOrigin())
 }
 
-/** У обёртки `display: contents` своей коробки нет — рамка обнимает её детей. */
+/** У обёртки `display: contents` своей коробки нет — рамка обнимает её детей. Адрес на настоящем элементе (виджет на весь
+ *  экран ставит его прямо на `h1`, `p`, `li` — 335) — рамка по его собственной коробке: детей-элементов у него может не быть. */
 function boxOf(el: Element): DOMRect | null {
+  if (getComputedStyle(el).display !== "contents") {
+    const own = el.getBoundingClientRect()
+    return own.width > 0 && own.height > 0 ? own : null
+  }
   const rects = Array.from(el.children).map((c) => c.getBoundingClientRect()).filter((r) => r.width > 0 && r.height > 0)
   if (rects.length === 0) return null
   const left = Math.min(...rects.map((r) => r.left))

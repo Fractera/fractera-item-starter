@@ -116,10 +116,10 @@ export function ConfigEditor({
   }
 
   return (
-    <div data-config-editor className="flex flex-col gap-8">
+    <div data-block="w27gx" data-config-editor className="flex flex-col gap-8">
       {sections.map(section => (
-        <section key={section.id} data-section={section.id} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
+        <section data-block="f1eh3" key={section.id} data-section={section.id} className="flex flex-col gap-4">
+          <div data-block="imo28" className="flex flex-col gap-1">
             <H3 variant="ui">{ui.sections[section.id] ?? section.id}</H3>
             {ui.sectionHints[section.id] && (
               <Small className="max-w-2xl">{ui.sectionHints[section.id]}</Small>
@@ -143,7 +143,7 @@ export function ConfigEditor({
               5–9 полей это читается так же, и другого способа получить честную
               линию между колонками нет.
               На узком экране колонка одна, и линии нет: разделять нечего. */}
-          <div className="flex flex-col gap-5 md:flex-row md:gap-8">
+          <div data-block="jgnb3" className="flex flex-col gap-5 md:flex-row md:gap-8">
             {[0, 1].map(side => {
               const half = Math.ceil(section.fields.length / 2)
               const part = side === 0 ? section.fields.slice(0, half) : section.fields.slice(half)
@@ -153,7 +153,7 @@ export function ConfigEditor({
                   {side === 1 && (
                     <Separator orientation="vertical" className="hidden md:block" data-column-rule />
                   )}
-                  <div className="flex min-w-0 flex-1 flex-col gap-5">
+                  <div data-block="abtgy" className="flex min-w-0 flex-1 flex-col gap-5">
                     {part.map(field => (
                       <FieldRow
                         key={field.path}
@@ -174,12 +174,12 @@ export function ConfigEditor({
         </section>
       ))}
 
-      <div className="flex items-center gap-3">
+      <div data-block="kogof" className="flex items-center gap-3">
         <Button data-save onClick={save} disabled={busy || changed.length === 0}>
           {busy && <Loader2 className="size-4 animate-spin" aria-hidden />}
           {busy ? ui.saving : ui.save}
         </Button>
-        {status && <p className="text-sm text-muted-foreground" role="status">{status}</p>}
+        {status && <p data-block="bsb4y" className="text-sm text-muted-foreground" role="status">{status}</p>}
       </div>
     </div>
   )

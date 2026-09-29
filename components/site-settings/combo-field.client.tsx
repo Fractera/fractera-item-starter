@@ -40,8 +40,8 @@ export function ComboField({
   onChange: (next: string) => void
 }) {
   return (
-    <div data-combo-field className="flex w-full flex-col gap-2">
-      <div className="flex flex-wrap gap-2">
+    <div data-block="xut4h" data-combo-field className="flex w-full flex-col gap-2">
+      <div data-block="somzx" className="flex flex-wrap gap-2">
         {options.map(option => {
           const chosen = value === option
           return (
