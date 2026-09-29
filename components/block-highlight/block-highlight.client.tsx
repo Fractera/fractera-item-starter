@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import type { BlockHighlightWords } from "./block-highlight.i18n"
 
 // ПОДСВЕТКА БЛОКОВ В РЕЖИМЕ АРХИТЕКТОРА (node step 317-3). Образец — FineTuneOverlay сайта 22slots: рамка поверх блока,
-// рисуется отдельным слоем `position: fixed` (страница не меняется; портал не нужен — островок и так стоит в конце `<body>`), у рамки — имя блока и «Скопировать адрес».
+// рисуется отдельным слоем `position: fixed` (страница не меняется; портал не нужен — островок и так стоит в конце `<body>`), у рамки — имя блока и «Нажми для обновления» (336-2).
 //
 // 🔒 ВКЛЮЧАЕТ ЯДРО, А НЕ ПОСЕТИТЕЛЬ. Кнопка «Подсветка» в Preview ядра шлёт в окно просмотра сообщение
 // `{ type: "fractera:highlight", on }`; островок слушает только свой источник — https той же зоны или localhost на машине
@@ -13,8 +13,8 @@ import type { BlockHighlightWords } from "./block-highlight.i18n"
 // 🔒 АДРЕС = СТРАНИЦА · ФАЙЛ · БЛОК: `data-page` / `data-file` ставит страница ветки (`lib/branch-page.tsx`), `data-block`
 // (постоянный `bid`) и `data-kind` — фабрика `page-body` из «Блоков». Блоку ничего знать не нужно. Код виджетов (`lib/page-widgets.tsx`)
 // получает `data-block` процедурой `npm run widgets:ids` (335) — на каждом контейнере.
-// 🔒 АДРЕС УХОДИТ И В БУФЕР, И В ЯДРО: в окне чужого источника браузер может закрыть буфер обмена, и тогда адрес покажет и
-// даст скопировать сама панель Preview.
+// 🔒 АДРЕС УХОДИТ В ЯДРО (336-2): «Нажми для обновления» шлёт `fractera:block` (панель под Preview) и `fractera:update` (окно
+// задачи ядра). Скопировать адрес — в окне ядра: в окне чужого источника браузер может закрыть буфер обмена.
 
 type Target = { rect: DOMRect; bid: string; kind: string; page: string; file: string }
 
@@ -200,18 +200,16 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
     }
   }, [on])
 
-  const copy = useCallback(async () => {
-    if (!target) return
-    const text = addressText(target, words)
-    let ok = false
-    try {
-      await navigator.clipboard.writeText(text)
-      ok = true
-    } catch {
-      ok = false
-    }
-    if (parent) (parent.source as WindowProxy).postMessage({ type: "fractera:block", address: text, page: target.page, file: target.file, bid: target.bid, kind: target.kind }, parent.origin)
-    setCopied(ok)
+  // 336-2: «Нажми для обновления» — ядро получает адрес блока (`fractera:block`, панель под Preview) и просьбу открыть окно
+  // задачи (`fractera:update`, инструмент ядра `_tools/block-task`). Буфер обмена больше не трогается: адрес покажет и даст
+  // скопировать само окно ядра.
+  const update = useCallback(() => {
+    if (!target || !parent) return
+    const msg = { address: addressText(target, words), page: target.page, file: target.file, bid: target.bid, kind: target.kind }
+    const win = parent.source as WindowProxy
+    win.postMessage({ type: "fractera:block", ...msg }, parent.origin)
+    win.postMessage({ type: "fractera:update", ...msg }, parent.origin)
+    setCopied(true)
   }, [target, parent, words])
 
   const flashFrame = flash && (
@@ -241,8 +239,8 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
         style={{ top: Math.max(4, rect.top - 30), left: Math.max(4, rect.left), zIndex: 2147483001 }}
       >
         <span className="font-mono">{target.kind} · {target.bid}</span>
-        <button type="button" onClick={copy} className="rounded bg-primary-foreground/15 px-1.5 py-0.5 hover:bg-primary-foreground/25">
-          {copied ? words.copied : words.copy}
+        <button type="button" onClick={update} className="rounded bg-primary-foreground/15 px-1.5 py-0.5 hover:bg-primary-foreground/25" data-highlight-update>
+          {copied ? words.sent : words.update}
         </button>
       </div>
     </div>

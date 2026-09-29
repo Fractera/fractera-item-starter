@@ -169,7 +169,7 @@ Each block in page data carries a permanent `bid` (a letter and four base36 char
 `scripts/check-block-ids.mjs` fails the build on a missing or repeated one, `npm run blocks:ids` fills the missing. The
 branch page wraps itself in `data-page` / `data-file`, and `page-body` (from the Blocks element) gives each block
 `data-block` / `data-kind`. The architect turns on **Highlight** in the core's Preview: a frame over the hovered block,
-«Copy address» gives «page · file · block · link» — the exact paragraph to edit. Visitors never see it: the island
+«Click to update» (node step 336) sends «page · file · block · link» to the core, which opens a task window (improve design, fix, delete, change texts…) and hands the task to your terminal — the exact paragraph to edit. Visitors never see it: the island
 (`components/block-highlight/`) wakes only on a message from the node's own origin. When the person brings such an
 address, open that file and find that `bid`.
 
@@ -177,7 +177,7 @@ address, open that file and find that `bid`.
 `lib/page-widgets.tsx` (a whole-page landing, a table, a form) bypasses `page-body`, so without it Highlight shows nothing.
 After you write or rewrite any widget run `npm run widgets:ids`: it stamps `data-block="<id>"` on every container element
 (`section`, `div`, `h1`–`h6`, `p`, `li`…) that has none and never touches an existing one; `prebuild` fails on a container
-without one. An address from «Copy address» that is not in page data is in code: `git grep 'data-block="<id>"' components/`.
+without one. A block address that is not in page data is in code: `git grep 'data-block="<id>"' components/`.
 
 **The way back (node step 318): when you finish editing a block, end your answer with its link**
 `/<lang>/<path>#block=<bid>` — the `Link` line of the address you got, or built from the page path and the `bid` — and

@@ -80,7 +80,7 @@ page. Fix the paragraph in that language, then check the other languages for the
 ## Every block has an address — and you answer with its link
 
 Every block in `<lang>.json` carries a `bid` (a letter and four base36 characters, the same in every language). The person
-may bring an address copied in the core's Preview («Copy address»):
+may bring an address copied in the core's Preview («Click to update» → the core's task window):
 
 ```
 Page: /ru/privacy
