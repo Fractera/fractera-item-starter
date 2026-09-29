@@ -185,6 +185,15 @@ tell the person: "Open Preview, paste the link into «Find block» and press Fin
 the block and frames it for 3 seconds. One link per edited block; no host, no port. How to build the path — skill
 `use-page-tree`.
 
+**Finishing a change — commit, then send the person to THIS element's Deployments (node step 337).** Your edits are not on
+the site until the element is rebuilt, and the person decides when. So: 1) run the guards you touched, 2) `git add` your
+files and commit (the Deployments page compares the last commit with the running one and lists uncommitted files),
+3) end the answer with one line — "See it before it goes live and deploy it:
+`<ARCHITECT_URL>/<lang>/architect/<id>/build/deployments`" (`ARCHITECT_URL` from `.env.local`, `id` from
+`OWN-SERVICE-PROPS.json`). There the person presses **Preview** (built beside the live version, nothing changes for
+visitors), then **Accept** or **Reject**, or **Deploy** directly. 🛑 Never send the person to the core's deployment board
+or tell them to rebuild anything themselves — the element's own page is where this lives.
+
 ## Finding a page someone talks about
 
 People name pages by their words, not by their addresses. Search the data: `_pages/**/<lang>.json` for the words the
