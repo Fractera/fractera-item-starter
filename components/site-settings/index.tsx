@@ -2,6 +2,7 @@ import { SettingsEditorIsland } from "./settings-editor.client"
 import { LanguagesIsland } from "./languages-island.client"
 import { fieldsUi } from "./fields.i18n"
 import { groupsUi } from "./groups.i18n"
+import { searchLanguagesWords } from "./search-languages.i18n"
 import { siteSettingsWords } from "./site-settings.i18n"
 import { ALL_LANGUAGE_METADATA } from "@/lib/site-settings/language-metadata"
 import { linkOn } from "@/lib/own-site"
@@ -18,6 +19,11 @@ function builtLanguages(): { langs: string[]; def: string } {
   const langs = (process.env.NEXT_PUBLIC_SUPPORTED_LANGUAGES ?? "en").split(",").map((s) => s.trim()).filter(Boolean)
   const def = process.env.NEXT_PUBLIC_DEFAULT_LOCALE?.trim() || langs[0] || "en"
   return { langs: langs.length ? langs : ["en"], def }
+}
+
+/** Языки, разблокированные для поисковиков в собранном сайте (340-3): сравнивается с сохранённым — «ждёт развёртывания». */
+function builtUnlocked(): string[] {
+  return (process.env.NEXT_PUBLIC_INDEXED_LANGUAGES ?? "").split(",").map((s) => s.trim()).filter(Boolean)
 }
 
 export function SiteSettings({ lang }: { lang: string }) {
@@ -37,7 +43,7 @@ export function SiteSettings({ lang }: { lang: string }) {
       ))}
       <section data-block="a1did" className="flex flex-col gap-3" aria-label={w.languagesTitle}>
         <p data-block="dqvkk" className="text-sm text-muted-foreground">{w.languagesNote}</p>
-        <LanguagesIsland catalogue={catalogue} built={langs} builtDefault={def} ui={groupsUi(lang)} words={w.access} />
+        <LanguagesIsland catalogue={catalogue} built={langs} builtDefault={def} builtUnlocked={builtUnlocked()} ui={groupsUi(lang)} search={searchLanguagesWords(lang)} words={w.access} />
       </section>
     </div>
   )
