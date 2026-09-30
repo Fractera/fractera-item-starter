@@ -47,7 +47,8 @@
     "check:lang-delivery": "node scripts/check-lang-delivery.mjs",
     "check:case": "node scripts/check-case.mjs",
     "widgets:ids": "node scripts/stamp-widget-ids.mjs --fix",
-    "check:widget-ids": "node scripts/stamp-widget-ids.mjs"
+    "check:widget-ids": "node scripts/stamp-widget-ids.mjs",
+    "check:index": "node scripts/check-index.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.55",
