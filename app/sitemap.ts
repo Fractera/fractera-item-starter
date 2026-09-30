@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 import { brand } from "@/lib/brand"
 import { SUPPORTED_LANGUAGES } from "@/config/translations/translations.config"
 import { urlFor } from "@/lib/seo/alternates"
-import { translatedLanguages } from "@/lib/seo/translation-state"
+import { indexableLanguages } from "@/lib/seo/translation-state"
 import { branchRoot, branchChildren } from "@/lib/page-tree"
 
 // ГЛАВНАЯ КАРТА САЙТА — страницы, множество которых конечно и авторское.
@@ -67,12 +67,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // стоял перечень раздела /blog и всех его постов — вместе с разделом он
   // потерял предмет.
   const home = branchRoot("(publicLayer)")
-  if (home) for (const lang of translatedLanguages(home)) {
+  if (home) for (const lang of indexableLanguages(home)) {
     out.push({ url: urlFor(lang, ""), changeFrequency: "daily", priority: 1 })
   }
 
   for (const page of branchChildren("(publicLayer)")) {
-    for (const lang of translatedLanguages(page)) {
+    for (const lang of indexableLanguages(page)) {
       out.push({ url: urlFor(lang, `/${page.slug}`), changeFrequency: "weekly", priority: 0.5 })
     }
   }

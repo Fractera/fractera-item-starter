@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import type { Block, FaqPair } from '@/lib/content/blocks/types'
 import { buildAlternates } from '@/lib/seo/alternates'
-import { translatedLanguages, isTranslated, type TranslatedPage } from '@/lib/seo/translation-state'
+import { alternatesLanguages, isIndexable, type TranslatedPage } from '@/lib/seo/translation-state'
 import { author, authorSameAs } from '@/lib/author'
 import { brand } from '@/lib/brand'
 import { StandardContentPage, type Breadcrumb } from '@/components/content-page/standard-content-page'
@@ -76,6 +76,11 @@ export type ContentPageConfig<C extends ContentPageContent> = {
    * оба. Свой текст появился — признак снимается, и страница входит в выдачу.
    */
   noindex?: boolean
+  /**
+   * Страница закрытой ветки (кабинеты, гость; шаг 340-2): её robots задаёт layout ветки, а страница не объявляет переводов —
+   * набор hreflang закрытой страницы поисковик не учитывает (сторож `check-seo-html`: noindex-with-hreflang).
+   */
+  closedBranch?: boolean
   /**
    * Крошки и ссылка «назад». НЕОБЯЗАТЕЛЬНЫ (шаг 508).
    *
@@ -159,7 +164,7 @@ export function createContentPage<C extends ContentPageContent>(config: ContentP
       title: { absolute: seoTitle ? `${seoTitle} | ${brand().name}` : brand().name },
       description: c.description,
       keywords: c.keywords,
-      alternates: buildAlternates(lang, meta.subPath, translatedLanguages(config.data)),
+      alternates: buildAlternates(lang, meta.subPath, config.noindex || config.closedBranch ? [] : alternatesLanguages(lang, config.data)),
       // 🔒 НЕПЕРЕВЕДЁННАЯ ВЕРСИЯ НЕ ИНДЕКСИРУЕТСЯ (256-6), и здесь это сказано
       // ЯВНО, хотя раньше `robots` страница вовсе не объявляла и наследовала его
       // от корня. Наследование — ровно то, из-за чего непереведённый адрес
@@ -170,7 +175,7 @@ export function createContentPage<C extends ContentPageContent>(config: ContentP
       // английский текст; невидима она только для поисковика. Правило о том, что
       // ПОКАЗЫВАТЬ, и правило о том, что ОБЕЩАТЬ машине, — разные, и смешение их
       // дало бы 404 там, где нужен просто честный сигнал.
-      ...(!config.noindex && isTranslated(lang, config.data) ? {} : { robots: { index: false, follow: true } }),
+      ...(config.closedBranch || (!config.noindex && isIndexable(lang, config.data)) ? {} : { robots: { index: false, follow: true } }),
       openGraph: {
         type: 'article',
         url: `${SITE}/${lang}${meta.subPath}`,

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import type { Block, FaqPair } from '@/lib/content/blocks/types'
 import { buildAlternates } from '@/lib/seo/alternates'
-import { translatedLanguages, isTranslated, type TranslatedPage } from '@/lib/seo/translation-state'
+import { alternatesLanguages, isIndexable, type TranslatedPage } from '@/lib/seo/translation-state'
 import { author, authorSameAs } from '@/lib/author'
 import { brand } from '@/lib/brand'
 import { StandardContentPage, type Breadcrumb } from '@/components/content-page/standard-content-page'
@@ -140,7 +140,7 @@ export function createContentPost(config: ContentPostConfig) {
       title: { absolute: `${seoTitle} | ${titleSuffix(lang)} | ${brand().name}` },
       description: post.description,
       ...(post.keywords ? { keywords: post.keywords } : {}),
-      alternates: buildAlternates(lang, subPath, translatedLanguages(config.data)),
+      alternates: buildAlternates(lang, subPath, alternatesLanguages(lang, config.data)),
       // 🔒 НЕПЕРЕВЕДЁННАЯ ВЕРСИЯ НЕ ИНДЕКСИРУЕТСЯ (256-6). Здесь стояло
       // безусловное `index: true`. Адрес на включённом языке существует всегда —
       // резолвер честно отдаёт английскую основу, — и без этой строки такая
@@ -149,7 +149,7 @@ export function createContentPost(config: ContentPostConfig) {
       //
       // Человек её по-прежнему видит: правило о том, что ПОКАЗЫВАТЬ, и правило о
       // том, что ОБЕЩАТЬ машине, — разные.
-      robots: isTranslated(lang, config.data)
+      robots: isIndexable(lang, config.data)
         ? { index: true, follow: true }
         : { index: false, follow: true },
       openGraph: {

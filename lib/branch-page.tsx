@@ -75,6 +75,9 @@ function dataFile(tree: TreePage, dir: string[], lang: string): string {
   return ['app', '[lang]', ...dir, name].join('/')
 }
 
+/** Публичная ли ветка: индексируется только `(publicLayer)`; остальные закрыты своим layout. */
+const isPublic = (segments: string[]) => segments[0] === '(publicLayer)'
+
 /**
  * Корень ветки: `segments` — путь папки ветки внутри `app/[lang]`, `subPath` — её адрес без языка.
  * 🔒 Данные читаются при каждой отрисовке, не при загрузке модуля: иначе правка JSON не дошла бы до сайта без перезапуска.
@@ -85,6 +88,9 @@ export function rootPage(opts: { segments: string[]; subPath: string; titleInBod
     if (!page) throw new Error(`branch root without _data/en.json: ${opts.segments.join('/')}`)
     return createContentPage({
       data: { overrides: page.overrides },
+      // 340-2: закрытые ветки (кабинеты, гость) закрыты от поиска своим layout; страница обязана это знать, иначе печатает
+      // набор hreflang, который поисковик не учтёт (сторож: noindex-with-hreflang).
+      closedBranch: !isPublic(opts.segments),
       meta: { subPath: opts.subPath, ogImage: page.meta.ogImage ?? '/og-default.png' },
       resolve: (lang) => contentOf(page, lang),
       // 331-2: корень ветки тоже может назвать виджет в `_data/meta.json` (как ребёнок в `_pages/<slug>/meta.json`).
@@ -126,6 +132,7 @@ export function childRoute(opts: { segments: string[]; subPath: string }) {
     const widget = page.meta.widget
     const factory = createContentPage({
       data: { overrides: page.overrides },
+      closedBranch: !isPublic(opts.segments),
       meta: { subPath: `${opts.subPath}/${slug}`, ogImage: page.meta.ogImage ?? '/og-default.png' },
       resolve: (lang) => contentOf(page, lang),
       afterBody: widget ? (lang) => pageWidget(widget, lang) : undefined,
