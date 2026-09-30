@@ -215,6 +215,16 @@ folders on the first new page. A machine map for outside agents, if ever needed,
   The Blocks link off removes the `@fractera` registry from `components.json` — write your own blocks then.
 - **Languages are built in.** A new language set chosen on that page reaches the site after a rebuild of the element
   (the owner: core → the element → Deployments). Until then the site keeps its current languages — say so.
+- **People see every language; search engines see only the open ones** (node step 340, owner 2026-09-30: «launch production
+  on one or two languages … English plus the default language»). Open = English + the default language (always) + the
+  languages the person unlocked at their own risk on the same page, block «Languages for search engines» (APP-CONFIG
+  `languages.indexed` → the node writes `NEXT_PUBLIC_INDEXED_LANGUAGES` into the build). A page is indexed only if its
+  language is open AND it has its own text (`isIndexable` in `lib/seo/translation-state.ts`); robots meta, hreflang and the
+  sitemap all ask that one function. Closed pages stay visible to people with `noindex, follow` and declare no hreflang.
+  🛑 Never close a language in `robots.txt`: Google reads `noindex` only on pages it may crawl
+  (developers.google.com/search/docs/crawling-indexing/block-indexing). Never open a language yourself — it is the
+  person's decision. Guard: `scripts/check-seo-html.mjs` (rules 9–13) fails a build that breaks this; the live site is
+  measured with `npm run check:index <https://site> --langs en,ru,…`.
 - **The node's core is the one outside origin this element trusts** (`/api/core-origin`): the Preview highlight works on
   any main address. Do not widen `lib/sibling-origin.ts` or the highlight island beyond it.
 - **Sign-in on the element's own domain goes through the node's sign-in centre** (node step 328). The node's sign-in
