@@ -5,12 +5,28 @@ import "@fontsource/barlow/400.css"
 import "@fontsource/barlow/500.css"
 import "@fontsource/barlow/600.css"
 import "@fontsource-variable/jetbrains-mono"
-import { ArrowRight, Code } from "lucide-react"
+import { ArrowDown, ArrowRight, ArrowUp, Check, Code, Footprints, MessagesSquare, Ticket, TrainFront } from "lucide-react"
 import { landingWords, type LandingExtra } from "./words"
 import { AgentChat } from "./agent-chat.client"
 import { StaticImage } from "@/components/media/static-image.server"
 import s from "./landing-agent.module.css"
 import { SplitFlap } from "./split-flap.client"
+import { TransitMap } from "./transit-map.client"
+import { LostRoute } from "./lost-route"
+import { Walkers } from "./walkers.client"
+import { VersusTabs } from "./versus-tabs.client"
+import { PortalStation } from "./portal-station.client"
+import { HelpDesk } from "./help-desk.client"
+import { voiceStrings } from "@/lib/i18n/voice-field.i18n"
+
+// Штрихкод корешка билета: постоянный рисунок (ширины полос и промежутков), а не код чего-либо.
+const BARS: [number, number][] = (() => {
+  const w = [3, 1, 2, 1, 1, 3, 2, 1, 1, 2, 3, 1, 2, 2, 1, 1, 3, 1, 1, 2, 2, 1, 3, 2, 1, 1, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 2, 1, 1, 3]
+  const out: [number, number][] = []
+  let x = 0
+  for (let i = 0; i < w.length && x < 160; i += 2) { out.push([x, w[i] * 1.6]); x += (w[i] + (w[i + 1] ?? 1)) * 1.6 }
+  return out
+})()
 
 // Чат агентов главной (333-12) — тот же островок, свой вид: классы этого виджета вместо классов главной.
 const chatClasses = {
@@ -35,6 +51,7 @@ export function LandingAgent({ lang }: { lang: string }) {
   const b = x.board
   const outcomes = x.outcomes.slice(0, 3)
   const openSource = (x as LandingExtra & { openSource?: string }).openSource
+  const TitleTag = openSource ? "p" : "h1"
 
   return (
     <div data-block="cjguc" className={s.page}>
@@ -44,19 +61,84 @@ export function LandingAgent({ lang }: { lang: string }) {
         <div data-block="d0prw" className={`${s.wrap} ${s.signGrid}`}>
           <div data-block="b4u43" className={s.signMain}>
             <div data-block="r9ng5" className={s.signRow}>
-              <h1 data-block="akqbz" className={s.signTitle}>{hero.title}</h1>
+              {/* Длинный заголовок (слово владельца 2026-09-29, ~200 знаков) — меньший кегль, чтобы первый экран его вместил. */}
+              {/* «ты приглашен» (слово владельца 2026-09-29) — белая эмалевая плашка с внутренней рамкой и бликом, как табличка;
+                  слова берутся из данных (`landing.titleMark`), первое вхождение в заголовке. */}
+              {/* SEO (владелец 2026-09-30, ТЗ от Google): H1 — бейдж «Open-source фреймворк AI-агентов для Web3-разработки», манифест —
+                  абзац; классы и data-block те же. Нет бейджа — H1 остаётся на манифесте, страница без H1 не бывает. */}
+              <TitleTag data-block="akqbz" className={s.signTitle} data-long={hero.title.length > 60 ? "" : undefined}>
+                {x.titleMark && hero.title.includes(x.titleMark) ? (
+                  <>
+                    {hero.title.slice(0, hero.title.indexOf(x.titleMark))}
+                    <span className={s.titleMark}>{x.titleMark}</span>
+                    {hero.title.slice(hero.title.indexOf(x.titleMark) + x.titleMark.length)}
+                  </>
+                ) : hero.title}
+              </TitleTag>
               {openSource && (
                 // Эмалевая табличка на стене вокзала: белая эмаль, кант цвета табло, квадрат-«платформа» со знаком кода.
-                <p data-block="eehho" className={s.plate}>
+                <h1 data-block="eehho" className={s.plate}>
                   <span className={s.plateMark} aria-hidden="true"><Code className="size-4" strokeWidth={2.5} /></span>
-                  {openSource}
-                </p>
+                  {/* Слово владельца 2026-09-29: главные слова (в данных — между звёздочками: Open-source, AI, Web3) —
+                      основным шрифтом и крупнее, остальное — мельче: эффект выделения, а не занижения. */}
+                  <span className={s.plateText}>
+                    {openSource.split(/\*([^*]+)\*/).map((part, i) => (i % 2 ? <strong key={i} className={s.plateKey}>{part}</strong> : part))}
+                  </span>
+                </h1>
               )}
             </div>
-            <p data-block="fh05d" className={s.signSub}>{x.titleSub}</p>
+            <p data-block="fh05d" className={s.signSub}>
+              {x.titleSub}
+              {/* Слово владельца 2026-09-30: [?] у подзаголовка — как у «От идеи до enterprise-продукта…» на табло. */}
+              {x.titleSubHint && (
+                <span className={`${s.hintWrap} ${s.subHint}`}>
+                  <button type="button" className={s.hintBtn} aria-label={x.titleSubHintLabel} aria-describedby="agent-sub-hint">?</button>
+                  <span role="tooltip" id="agent-sub-hint" className={s.hint}>
+                    {x.titleSubHint.split("\n\n").map((t) => <span key={t} className={s.hintPara}>{t}</span>)}
+                  </span>
+                </span>
+              )}
+            </p>
+            {/* 342 (владелец 2026-09-30): «add CTA to first screen as another red button» — та же кнопка, что под табло
+                (слова и адрес подписки — `hero.cta`), на первом экране. */}
+            {hero.cta && (
+              <a data-block="p342c" href={hero.cta.href} className={`${s.go} ${s.signGo}`}>
+                {hero.cta.label}
+                <ArrowRight className="size-5" strokeWidth={2} aria-hidden="true" />
+              </a>
+            )}
           </div>
+          {/* Указатель к чату (владелец 2026-09-30): табло прохода к гейтам в аэропорту — висит на двух цепочках. Широкий экран:
+              под первым экраном, правая часть ровно под колонкой чата, стрелка вверх. Телефон: между заголовками и чатом, стрелка
+              вниз, короче. Табличка — ссылка на чат. */}
+          {x.gate && x.chat && (
+            <a href="#agent-chat" className={s.gate} title={x.gate.label}>
+              <span className={s.gateRods} aria-hidden="true" />
+              <span className={s.gateBar}>
+                <span className={s.gateRoutes}>
+                  <span className={s.gateIcon} aria-hidden="true"><MessagesSquare className="size-5" strokeWidth={2.4} /></span>
+                  {x.gate.routes.map((r) => <span key={r} className={s.gateRoute}>{r}</span>)}
+                  {/* Владелец 2026-09-30: как на указателе в аэропорту — время пути. */}
+                  {x.gate.longWay && <span className={s.gateWalk}><Footprints className="size-4" aria-hidden="true" />{x.gate.longWay}</span>}
+                </span>
+                <span className={s.gateExit}>
+                  <span className={s.gateWords}>
+                    <span className={s.gateAsk}>{x.gate.ask}</span>
+                    <span className={s.gateAnswer}>{x.gate.answer}</span>
+                    <span className={s.gateAnswerMobile}>{x.gate.answerMobile}</span>
+                  </span>
+                  {x.gate.exitTime && <span className={s.gateTime}><Footprints className="size-4" aria-hidden="true" />{x.gate.exitTime}</span>}
+                  {/* Владелец 2026-09-30: стрелка — справа от текста, в конце таблички. */}
+                  <span className={s.gateArrow} aria-hidden="true">
+                    <ArrowUp className={s.gateUp} strokeWidth={3} />
+                    <ArrowDown className={s.gateDown} strokeWidth={3} />
+                  </span>
+                </span>
+              </span>
+            </a>
+          )}
           {x.chat && (
-            <div data-block="hs2dv" className={s.signChat}>
+            <div data-block="hs2dv" id="agent-chat" className={s.signChat}>
               <AgentChat label={x.chat.label} items={x.chat.items} contractLabels={x.chat.contractLabels} endCta={x.chat.endCta} classes={chatClasses} />
             </div>
           )}
@@ -127,7 +209,7 @@ export function LandingAgent({ lang }: { lang: string }) {
           <ol data-block="rd7fv" className={s.timetable}>
             {can.texts.map((t, i) => (
               <li data-block="xuoap" key={i} className={s.tRow}>
-                <span className={s.tName}>{x.cards[i]}</span>
+                <h3 data-block="uqv08"><span className={s.tName}>{x.cards[i]}</span></h3>
                 <span className={s.tText}>{t}</span>
               </li>
             ))}
@@ -139,18 +221,106 @@ export function LandingAgent({ lang }: { lang: string }) {
         <div data-block="c1jfw" className={s.wrap}>
           <div data-block="xud3c" className={s.ticket}>
             <div data-block="jc5dc" className={s.ticketMain}>
+              {/* Билет (владелец 2026-09-30): шапка билета через всю основную часть — часть анатомии билета, а не надпись над заголовком. */}
+              {x.ticket && (
+                <p data-block="weu9w" className={s.ticketBand}>
+                  <span className={s.ticketKicker}><Ticket className="size-4" strokeWidth={2.4} aria-hidden="true" />{x.ticket.kicker}</span>
+                  <span className={s.ticketSerial}>{x.ticket.serial}</span>
+                </p>
+              )}
               <h2 data-block="lm51s" className={s.ticketTitle}>{hood.title}</h2>
               {hood.texts.map((t, i) => <p data-block="zw1b0" key={i} className={s.ticketText}>{t}</p>)}
+              {x.ticket && (
+                <dl className={s.ticketFields}>
+                  {x.ticket.fields.map((fd) => (
+                    <div data-block="imdak" key={fd.label}>
+                      <dt>{fd.label}</dt>
+                      <dd>{fd.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
             <div data-block="o8d2u" className={s.ticketStub}>
               <p data-block="znlj8" className={s.stubHead}>{b.included}</p>
               <ul data-block="va0ro" className={s.stubList}>
                 {x.chips.map((c) => <li data-block="tzbzi" key={c}>{c}</li>)}
               </ul>
+              {/* Корешок (владелец 2026-09-30): «сохраняется до конца поездки» и штрихкод — рисунок, не данные. */}
+              {/* Печать на корешке (владелец 2026-09-30): «open source, стоимость к оплате ноль». */}
+              {x.ticket?.stamp && (
+                <p data-block="fzs05" className={s.stamp}>
+                  <span>{x.ticket.stamp.top}</span>
+                  <span className={s.stampSum}>{x.ticket.stamp.bottom}</span>
+                </p>
+              )}
+              {x.ticket && (
+                <div data-block="gra3c" className={s.stubKeep}>
+                  <svg className={s.barcode} viewBox="0 0 160 36" preserveAspectRatio="none" aria-hidden="true">
+                    {BARS.map(([bx, bw]) => <rect key={bx} x={bx} y={0} width={bw} height={36} />)}
+                  </svg>
+                  <span>{x.ticket.keep}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
+
+      {/* «Fractera vs LLM» (владелец 2026-09-30, выбор «Карта магистрали»): предпоследняя секция — два экрана на стене вокзала.
+          Слева неподвижный «пеший маршрут», справа схема магистрали — островок, прорисовывается при въезде в экран. */}
+      {x.compare && (
+        <section data-block="l6kqq" className={s.versus}>
+          <div data-block="x066g" className={s.wrap}>
+            <h2 data-block="co2y3" className={s.versusTitle}>{x.compare.title}</h2>
+            <p data-block="oysml" className={s.versusSub}>{x.compare.sub}</p>
+            {/* Телефон: переключатель вместо двух карточек подряд (владелец 2026-09-30). */}
+            <VersusTabs labels={[x.compare.left.who, x.compare.right.who]}>
+            {/* Владелец 2026-09-30: бейджи одной ширины — по самому длинному ярлыку обеих карточек (моноширинный: ширина в ch точна). */}
+            <div data-block="cu99c" className={s.versusGrid} style={{ ["--tagn" as string]: Math.max(...[...x.compare.left.items, ...x.compare.right.items].map((it) => it.tag.length)) }}>
+              {([["off", x.compare.left], ["on", x.compare.right]] as const).map(([tone, side]) => (
+                <article data-block="si7i8" key={tone} className={s.screen} data-tone={tone}>
+                  <div data-block="od4wq" className={s.screenHead}>
+                    <span className={s.screenWho}>
+                      {tone === "off" ? <Footprints className="size-5" aria-hidden="true" /> : <TrainFront className="size-5" aria-hidden="true" />}
+                      {side.who}
+                    </span>
+                    <h3 data-block="mwwfh" className={s.screenLabel}>
+                      <span className={s.lamp} aria-hidden="true" />
+                      {side.label}
+                    </h3>
+                  </div>
+                  <div data-block="ryu19" className={s.screenArt}>
+                    {tone === "off"
+                      ? <LostRoute stations={x.compare!.left.stations} deadEnd={x.compare!.left.deadEnd} products={x.compare!.left.products} label={x.compare!.left.label} />
+                      : <TransitMap hub={x.compare!.right.hub} here={x.compare!.right.here} stations={x.compare!.right.stations} ring={x.compare!.right.ring} label={x.compare!.mapLabel} />}
+                  </div>
+                  <p data-block="txccg" className={s.screenText}>{side.text}</p>
+                  <ul data-block="ufewp" className={s.screenList}>
+                    {side.items.map((it) => (
+                      <li data-block="i0dvi" key={it.tag}>
+                        <span className={s.status}>{it.tag}</span>
+                        <span>{it.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            </VersusTabs>
+          </div>
+        </section>
+      )}
+
+      {/* 348–349 (владелец 2026-09-30): справочное бюро — третья секция снизу, над «Конвейером децентрализованной разработки»
+          («конвейер … должен быть под новой секцией справочного бюро»). */}
+      {x.helpDesk && (
+        <section data-block="xbxoz" id="help-desk" className={s.desk}>
+          <div data-block="ql52w" className={s.wrap}>
+            <HelpDesk w={x.helpDesk} lang={lang} voiceWords={(({ micDenied, micNoDevice, frame, failed, nothing, noKey }) => ({ micDenied, micNoDevice, frame, failed, nothing, noKey }))(voiceStrings(lang))} />
+          </div>
+        </section>
+      )}
 
       <section data-block="xsind" className={s.depart}>
         {x.closingImage && (
@@ -162,6 +332,14 @@ export function LandingAgent({ lang }: { lang: string }) {
         )}
         <div data-block="j6lny" className={s.wrap}>
           <h2 data-block="cxgfo" className={s.departTitle}>{b.closing}</h2>
+          {/* Владелец 2026-09-30, «очень аккуратно»: назначение маршрута — узкая строка табло между заголовком и текстом. */}
+          {x.route && (
+            <p data-block="krxcw" className={s.routeTo}>
+              <span className={s.routeLine} aria-hidden="true" />
+              <span className={s.routeLabel}>{x.route.label}</span>
+              <span className={s.routeValue}>{x.route.value}</span>
+            </p>
+          )}
           <p data-block="tanth" className={s.departText}>{x.closingText}</p>
           {hero.cta && (
             <a href={hero.cta.href} className={s.go}>
@@ -171,6 +349,39 @@ export function LandingAgent({ lang }: { lang: string }) {
           )}
         </div>
       </section>
+      {/* «Маршрут построен» (владелец 2026-09-30): последняя строка страницы — линия метро от станции отправления к станции
+          назначения; между ними — пересадка (станций три). */}
+      {x.routeBuilt && (
+        <section data-block="hpza2" className={s.built}>
+          <div data-block="fhxaj" className={s.wrap}>
+            <h2 data-block="gmpb7" className={s.builtTitle}>
+              <span className={s.builtLamp} aria-hidden="true"><Check className="size-4" strokeWidth={3} /></span>
+              {x.routeBuilt.title}
+            </h2>
+            <ol data-block="k2j60" className={s.builtLine}>
+              {[x.routeBuilt.from, x.routeBuilt.via, x.routeBuilt.to].filter((st) => st !== undefined).map((st, i, all) => (
+                <li
+                  data-block="q2iyo" key={st.label} className={s.builtStop}
+                  data-pos={i === 0 ? "start" : i === all.length - 1 ? "end" : "mid"}
+                >
+                  {/* 342: на станции пересадки — пульс и портал с кнопкой «Жми» (островок); без слов кнопки — прежняя точка. */}
+                  {st === x.routeBuilt?.via && x.routeBuilt.via.go && hero.cta ? (
+                    <span className={s.builtDot}>
+                      <PortalStation href={hero.cta.href} label={x.routeBuilt.via.go.label} aria={x.routeBuilt.via.go.aria} />
+                    </span>
+                  ) : (
+                    <span className={s.builtDot} aria-hidden="true" />
+                  )}
+                  <span className={s.builtLabel}>{st.label}</span>
+                  <span className={s.builtStation}>{st.station}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+      {/* Пассажиры у нижней кромки окна (владелец 2026-09-30) — только в браузере, после 10 с покоя. */}
+      <Walkers />
     </div>
   )
 }

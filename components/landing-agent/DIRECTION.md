@@ -24,3 +24,8 @@ WHAT IS FIXED: the timetable «What it can do» is one grid; the title column is
 
 FIRST VIEWPORT: the station sign with the headline and «on blockchain, and beyond»; the board: origin «your idea», the main
 display flipping the three destinations, the three rows, the yellow ticker with «?»; the signal action and the outline one.
+
+FOURTH ADDITION (owner, 2026-09-30): the «Fractera vs LLM» section, second to last. Owner's pick among three directions —
+«transit map»: a second authored moment, placed far below the flaps as its own scene (draw-once on view, trains paused
+off-screen), the left screen still. It is a contained map inside a board screen, not the first version's page-wide transit
+line; the maquette's world (board, poster, signal, floor) stays, `--go` is the only new role.

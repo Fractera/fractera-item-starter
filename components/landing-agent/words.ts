@@ -10,11 +10,33 @@ type Block = { kind: string; id?: string; title?: string; text?: string; pill?: 
 
 export type LandingExtra = {
   titleSub: string
+  /** Подсказка [?] к подзаголовку (слово владельца 2026-09-30: «add [?] … like in От идеи до enterprise-продукта»); абзацы — через пустую строку. */
+  titleSubHint?: string
+  titleSubHintLabel?: string
+  /** Указатель к чату под первым экраном (владелец 2026-09-30: табло прохода к гейтам в аэропорту). */
+  gate?: { routes: string[]; ask: string; answer: string; answerMobile: string; label: string; longWay?: string; exitTime?: string }
+  /** Слова заголовка, выделенные эмалевой плашкой (слово владельца 2026-09-29: «ты приглашен»); нет — заголовок без плашки. */
+  titleMark?: string
   claim: string
   claimHint: string
   claimHintLabel: string
   cards: string[]
   chips: string[]
+  /** Секция «Fractera vs LLM» (владелец 2026-09-30): два табло — пеший маршрут и магистраль; станций карты ровно четыре. */
+  compare?: {
+    title: string
+    sub: string
+    left: { who: string; label: string; text: string; stations: [string, string]; deadEnd: string; products?: { name: string; icon: "chat" | "code" | "cowork" | "platform" }[]; items: { tag: string; text: string }[] }
+    right: { who: string; label: string; text: string; hub: string; here?: string; stations: [string, string, string, string]; ring?: { name: string; stations: string[]; free: string[] }; items: { tag: string; text: string }[] }
+    mapLabel: string
+  }
+  /** Билет «под капотом» (владелец 2026-09-30): шапка, поля посадочного, корешок «сохраняется до конца поездки». */
+  ticket?: { kicker: string; serial: string; fields: { label: string; value: string }[]; keep: string; stamp?: { top: string; bottom: string } }
+  /** Финал (владелец 2026-09-30): «назначение маршрута» у последней секции и отдельная строка «Маршрут построен» в самом конце. */
+  route?: { label: string; value: string }
+  /** Справочное бюро (узел, шаг 348): киоск с чатом и вывесками вопросов. */
+  helpDesk?: { title: string; hours: string; greeting: string; who: string; you: string; placeholder: string; send: string; mic: string; questions: string[]; answers: string[]; departure: { label: string; question: string; answer: string }; transfer: { label: string; question: string; answer: string }; github: { label: string; href: string }; thinking: string; limit: string; closed: string }
+  routeBuilt?: { title: string; from: { label: string; station: string }; via?: { label: string; station: string; go?: { label: string; aria: string } }; to: { label: string; station: string } }
   closingTitle: string
   closingText: string
   closingImage?: { src: string; alt: string }
@@ -27,7 +49,7 @@ export type LandingExtra = {
     items: {
       side: "left" | "right" | "system"; who: string; text: string; contract: "a2a" | "h2a" | "m2m" | "h2m" | "h2h"
       kind?: "thinking" | "tool" | "confirm" | "task"; title?: string; steps?: string[]; checks?: string[]
-      tool?: string; input?: unknown; output?: unknown; accepted?: string
+      tool?: string; input?: unknown; output?: unknown; accepted?: string; attachments?: { filename: string; mediaType: string }[]
     }[]
     endCta?: Link
   }

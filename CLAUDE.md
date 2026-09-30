@@ -109,6 +109,12 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
   screen with its own layout, not the Blocks; its colours, fonts and corners are the Design tokens (node step 333-2), so the
   Design element restyles it. Its words are still the page data: the blocks (hero, sections `what-it-can-do`,
   `under-the-hood`) plus the field `landing` for what blocks do not carry. Change the words there, not in the code.
+- **The template ships the Fractera landing of aifa.dev whole** (owner 2026-09-30, node step 354: «Шаблон = aifa.dev»): the
+  information desk `help-desk.client.tsx` (its signboards answer from the page with no model; typed questions go to
+  `POST /api/help-desk`, voice to `POST /api/help-desk/voice`), the intro chat and the transit-map scenes. Facts the desk may
+  state live in `lib/help-desk.ts`; limits there too (40 messages and 40 transcriptions an hour per address, voice ≤ 20 s).
+  Both doors need `OPENAI_API_KEY` (read by `lib/openai-key`); without it the signboards still answer, typed chat refuses.
+  Details — `components/landing-agent/README.md`. A new element is born looking like aifa.dev; rewrite it for its own product.
 - **An own design goes through one of two design skills** (owner, node step 330-5). When the person refuses the Blocks
   design and wants their own look, ask once which skill to use — **taste** (`design-taste-frontend`, Leon Lin) or
   **impeccable** (Paul Bakaus) — then load it and design in its style. Which rules of this element win over the skill:

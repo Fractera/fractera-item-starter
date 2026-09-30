@@ -9,6 +9,7 @@ import { ChainOfThought, ChainOfThoughtContent, ChainOfThoughtHeader, ChainOfTho
 import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "@/components/ai-elements/tool"
 import { Task, TaskContent, TaskItem, TaskTrigger } from "@/components/ai-elements/task"
 import { Confirmation, ConfirmationAccepted, ConfirmationTitle } from "@/components/ai-elements/confirmation"
+import { Attachment, AttachmentInfo, AttachmentPreview, Attachments } from "@/components/ai-elements/attachments"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import base from "./landing-agent.module.css"
@@ -39,6 +40,9 @@ type Item = {
   input?: unknown
   output?: unknown
   accepted?: string
+  /** 346 (слово владельца: «покажи … как будто она загрузила изображения и … документ»): вложения реплики — AI Elements
+   *  `Attachments`, вид `list`; файлов нет (это визуализация), поэтому у картинки — значок, а не выдуманное фото. */
+  attachments?: { filename: string; mediaType: string }[]
 }
 
 /** Классы, которые страница может заменить своими («Дизайн агента», `components/landing-agent/`); без них — вид главной. */
@@ -47,6 +51,23 @@ export type AgentChatClass =
   | "msgAvatar" | "contract" | "msgText" | "msgTextRight" | "aeBlock" | "typing" | "typingRight"
   | "system" | "systemStamp" | "systemBadge" | "endCta"
 type Classes = Record<AgentChatClass, string>
+
+// 346: настоящие ссылки в репликах (скачать Claude, форк на GitHub) — кликабельны; вымышленные адреса Анны (временный адрес
+// Cloudflare, её домен) остаются текстом: мёртвая ссылка на публичной странице хуже никакой.
+const LINK_HOSTS = ["claude.com", "github.com"]
+function Linked({ text }: { text: string }) {
+  const parts = text.split(/(https:\/\/[^\s,)]+)/g)
+  return <>{parts.map((p, i) => {
+    if (!p.startsWith("https://")) return p
+    const url = p.replace(/[.;:]+$/, "")
+    const tail = p.slice(url.length)
+    let host = ""
+    try { host = new URL(url).hostname.replace(/^www\./, "") } catch { /* не адрес */ }
+    return LINK_HOSTS.includes(host)
+      ? <span key={i}><a href={url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{url.replace("https://", "")}</a>{tail}</span>
+      : p
+  })}</>
+}
 
 // Темп на 33 реплики: «печатает…» короче, чтение — по длине реплики (блок AI Elements — дольше), системное — сразу.
 const TYPING_MS = 900
@@ -164,7 +185,7 @@ export function AgentChat({ label, items, contractLabels, endCta, classes }: {
             <div data-block="t647q" key={i} className={s.system}>
               <p data-block="j2lc9" className={s.systemStamp}>
                 <span className={s.systemBadge} title={contractLabels[m.contract]}>{`${m.who} · ${m.contract}`}</span>
-                <span>{m.text}</span>
+                <span><Linked text={m.text} /></span>
               </p>
             </div>
           ) : (
@@ -178,7 +199,17 @@ export function AgentChat({ label, items, contractLabels, endCta, classes }: {
                 <span className={s.msgWho}>{m.who}</span>
                 <Badge variant="outline" className={s.contract} title={contractLabels[m.contract]}>{m.contract}</Badge>
               </div>
-              <MessageContent className={m.side === "right" ? s.msgTextRight : s.msgText}>{m.text}</MessageContent>
+              <MessageContent className={m.side === "right" ? s.msgTextRight : s.msgText}><Linked text={m.text} /></MessageContent>
+              {m.attachments && m.attachments.length > 0 && (
+                <Attachments variant="list" className={m.side === "right" ? "ml-auto w-fit" : "w-fit"}>
+                  {m.attachments.map((a, k) => (
+                    <Attachment key={k} data={{ id: `${i}-${k}`, type: "file", mediaType: a.mediaType, filename: a.filename, url: "" }}>
+                      <AttachmentPreview />
+                      <AttachmentInfo showMediaType />
+                    </Attachment>
+                  ))}
+                </Attachments>
+              )}
               <Extra item={m} s={s} />
             </Message>
           ))}

@@ -54,6 +54,8 @@ const ALLOWED = new Map([
   // двери API — не страницы
   ['app/api/config-image/[slot]/route.ts', 'картинки настроек'],
   ['app/api/health/route.ts', 'жив ли элемент — для сторожа узла'],
+  ['app/api/help-desk/route.ts', 'чат справочного бюро лендинга (узел, шаг 349)'],
+  ['app/api/help-desk/voice/route.ts', 'голос справочного бюро: расшифровка до 20 с (узел, шаг 350)'],
   ['app/api/i18n/translate/route.ts', 'перевод строк'],
   ['app/api/auth/callback/route.ts', 'возврат из центра единого входа (328-3)'],
   ['app/api/auth/guest-leave/route.ts', 'гость удаляет свою запись и уходит (331-2)'],

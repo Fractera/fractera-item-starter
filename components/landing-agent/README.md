@@ -64,3 +64,28 @@ and on flaps is far above 7:1; ink (0.2) on poster (0.881) and on floor (0.928) 
 
 Faces: `--font-heading` / `--font-body`; Barlow Condensed / Barlow (the maquette's faces, local `@fontsource`) only as the
 fallback after the tokens. Corners: `--radius` (tiles and buttons `calc(var(--radius) * 0.25)`).
+- **«Fractera vs LLM»** (owner, 2026-09-30; brief from Google, built with the impeccable skill — launcher not run, owner's
+  pick «transit map»): the second-to-last section, before the closing band. Words — `x.compare` in the home page data
+  (`landing.compare`). On the light floor: the glowing title plate, then two dark screens with scan lines — left «on foot»
+  (`lost-route.tsx`, server SVG, still: a lone station and rails ending at a red buffer stop), right «day-zero main line»
+  (island `transit-map.client.tsx`: hub + four branches to subdomain stations, the fourth dashed «being built»). Without
+  JavaScript the map stands fully drawn; the island draws the branches once when the map comes into view (30 %), then
+  stations pop and train lights (SVG `animateMotion`) run — paused off-screen, absent under `prefers-reduced-motion`.
+  Colours: `--signal` left, `--go` right (a new relation to `--primary`, hue −127 ≈ green); monospace (`--mono`) only for
+  board data — domains, statuses, labels. Station labels: the four strings of `stations`, geometry fixed in `LINES`/`TAGS`.
+  Revision (owner, 2026-09-30): both screens are always the same height — one grid stretches both, the card fills it, any
+  difference goes into free space above the status list (`margin-top: auto`); both pictures are squares (viewBox 600×600,
+  `aspect-ratio: 1`); badges have one width = the longest tag of both cards (`--tagn`, set by the markup, monospace `ch`);
+  left texts have exactly as many words as the matching right ones (paragraph and each status). The left scheme now shows two
+  chat stations whose tracks run parallel, merge into one and hit a red buffer stop («dead end»): streams of separate chats
+  cannot be joined without your own server.
+- **Information desk** (node steps 348–349, owner 2026-09-30; impeccable, the page's world): section `#help-desk`, third from the
+  bottom, above the pipeline. Island `help-desk.client.tsx`: a station kiosk (enamel plate, «Open 24 hours» lamp, chat window,
+  counter with mic, GitHub button and the Send action); on ≥ 1024 px six question signboards hang at the sides plus the two main
+  ones at the bottom — «Departure» (signal red, left) and «Transfers en route» (`--ring` orange, right); on phones a row of quick
+  buttons. **Signs and quick buttons answer with ready text on the page** (`landing.helpDesk.answers`, `departure.answer`,
+  `transfer.answer`) — instant, unlimited, even offline; **only typed messages go to the model**: `useChat` → public door
+  `app/api/help-desk/route.ts` (`gpt-6-luna`, facts only from `lib/help-desk.ts`, 40 messages an hour per address, short
+  answers). The door passes only plain text of the history (✗ useChat's OpenAI metadata made the second turn fail). Every landing
+  button (red CTAs, the portal «Жми», the chat's end button) leads to `#help-desk`; the procedure ends at the fork of
+  `github.com/fractera/agi`. Words — `landing.helpDesk` of the home page data.

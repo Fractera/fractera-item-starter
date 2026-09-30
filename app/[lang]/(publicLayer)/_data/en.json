@@ -1,37 +1,33 @@
 {
-  "title": "Your journey into the world of AGI solutions starts here",
-  "description": "We invite you on a journey into the world of AGI solutions built on blockchain technology, and beyond. You bring the idea, Fractera AGI does the rest.",
+  "title": "Open-source AI agent framework for Web3 development",
+  "description": "Day-zero infrastructure for indie hackers and Web3 builders. Launch autonomous AI agents, deploy smart contracts and scale services in seconds.",
   "keywords": "",
   "blocks": [
     {
       "kind": "hero-centered",
       "pill": "AGI element",
-      "title": "Your journey into the world of AGI solutions starts here",
+      "title": "If you're an indie hacker, a Web3 builder or an AI visionary — you're invited to a private party for the makers of AI corporations.",
       "description": "Not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes. You decide. All you bring is the idea; Fractera AGI does the rest.",
       "cta": {
-        "label": "Use Claude Code",
-        "href": "/en/architect/build/subscription"
-      },
-      "secondary": {
-        "label": "Start building",
-        "href": "/en/architect/build/terminal"
+        "label": "Look inside",
+        "href": "#help-desk"
       },
       "bid": "j7tri"
     },
     {
       "kind": "section-head",
       "id": "what-it-can-do",
-      "title": "What Fractera AGI can do",
+      "title": "AI agent orchestration and autonomous deployment of Web3 applications",
       "bid": "zy6l4"
     },
     {
       "kind": "p",
-      "text": "The AGI and web3 core installs on your computer in seconds, and your site is live on the internet at a temporary address right away. Your own domain takes a couple of minutes more. Need a server? Rent a VPS and move in ten minutes.",
+      "text": "The AGI and web3 core installs on your computer in seconds, and your site is live on the internet at a temporary address right away. Your own domain takes a couple of minutes more. Need a server? Rent a VPS and run hundreds of sites on your own APP factory.",
       "bid": "r9fm4"
     },
     {
       "kind": "p",
-      "text": "Tell the agent your idea. It asks a few sharp questions and builds the project on the Fractera starter for Next 16, an architecture made for heavy load from day one, with nothing to rebuild later.",
+      "text": "Tell the agent your idea. It asks a few sharp questions and builds the project. Under it is the Fractera starter for Next 16: high-load architecture, sign-in, database and media storage already set up locally.",
       "bid": "eyhxg"
     },
     {
@@ -52,7 +48,7 @@
     {
       "kind": "section-head",
       "id": "under-the-hood",
-      "title": "Already working under the hood",
+      "title": "Day-zero infrastructure: a ready backend architecture for platforms",
       "bid": "ubj4n"
     },
     {
@@ -79,10 +75,151 @@
       "Open source code",
       "Buy & sell on WEB3"
     ],
+    "ticket": {
+      "kicker": "Your entry ticket to the private party",
+      "serial": "No. AGI-0001",
+      "fields": [
+        {
+          "label": "Passenger",
+          "value": "You"
+        },
+        {
+          "label": "Departure",
+          "value": "Today"
+        },
+        {
+          "label": "Class",
+          "value": "First emission"
+        }
+      ],
+      "keep": "Keep until the end of the journey",
+      "stamp": {
+        "top": "Open-source",
+        "bottom": "Amount due: 0"
+      }
+    },
+    "compare": {
+      "title": "To create your own AI corporation, you don't need to build server architecture. You need day-zero infrastructure.",
+      "sub": "Why a plain AI chat is not enough to take Web3.",
+      "left": {
+        "who": "Vanilla Claude",
+        "label": "On foot (raw code)",
+        "text": "Claude.ai quickly builds a CRM or a shop. But linking projects from different chats without your own server fails.",
+        "stations": [
+          "chat: CRM",
+          "chat: shop"
+        ],
+        "deadEnd": "dead end",
+        "products": [
+          {
+            "name": "Claude.ai",
+            "icon": "chat"
+          },
+          {
+            "name": "Claude Code",
+            "icon": "code"
+          },
+          {
+            "name": "Claude Platform",
+            "icon": "platform"
+          },
+          {
+            "name": "Cowork",
+            "icon": "cowork"
+          }
+        ],
+        "items": [
+          {
+            "tag": "Waiting",
+            "text": "You rent the server entirely by yourself."
+          },
+          {
+            "tag": "Manual labour",
+            "text": "You configure databases, Docker and sign-in by hand, one step at a time."
+          },
+          {
+            "tag": "Delayed",
+            "text": "You attach domains and SSL certificates yourself, so every launch slips."
+          },
+          {
+            "tag": "Dead end",
+            "text": "Chats never merge: joining their separate streams hits dead ends."
+          }
+        ]
+      },
+      "right": {
+        "who": "Fractera AGI",
+        "label": "Day-zero main line",
+        "text": "You set the destination. Agents lay the tracks themselves and launch a whole network of services in one ecosystem.",
+        "hub": "Main hub",
+        "here": "You are here",
+        "stations": [
+          "crm.domain",
+          "ai-support.domain",
+          "shop.domain",
+          "next.domain"
+        ],
+        "ring": {
+          "name": "Infinite AGI loop",
+          "stations": [
+            "AGI CRM",
+            "AGI support",
+            "AGI shops",
+            "AGI next"
+          ],
+          "free": [
+            "AGI.figma",
+            "AGI.slack",
+            "AGI.jira",
+            "AGI.notion",
+            "AGI.github",
+            "AGI.linear"
+          ]
+        },
+        "items": [
+          {
+            "tag": "Branches open",
+            "text": "Endless generation of subdomain stations: crm.domain, ai.domain."
+          },
+          {
+            "tag": "Network effect",
+            "text": "Every new feature runs on its own domain but strengthens the shared hub."
+          },
+          {
+            "tag": "Ticket paid",
+            "text": "Services, roles and databases are deployed automatically together with the code."
+          },
+          {
+            "tag": "All inclusive",
+            "text": "You don't write code. You run a transcontinental platform factory."
+          }
+        ]
+      },
+      "mapLabel": "Map: the main hub, branches to subdomain stations and transfers to the «Infinite AGI loop» ring"
+    },
     "closingTitle": "Your idea is the only thing missing",
     "closingText": "Use Claude Code, start building and describe what you want. The rest is already here.",
-    "titleSub": "Built on blockchain technology, and beyond.",
-    "openSource": "Open source",
+    "titleSub": "Transfer to zero-day infrastructure: the world of home AGI servers, smart contracts and automated Web3 orders. Claim your first-emission tokens.",
+    "titleSubHint": "Only in the first season, early users receive reputation tokens simply for launching their first service. These tokens are your mathematical weight in the ecosystem. The more you hold, the higher you rank when Web3 orders are distributed.\n\nThe reward is dynamic: the token pool shrinks with every new participant. Launch your AGI server today to claim the largest starting stack before the algorithm makes the terms harder.",
+    "titleSubHintLabel": "What are first-emission tokens?",
+    "gate": {
+      "routes": [
+        "AI agent",
+        "AGI",
+        "Web3",
+        "A2A",
+        "M2M",
+        "H2A"
+      ],
+      "ask": "What does it all mean?",
+      "answer": "Explore a real chat example",
+      "answerMobile": "Explore the chat below",
+      "label": "Go to the agents chat",
+      "longWay": "usually a long way",
+      "exitTime": "3 min"
+    },
+    "titleMark": "you're invited",
+    "openSource": "*Open-source* *AI* agent framework for *Web3* development",
     "outcomes": [
       {
         "name": "Agent",
@@ -106,7 +243,7 @@
       "when": "Now boarding",
       "connections": "Connections",
       "included": "Included in every ticket",
-      "closing": "Your adventure in the world of AGI solutions starts now"
+      "closing": "A decentralized development pipeline: from a text prompt to a Web3 release"
     },
     "closingImage": {
       "src": "/images/landing/agi-journey.jpg",
@@ -116,16 +253,114 @@
       "label": "AGI network, live",
       "items": [
         {
+          "side": "right",
+          "who": "Anna",
+          "text": "Hello. I am opening a hair salon called «Strand» on Garden Street. I heard a website can now be made completely automatically?",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Fractera agent",
+          "text": "Hello, Anna! This is the Fractera agent. That is right — it takes a couple of simple steps.",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Fractera agent",
+          "text": "Install Claude for your computer: https://claude.com/download. Working with AI needs a subscription — the Pro plan at $20 a month will do, and it includes Claude Code.",
+          "contract": "h2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "Installed and signed in. What next?",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Fractera agent",
+          "text": "Your project will live on GitHub. Create a free account there, open https://github.com/fractera/agi and press Fork — all the project files land in your GitHub. Copy the address of your copy.",
+          "contract": "h2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "Done, copied it.",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Fractera agent",
+          "text": "In Claude, open the Code tab, start a new chat and choose a folder for the project. Paste the link and write: «launch this». The agent reads the instructions and in a few minutes brings up your own server on this computer.",
+          "contract": "h2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "It installed everything, checked that the site works and asked whether to put it on the internet. I said yes — here is the link: https://strand-garden.trycloudflare.com",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Fractera agent",
+          "text": "Great, your project is running! Right now your own computer is the server. This address is temporary — your own domain will make it permanent, and with it the salon pages stay open at all times, even while the computer is off. The services — booking, the client base, the assistant — need the computer switched on. That is enough to start with, and when you need it we will move you to a real server (VPS). You can close this window: from here on your own agent, the lead orchestrator agent, takes over. Most of the time you will talk to it in Telegram, and it carries out your commands.",
+          "contract": "h2a"
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "text": "The «Strand» project is handed over to the lead orchestrator agent on your server.",
+          "contract": "a2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "Hi! Please make a website for my hair salon. Here is the description I prepared.",
+          "contract": "h2a",
+          "attachments": [
+            {
+              "filename": "Salon hall.jpg",
+              "mediaType": "image/jpeg"
+            },
+            {
+              "filename": "Stylists at work.jpg",
+              "mediaType": "image/jpeg"
+            },
+            {
+              "filename": "About the Strand salon.pdf",
+              "mediaType": "application/pdf"
+            }
+          ]
+        },
+        {
           "side": "left",
           "who": "Lead orchestrator agent",
-          "contract": "m2m",
-          "text": "New project. Anna is opening «Strand», a hair salon on Garden Street. Assembling a team of agents."
+          "text": "Thank you for the detailed description. I will need a little time. Meanwhile, think about which extra services you need.",
+          "contract": "h2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "How much will it cost?",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "text": "It is free: we build it on your server with the Claude Code agent. You can change it as often as you like — it is a simple service, and it needs no outside solutions.",
+          "contract": "h2a"
         },
         {
           "side": "right",
           "who": "Anna",
           "contract": "h2a",
-          "text": "Hello. I need online booking, a client base and an assistant that answers when the salon is closed."
+          "text": "I need online booking, a client base and an assistant that answers when the salon is closed."
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "contract": "m2m",
+          "text": "New project. Anna is opening «Strand», a hair salon on Garden Street. Assembling a team of agents."
         },
         {
           "side": "left",
@@ -292,6 +527,18 @@
           "text": "Locked until acceptance: 80 USDT (booking), 40 USDT (CRM), 30 USDT (AI consultant)."
         },
         {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "text": "Anna, the agent of your home page reports that the website is finished. Please check whether everything suits you.",
+          "contract": "h2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "Everything looks exactly as I imagined it and described in the document. Nothing to add for now.",
+          "contract": "h2a"
+        },
+        {
           "side": "right",
           "who": "Booking agent",
           "contract": "m2m",
@@ -440,6 +687,36 @@
           "text": "Three bookings for tomorrow already. It was faster than choosing paint for the walls."
         },
         {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "text": "Anna, the site still lives on a temporary address. I suggest buying your own domain — say, strand-salon.com — and moving the project to it: the address becomes permanent and easy for clients to remember.",
+          "contract": "h2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "Fine, give me the link.",
+          "contract": "h2a"
+        },
+        {
+          "side": "left",
+          "who": "Lead orchestrator agent",
+          "text": "Here is your server page «Domain and hosting → Domain activation»: https://strand-garden.trycloudflare.com/en/architect/hosting/domain. Five steps: buy the domain, add it to Cloudflare, give the node a key — I do the rest.",
+          "contract": "h2a"
+        },
+        {
+          "side": "system",
+          "who": "System",
+          "text": "The domain strand-salon.com is connected to the «Strand» project.",
+          "contract": "a2a"
+        },
+        {
+          "side": "right",
+          "who": "Anna",
+          "text": "That was so easy! Now the name of my salon and the name of my domain are the same.",
+          "contract": "h2a"
+        },
+        {
           "side": "right",
           "who": "Anna",
           "contract": "h2a",
@@ -509,9 +786,75 @@
         "h2h": "person and person through web3"
       },
       "endCta": {
-        "label": "Add new features",
-        "href": "/en/architect/build/terminal"
+        "label": "Ask the information desk",
+        "href": "#help-desk"
       }
+    },
+    "route": {
+      "label": "Route destination",
+      "value": "Web3 release"
+    },
+    "routeBuilt": {
+      "title": "Route built",
+      "from": {
+        "label": "Departure",
+        "station": "Vibe Coding station"
+      },
+      "via": {
+        "label": "Transfer",
+        "station": "Zero-day infrastructure",
+        "go": {
+          "label": "Go",
+          "aria": "Press — open the subscription page"
+        }
+      },
+      "to": {
+        "label": "Destination",
+        "station": "Your AI corporation"
+      }
+    },
+    "helpDesk": {
+      "title": "Information desk",
+      "hours": "Open 24 hours",
+      "who": "Information desk",
+      "you": "You",
+      "greeting": "Hello! Ask about the journey to your own AI corporation — or pick a question on a sign.",
+      "placeholder": "Ask about the journey…",
+      "send": "Send",
+      "mic": "Voice input",
+      "questions": [
+        "Fare",
+        "Luggage",
+        "Crossing the border",
+        "Refund guarantee",
+        "Traveller's kit",
+        "Using the autopilot"
+      ],
+      "departure": {
+        "label": "Departure",
+        "question": "I want to set off. Walk me through the whole launch, step by step.",
+        "answer": "The launch, step by step:\n1. Install Claude for desktop — https://claude.com/download — and take the Pro plan at $20 a month: Claude Code is included.\n2. Create a free GitHub account, open https://github.com/fractera/agi, press Fork and copy the address of your copy.\n3. In Claude open the Code tab, start a new chat, choose a folder for the project, paste the link and write «launch this».\n4. The agent installs the node, checks that the site works on your computer and asks whether to put it on the internet; on a yes it gives you a temporary Cloudflare address.\n5. From then on your own lead orchestrator agent works with you, mostly in Telegram.\n6. Later you buy your own domain and connect it on the node page «Domain and hosting → Domain activation».\nStart now: open https://github.com/fractera/agi and press Fork."
+      },
+      "thinking": "Checking the timetable…",
+      "limit": "Many questions in a row — the desk answers up to 40 times an hour per address. Please come back a little later.",
+      "closed": "The desk is closed right now: the computer serving this site is offline. Please look in later.",
+      "transfer": {
+        "label": "Transfers en route",
+        "question": "What transfers are there en route? How does the project grow and get new capabilities?",
+        "answer": "The project grows by elements: the site, sign-in, data, design, blocks and whatever you add are separate elements, each with its own agent. A new element is born from the template with «Create AGI ITEM» on your node, and new features you order from the lead orchestrator agent in the chat or in Telegram."
+      },
+      "github": {
+        "label": "Fractera repository on GitHub",
+        "href": "https://github.com/fractera/agi"
+      },
+      "answers": [
+        "The Fractera node itself is open and free. You pay only for Claude Pro — $20 a month, Claude Code included — and, if you want, for your own domain at a registrar. The Cloudflare tunnel and the copy of your pages run on the free plan, and your computer is the server; a rented server (VPS) comes later, only if you want it.",
+        "Texts, photos, documents and the description of your business you simply hand to the agent in the chat. All the data lives on your own computer.",
+        "People see the site in every language you choose. Search engines get English and your default language; you open the other languages to them yourself, one by one.",
+        "The code is open and lives with you: if Fractera disappeared tomorrow, nothing of yours would break. You can cancel the Claude subscription with Anthropic at any time.",
+        "A computer, Claude for desktop on the Pro plan and a free GitHub account. For a permanent address: your own domain and a free Cloudflare account.",
+        "The agents of your elements work in the terminal and in Telegram, a watchdog restarts the site by itself, and the node starts on its own when the computer is switched on. With your own domain the public pages stay visible even while the computer is off."
+      ]
     }
   }
 }
