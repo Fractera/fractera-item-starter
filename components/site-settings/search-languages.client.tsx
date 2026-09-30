@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react"
 import { Loader2, Lock, LockOpen } from "lucide-react"
 import { toast } from "./toast"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { H3, P, Small } from "@/components/ui/typography"
 import { AdviceNote } from "./advice-note"
@@ -26,6 +26,7 @@ export function SearchLanguages({
   defaultLang,
   initialUnlocked,
   builtUnlocked,
+  deployHref,
   w,
 }: {
   catalogue: readonly LangRow[]
@@ -36,6 +37,8 @@ export function SearchLanguages({
   initialUnlocked: readonly string[]
   /** С каким набором сайт собран (`NEXT_PUBLIC_INDEXED_LANGUAGES`). */
   builtUnlocked: readonly string[]
+  /** 340-4: страница «Развёртывания» ЭТОГО элемента в ядре (Предпросмотр · Принять · Развернуть). */
+  deployHref?: string
   w: SearchLanguagesWords
 }) {
   const always = useMemo(() => supported.filter((l) => l === "en" || l === defaultLang), [supported, defaultLang])
@@ -159,6 +162,15 @@ export function SearchLanguages({
       <div data-block="sl34h" data-search-rebuild={pending ? "pending" : "clean"} className="flex flex-col gap-1">
         <P className="text-[length:var(--fs-body)] font-medium">{pending ? w.pendingTitle : w.clean}</P>
         {pending && <Small className="max-w-2xl">{w.pending}</Small>}
+        {/* 340-4: развёртывание запускает человек на странице элемента в ядре (закон 337) — туда и ведёт кнопка. */}
+        {pending && deployHref && (
+          <div data-block="sl34i" className="mt-2 flex max-w-2xl flex-col gap-2">
+            <Small className="text-foreground">{w.deployNote}</Small>
+            <a href={deployHref} data-start-deploy className={buttonVariants({ className: "h-10 w-fit" })}>
+              {w.deploy}
+            </a>
+          </div>
+        )}
       </div>
     </section>
   )

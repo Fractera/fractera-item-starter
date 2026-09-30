@@ -18,11 +18,12 @@ export type LanguagesIslandProps = {
   builtUnlocked: string[]
   ui: GroupsUi
   search: SearchLanguagesWords
+  deployHref?: string
   words: AccessWords
   loginHref?: string
 }
 
-export function LanguagesIsland({ catalogue, built, builtDefault, builtUnlocked, ui, search, words, loginHref }: LanguagesIslandProps) {
+export function LanguagesIsland({ catalogue, built, builtDefault, builtUnlocked, ui, search, deployHref, words, loginHref }: LanguagesIslandProps) {
   const [access, setAccess] = useState<Access>('loading')
   const [saved, setSaved] = useState<{ supported: string[]; default: string; indexed: string[] } | null>(null)
   useEffect(() => {
@@ -36,5 +37,5 @@ export function LanguagesIsland({ catalogue, built, builtDefault, builtUnlocked,
     })
   }, [built, builtDefault, builtUnlocked])
   if (access !== 'ok' || !saved) return <AccessNotice access={access} words={words} loginHref={loginHref} />
-  return <LanguagesEditor catalogue={catalogue} initial={saved.supported} initialDefault={saved.default} built={built} ui={ui} search={{ w: search, initialUnlocked: saved.indexed, builtUnlocked }} />
+  return <LanguagesEditor catalogue={catalogue} initial={saved.supported} initialDefault={saved.default} built={built} ui={ui} search={{ w: search, initialUnlocked: saved.indexed, builtUnlocked, deployHref }} />
 }

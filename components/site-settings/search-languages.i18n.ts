@@ -28,6 +28,10 @@ export type SearchLanguagesWords = {
   pendingTitle: string
   pending: string
   clean: string
+  deploy: string
+  deployNote: string
+  toDeployments: string
+  closeToast: string
 }
 
 const en: SearchLanguagesWords = {
@@ -55,6 +59,11 @@ const en: SearchLanguagesWords = {
   pendingTitle: "Waiting for deployment",
   pending: "The saved set differs from the one the site is built with. The change reaches every published page after a new deployment.",
   clean: "The site is built with this set.",
+  deploy: "Start a new deployment",
+  deployNote:
+    "The deployment changes the settings of every published page: robots tags, the sitemap and the map of alternate languages. It takes about as long as a regular build of this element — usually a few minutes. The site keeps working meanwhile.",
+  toDeployments: "Open Deployments",
+  closeToast: "Close",
 }
 
 const ru: SearchLanguagesWords = {
@@ -82,6 +91,11 @@ const ru: SearchLanguagesWords = {
   pendingTitle: "Ждёт развёртывания",
   pending: "Сохранённый набор отличается от того, с которым собран сайт. Изменение дойдёт до всех опубликованных страниц после нового развёртывания.",
   clean: "Сайт собран с этим набором.",
+  deploy: "Запустить новое развёртывание",
+  deployNote:
+    "Развёртывание меняет настройки всех опубликованных страниц: теги для роботов, карту сайта и карту альтернативных языков. Это займёт примерно столько же, сколько обычная сборка элемента, — обычно несколько минут. Сайт всё это время работает.",
+  toDeployments: "К развёртываниям",
+  closeToast: "Закрыть",
 }
 
 const DICT: Record<string, SearchLanguagesWords> = { en, ru }

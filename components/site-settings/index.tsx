@@ -6,6 +6,8 @@ import { searchLanguagesWords } from "./search-languages.i18n"
 import { siteSettingsWords } from "./site-settings.i18n"
 import { ALL_LANGUAGE_METADATA } from "@/lib/site-settings/language-metadata"
 import { linkOn } from "@/lib/own-site"
+import { ownId } from "@/lib/own-id"
+import { SettingsToaster } from "./toast"
 
 // СТРАНИЦА «НАСТРОЙКИ САЙТА» ЭЛЕМЕНТА (шаги 324-8, 324-9). Копия редактора CONFIG (группы basics · seo · metaMedia и
 // языки), адаптированная под один элемент: островки ходят в дверь элемента `/api/settings/app`, которая пишет его
@@ -26,6 +28,16 @@ function builtUnlocked(): string[] {
   return (process.env.NEXT_PUBLIC_INDEXED_LANGUAGES ?? "").split(",").map((s) => s.trim()).filter(Boolean)
 }
 
+/**
+ * Страница «Развёртывания» этого элемента в ядре (закон 337: человека ведут на страницу ЭЛЕМЕНТА, не на доску ядра).
+ * Нет адреса ядра или имени — кнопки нет: ссылка в никуда хуже её отсутствия.
+ */
+function deploymentsHref(lang: string): string | undefined {
+  const core = (process.env.ARCHITECT_URL ?? "").trim().replace(/\/+$/, "")
+  const id = ownId()
+  return core && id ? `${core}/${lang}/architect/${id}/build/deployments` : undefined
+}
+
 export function SiteSettings({ lang }: { lang: string }) {
   const w = siteSettingsWords(lang)
   const { langs, def } = builtLanguages()
@@ -33,6 +45,8 @@ export function SiteSettings({ lang }: { lang: string }) {
     .map((m) => ({ code: m.code, flag: m.flag, nativeName: m.nativeName, englishName: m.englishName, tier: m.aiTier }))
     .sort((a, b) => a.englishName.localeCompare(b.englishName))
   const linked = linkOn("config")
+  const deployHref = deploymentsHref(lang)
+  const sw = searchLanguagesWords(lang)
   return (
     <div data-block="aeyz7" className="flex flex-col gap-8" data-site-settings={linked ? "linked" : "own"}>
       <p data-block="kf3nt" className={linked ? "rounded-md border border-warning/50 bg-warning/10 px-3 py-2 text-sm text-foreground" : "text-sm text-muted-foreground"}>
@@ -43,8 +57,10 @@ export function SiteSettings({ lang }: { lang: string }) {
       ))}
       <section data-block="a1did" className="flex flex-col gap-3" aria-label={w.languagesTitle}>
         <p data-block="dqvkk" className="text-sm text-muted-foreground">{w.languagesNote}</p>
-        <LanguagesIsland catalogue={catalogue} built={langs} builtDefault={def} builtUnlocked={builtUnlocked()} ui={groupsUi(lang)} search={searchLanguagesWords(lang)} words={w.access} />
+        <LanguagesIsland catalogue={catalogue} built={langs} builtDefault={def} builtUnlocked={builtUnlocked()} ui={groupsUi(lang)} search={sw} deployHref={deployHref} words={w.access} />
       </section>
+      {/* 340-4: тостер «Настроек сайта» не был поставлен вовсе — сообщения «Сохранено» уходили в пустоту. */}
+      <SettingsToaster deployHref={deployHref} deployLabel={sw.toDeployments} closeLabel={sw.closeToast} />
     </div>
   )
 }

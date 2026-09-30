@@ -108,7 +108,7 @@ export function LanguagesEditor({
   built: readonly string[]
   ui: GroupsUi
   /** 340-3: блок «Языки для поисковых систем» под списком. */
-  search?: { w: SearchLanguagesWords; initialUnlocked: readonly string[]; builtUnlocked: readonly string[] }
+  search?: { w: SearchLanguagesWords; initialUnlocked: readonly string[]; builtUnlocked: readonly string[]; deployHref?: string }
 }) {
   const t = ui.langs
   const [selected, setSelected] = useState<string[]>(() => [...initial])
@@ -374,6 +374,7 @@ export function LanguagesEditor({
               defaultLang={savedDef}
               initialUnlocked={search.initialUnlocked}
               builtUnlocked={search.builtUnlocked}
+              deployHref={search.deployHref}
               w={search.w}
             />
           </>
