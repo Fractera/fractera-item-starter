@@ -17,6 +17,7 @@ import { Walkers } from "./walkers.client"
 import { VersusTabs } from "./versus-tabs.client"
 import { PortalStation } from "./portal-station.client"
 import { HelpDesk } from "./help-desk.client"
+import { WaitingRoom } from "./waiting-room"
 import { voiceStrings } from "@/lib/i18n/voice-field.i18n"
 
 // Штрихкод корешка билета: постоянный рисунок (ширины полос и промежутков), а не код чего-либо.
@@ -201,6 +202,23 @@ export function LandingAgent({ lang }: { lang: string }) {
           <p data-block="selaf" className={s.lead}>{hero.description}</p>
         </div>
       </section>
+
+      {/* Зал ожидания (владелец 2026-10-01): под табло, над «Оркестрацией AI-агентов…». Слова — `landing.waiting`. */}
+      {x.waiting && (
+        <section data-block="r5g32" className={s.waiting}>
+          <div data-block="v3rdu" className={s.wrap}>
+            {/* Владелец 2026-10-01: «текст зал ожидания оформи в виде таблички висящей на цепочке» — цепочки как у жёлтой вывески. */}
+            <div data-block="w8sgn" className={s.waitingSign}>
+              <span className={s.gateRods} aria-hidden="true" />
+              <div data-block="w8plt" className={s.waitingPlate}>
+                <h2 data-block="tcd2c" className={s.waitingTitle}>{x.waiting.title}</h2>
+                <p data-block="j17ba" className={s.waitingText}>{x.waiting.text}</p>
+              </div>
+            </div>
+            <WaitingRoom on={x.waiting.on} off={x.waiting.off} tv={x.waiting.tv} scene={x.waiting.scene} />
+          </div>
+        </section>
+      )}
 
       <section data-block="n4m2k" className={s.poster}>
         <div data-block="b2qaq" className={s.wrap}>

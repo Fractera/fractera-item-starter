@@ -855,6 +855,14 @@
         "A computer, Claude for desktop on the Pro plan and a free GitHub account. For a permanent address: your own domain and a free Cloudflare account.",
         "The agents of your elements work in the terminal and in Telegram, a watchdog restarts the site by itself, and the node starts on its own when the computer is switched on. With your own domain the public pages stay visible even while the computer is off."
       ]
+    },
+    "waiting": {
+      "title": "Waiting room",
+      "text": "Learn more about your journey",
+      "scene": "A station waiting room: an armchair by a draped window, a station clock and an old valve TV",
+      "tv": "Valve TV",
+      "on": "Turn the TV on",
+      "off": "Turn the TV off"
     }
   }
 }
