@@ -634,6 +634,9 @@
 }
 .gateTime { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--text); font-size: 1rem; font-weight: 700; white-space: nowrap; }
 .gateWords { flex: 1; min-width: 0; }
+/* Владелец 2026-10-01 (телефон): «стрелка вместе с надписью 3 минуты в пути по правому краю». Перенесённый на свою строку блок
+   занимал ширину содержимого — растягиваться было некуда; теперь он берёт всю строку, время и стрелка уходят вправо. */
+.gateExit { flex: 1 1 auto; }
 @media (max-width: 639px) { .gateWalk { display: none; } }
 
 /* «Пересадки» почти на линии расписания (владелец 2026-09-30); расстояние от заголовка до линии прежнее: 0.4rem + 2rem = 2.1rem + 0.3rem. */

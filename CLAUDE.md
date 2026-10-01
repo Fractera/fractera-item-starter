@@ -205,7 +205,8 @@ or tell them to rebuild anything themselves — the element's own page is where 
   to see it working · `path` — the page where the change shows (`/about`, `""` for the home page; for logic or an API, the page
   where its effect is visible) · `anchor` — the `data-block` / `id` of the changed block, `""` if none. The core takes the report
   only when the file changed in the previewed commit: «Open the preview» then lands on `path#anchor` with `?report=<commit>`, and
-  the site shows the report in a window (only on this machine — `127.0.0.1` / `localhost`; the live site answers 404).
+  the site shows the report in a window (only on this machine — `127.0.0.1` / `localhost`; the live site answers 404); closing
+  the window lands the page on the anchor block (by `id` or `data-block`) — so give the changed block a `data-block` if it has none.
   A commit without a fresh report previews without one. Never put secrets or other people's data into the report.
 
 ## Finding a page someone talks about

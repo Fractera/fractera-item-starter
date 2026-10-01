@@ -113,7 +113,7 @@ export function LandingAgent({ lang }: { lang: string }) {
               под первым экраном, правая часть ровно под колонкой чата, стрелка вверх. Телефон: между заголовками и чатом, стрелка
               вниз, короче. Табличка — ссылка на чат. */}
           {x.gate && x.chat && (
-            <a href="#agent-chat" className={s.gate} title={x.gate.label}>
+            <a data-block="g8x2k" href="#agent-chat" className={s.gate} title={x.gate.label}>
               <span className={s.gateRods} aria-hidden="true" />
               <span className={s.gateBar}>
                 <span className={s.gateRoutes}>
