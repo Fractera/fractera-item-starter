@@ -1068,6 +1068,7 @@
 .chairLeg { stroke: var(--ink); stroke-width: 8; stroke-linecap: round; }
 
 .roomTv { position: absolute; left: 62%; top: 15%; width: 27%; }
+.roomMobile { display: none; }
 .tv {
   display: flex; flex-direction: column; align-items: center; gap: 0.4rem; width: 100%;
   padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; font: inherit;
@@ -1097,8 +1098,9 @@
 @keyframes tvShow { from { opacity: 0; transform: scaleY(0.02); transform-origin: 50% 50%; transform-box: fill-box; } to { opacity: 1; transform: none; } }
 @media (max-width: 640px) {
   .waiting { padding: 3rem 0 2rem; }
-  .roomTv { left: 58%; top: 8%; width: 36%; }
-  .tvCaption { font-size: 0.85rem; padding: 0.3rem 0.6rem; }
+  /* Владелец 2026-10-01: на узком экране только телевизор по центру, с play; кресла, окна, часов и кнопки нет. */
+  .roomSvg, .roomTv { display: none; }
+  .roomMobile { display: block; width: min(16rem, 70%); margin: 0 auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .tvNoise, .tvBars, .tvPlay { animation: none; }

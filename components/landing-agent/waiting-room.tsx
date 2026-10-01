@@ -1,6 +1,7 @@
 import s from "./landing-agent.module.css"
 import { TvSet } from "./tv-set.client"
 import { ClockHands } from "./clock-hands.client"
+import { TvDrawing } from "./tv-drawing"
 
 // ЗАЛ ОЖИДАНИЯ (владелец 2026-10-01): «изобразить ожидание … схематическое плоское кресло слева, окно и занавеска, убранная книзу и
 // развёрнутая сверху (асимметричная драпировка гардины с кокилье), справа телевизор на ножках, старый ламповый». Домысел агента в мире
@@ -47,6 +48,11 @@ export function WaitingRoom({ on, off, tv, scene }: { on: string; off: string; t
       </svg>
       <div data-block="cycgu" className={s.roomTv}>
         <TvSet on={on} off={off} label={tv} />
+      </div>
+      {/* Узкий экран (владелец 2026-10-01): «диван и окно убери, поставь телевизор в центр, убери кнопку включить, пусть на нём
+          всегда горит иконка YouTube с самого начала». Сцена выше скрыта стилем, здесь — неподвижный телевизор с play от сервера. */}
+      <div data-block="tvmob" className={s.roomMobile} role="img" aria-label={tv}>
+        <TvDrawing uid="tvm" phase="play" />
       </div>
     </div>
   )
