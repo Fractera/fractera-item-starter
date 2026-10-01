@@ -30,6 +30,8 @@ import { SignInNotice, SIGN_IN_TOASTER } from "@/components/auth/sign-in-notice.
 import { signInNoticeStrings } from "@/components/auth/sign-in-notice.i18n";
 import { BlockHighlight } from "@/components/block-highlight/block-highlight.client";
 import { blockHighlightWords } from "@/components/block-highlight/block-highlight.i18n";
+import { TaskReport } from "@/components/task-report/task-report.client";
+import { taskReportWords } from "@/components/task-report/task-report.i18n";
 
 // Root layout for the localized public surface (step 131). This zone OWNS <html>/
 // <body> — the language comes from the [lang] route param (known at build), NOT from
@@ -212,6 +214,8 @@ export default async function LangLayout({
             <InstallPrompt strings={installUi(lang)} />
             {/* 317-3: подсветка блоков — спит, пока Preview ядра не включит её сообщением (только свой источник). */}
             <BlockHighlight words={blockHighlightWords(lang)} />
+            {/* 356-2: окно отчёта о задаче — только ?report= на этой машине (предпросмотр); иначе ничего не рисует. */}
+            <TaskReport words={taskReportWords(lang)} />
           </DrawerProvider>
         </ThemeProvider>
       </body>
