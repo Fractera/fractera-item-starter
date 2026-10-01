@@ -555,7 +555,9 @@
 .gateIcon { width: 2.4rem; height: 2.4rem; margin-right: 0.8rem; }
 .gateRoute { padding: 0 0.7rem; font-size: 1.2rem; line-height: 1; white-space: nowrap; border-left: 2px solid color-mix(in oklab, var(--ink) 35%, transparent); }
 .gateIcon + .gateRoute { padding-left: 0; border-left: 0; }
-.gateRoute:nth-child(n + 5) { display: none; }
+/* Владелец 2026-10-01: «сейчас их слишком мало … смело можешь добавить ещё две а2а, м2м» — на узком экране видны пять маршрутов
+   (AI agent, AGI, Web3, A2A, M2M), прячется только шестой. Первый ребёнок ряда — иконка, поэтому граница n + 7. */
+.gateRoute:nth-child(n + 7) { display: none; }
 .gateExit { display: flex; align-items: center; gap: 0.75rem; }
 .gateArrow { width: 2.4rem; height: 2.4rem; transition: transform 0.3s var(--ease); }
 .gateArrow svg { width: 1.5rem; height: 1.5rem; }
@@ -574,7 +576,7 @@
   }
   .gateBar { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 3rem; padding: 0.7rem 1rem 0.7rem 0.7rem; }
   .gateRoute { font-size: 1.4rem; padding: 0 0.9rem; }
-  .gateRoute:nth-child(n + 5) { display: inline; }
+  .gateRoute:nth-child(n + 7) { display: inline; }
   .gateArrow { width: 3rem; height: 3rem; }
   .gateArrow svg { width: 1.8rem; height: 1.8rem; }
   .gateUp { display: block; }
