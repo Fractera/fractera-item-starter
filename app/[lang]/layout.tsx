@@ -31,6 +31,7 @@ import { signInNoticeStrings } from "@/components/auth/sign-in-notice.i18n";
 import { BlockHighlight } from "@/components/block-highlight/block-highlight.client";
 import { blockHighlightWords } from "@/components/block-highlight/block-highlight.i18n";
 import { TaskReport } from "@/components/task-report/task-report.client";
+import { appDialogUi } from "@/components/dialog/app-dialog.i18n";
 import { taskReportWords } from "@/components/task-report/task-report.i18n";
 
 // Root layout for the localized public surface (step 131). This zone OWNS <html>/
@@ -215,7 +216,7 @@ export default async function LangLayout({
             {/* 317-3: подсветка блоков — спит, пока Preview ядра не включит её сообщением (только свой источник). */}
             <BlockHighlight words={blockHighlightWords(lang)} />
             {/* 356-2: окно отчёта о задаче — только ?report= на этой машине (предпросмотр); иначе ничего не рисует. */}
-            <TaskReport words={taskReportWords(lang)} />
+            <TaskReport words={taskReportWords(lang)} dialogUi={appDialogUi(lang)} />
           </DrawerProvider>
         </ThemeProvider>
       </body>

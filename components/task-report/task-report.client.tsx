@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { AppDialog } from "@/components/dialog/app-dialog.client"
+import type { AppDialogUi } from "@/components/dialog/app-dialog.i18n"
 import type { TaskReportWords } from "./task-report.i18n"
 
 // ОКНО ОТЧЁТА О ЗАДАЧЕ (узел, шаг 356-2). Слово владельца 2026-10-01: «…&report-modal=… перехват такого параметра и вывод на окно …
@@ -10,7 +11,7 @@ import type { TaskReportWords } from "./task-report.i18n"
 // ничего не рисует — статике и поиску не мешает. Закрытие убирает `report` из адреса, якорь и прочие параметры остаются.
 type Report = { task: string; done?: string[]; check?: string[] }
 
-export function TaskReport({ words }: { words: TaskReportWords }) {
+export function TaskReport({ words, dialogUi }: { words: TaskReportWords; dialogUi: AppDialogUi }) {
   const [report, setReport] = useState<Report | null | "missing">(null)
 
   useEffect(() => {
@@ -32,29 +33,29 @@ export function TaskReport({ words }: { words: TaskReportWords }) {
 
   if (report === null) return null
   return (
-    <Dialog open onOpenChange={(o) => { if (!o) close() }}>
-      <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg" data-task-report>
-        <DialogHeader>
-          <DialogTitle>{words.title}</DialogTitle>
-          <DialogDescription>{report === "missing" ? words.missing : report.task}</DialogDescription>
-        </DialogHeader>
-        {report !== "missing" && (
-          <div className="flex flex-col gap-4 text-sm">
-            {report.done && report.done.length > 0 && (
-              <section className="flex flex-col gap-1.5">
-                <p className="font-semibold text-foreground">{words.done}</p>
-                <ul className="list-disc pl-5 text-muted-foreground">{report.done.map((d) => <li key={d}>{d}</li>)}</ul>
-              </section>
-            )}
-            {report.check && report.check.length > 0 && (
-              <section className="flex flex-col gap-1.5">
-                <p className="font-semibold text-foreground">{words.check}</p>
-                <ol className="list-decimal pl-5 text-muted-foreground">{report.check.map((c) => <li key={c}>{c}</li>)}</ol>
-              </section>
-            )}
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
+    <AppDialog
+      open
+      onOpenChange={(o) => { if (!o) close() }}
+      title={words.title}
+      description={report === "missing" ? words.missing : report.task}
+      ui={dialogUi}
+    >
+      {report !== "missing" && (
+        <div className="flex flex-col gap-4 text-sm" data-task-report>
+          {report.done && report.done.length > 0 && (
+            <section className="flex flex-col gap-1.5">
+              <p className="font-semibold text-foreground">{words.done}</p>
+              <ul className="list-disc pl-5 text-muted-foreground">{report.done.map((d) => <li key={d}>{d}</li>)}</ul>
+            </section>
+          )}
+          {report.check && report.check.length > 0 && (
+            <section className="flex flex-col gap-1.5">
+              <p className="font-semibold text-foreground">{words.check}</p>
+              <ol className="list-decimal pl-5 text-muted-foreground">{report.check.map((c) => <li key={c}>{c}</li>)}</ol>
+            </section>
+          )}
+        </div>
+      )}
+    </AppDialog>
   )
 }
