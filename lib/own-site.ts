@@ -1,5 +1,5 @@
 import { readFileSync } from "fs"
-import { join } from "path"
+import { basename, join } from "path"
 
 // СВОЙ АДРЕС ЭЛЕМЕНТА (шаг 324-5, решение владельца 2026-09-28: «с каким доменом по умолчанию работать: … третьего уровня
 // либо … двух уровневый»). У проекта один `url` — адрес корня, и настройки проекта (CONFIG) раздают его всем; у элемента,
@@ -39,13 +39,31 @@ export function linkOn(kind: LinkKind): boolean {
   }
 }
 
+// 🔒 394 (владелец 2026-10-05: «почини sitemap элемента roman, и не только этого, а потенциально каждого AGI ITEM»). Без
+// своего домена адресом элемента был `url` проекта — адрес КОРНЯ: карта сайта, robots, canonical и hreflang элемента на
+// `roman.<зона>` вели на `<зона>`. Теперь без `domain.json` адрес — поддомен элемента в зоне узла, то же правило, что у
+// узла (`app/api/node/preview-url`, 393): `<адрес>.<зона>`, адрес — `address.json` (переименование), иначе id = имя папки
+// данных. У узла нет своего домена — `null`, остаётся `url` проекта.
+function subdomainUrl(dir: string): string | null {
+  const file = process.env.NODE_DOMAIN_FILE?.trim()
+  if (!file) return null
+  let zone: unknown
+  try { zone = (JSON.parse(readFileSync(file, "utf8")) as { zone?: unknown }).zone } catch { return null }
+  if (typeof zone !== "string" || !/^[a-z0-9.-]+$/.test(zone)) return null
+  let address: unknown = basename(dir.replace(/[\\/]+$/, ""))
+  try {
+    const a = (JSON.parse(readFileSync(join(dir, "address.json"), "utf8")) as { address?: unknown }).address
+    if (typeof a === "string") address = a
+  } catch { /* адрес не менялся — id */ }
+  return typeof address === "string" && /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(address) ? `https://${address}.${zone}` : null
+}
+
 export function ownSiteUrl(): string | null {
   const dir = process.env.SERVICE_DATA_DIR?.trim()
   if (!dir) return null
   try {
     const url = (JSON.parse(readFileSync(join(dir, "domain.json"), "utf8")) as { url?: unknown }).url
-    return typeof url === "string" && /^https:\/\/[a-z0-9.-]+$/.test(url) ? url : null
-  } catch {
-    return null
-  }
+    if (typeof url === "string" && /^https:\/\/[a-z0-9.-]+$/.test(url)) return url
+  } catch { /* своего домена нет */ }
+  return subdomainUrl(dir)
 }

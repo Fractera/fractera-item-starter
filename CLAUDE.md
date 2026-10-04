@@ -221,7 +221,9 @@ folders on the first new page. A machine map for outside agents, if ever needed,
 
 - **Your main address is given by the node, not by settings.** When the owner connects an own domain to this element and
   picks the main address (subdomain or domain), the node writes `SERVICE_DATA_DIR/domain.json`; `lib/own-site.ts` makes
-  `getAppConfig().url` (and `seo.canonicalBase`) that address — canonical, sitemap, hreflang and og follow it. Never
+  `getAppConfig().url` (and `seo.canonicalBase`) that address — canonical, sitemap, hreflang and og follow it. Without an
+  own domain the address is your subdomain in the node's zone — `https://<address>.<zone>` (`address.json` or the data
+  folder's name, zone from `NODE_DOMAIN_FILE`; node step 394) — never the project's `url`, which is the root's. Never
   write the address into APP-CONFIG yourself: the project settings and the node would overwrite it.
 - **Links to CONFIG and Design can be off** (`SERVICE_DATA_DIR/links.json`, `linkOn()`): off, the project settings are not
   laid over this element's own `APP-CONFIG` / `PLATFORM-CONFIG` / `DESIGN-CONFIG`, and the design is not pulled. With the
