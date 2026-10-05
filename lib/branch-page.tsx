@@ -9,6 +9,7 @@ import { branchChild, branchRoot, wordsIn, type TreePage } from '@/lib/page-tree
 import { pageWidget } from '@/lib/page-widgets'
 import { ownId } from '@/lib/own-id'
 import { brand } from '@/lib/brand'
+import { ALL_ROLES, rolesThatSee } from '@/lib/roles'
 
 // СТРАНИЦЫ ВЕТКИ ИЗ ДЕРЕВА ДАННЫХ (node step 314-2). Два файла маршрута на ветку и больше ни одного: корень
 // (`<ветка>/page.tsx` → `rootPage`) и ребёнок (`<ветка>/[slug]/page.tsx` → `childRoute`). Всё остальное — данные.
@@ -38,16 +39,31 @@ function fillElementLinks(blocks: Block[]): Block[] {
   )
 }
 
-/** `{roles}` в тексте страницы — список её замка (роли из `meta.roles` + архитектор): один список, два читателя. */
-function allowedRoles(page: TreePage): string[] | null {
-  const roles = page.meta.roles
-  if (!roles || roles.length === 0) return null
-  return roles.includes('architect') ? roles : [...roles, 'architect']
+/** Публичная ли ветка: индексируется только `(publicLayer)`; остальные закрыты своим layout. */
+const isPublic = (segments: string[]) => segments[0] === '(publicLayer)'
+
+/** 402: роль папки страницы в кабинете — первая папка пути, названная именем роли (`vip-user` → `vip_user`); иначе null.
+ *  Только в `(protectedLayer)`: публичная страница с именем `user` не закрывается. */
+function folderRole(page: TreePage, segments: string[]): string | null {
+  if (segments[0] !== '(protectedLayer)') return null
+  const first = page.slug.split('/')[0].replace(/-/g, '_')
+  return (ALL_ROLES as readonly string[]).includes(first) ? first : null
 }
 
-function contentOf(page: TreePage, lang: string) {
+/** `{roles}` в тексте страницы — список её замка: роль папки и `meta.roles`, каждая со всеми наследниками (402, «роли
+ *  наследуются»), плюс архитектор. Один список, два читателя: замок и текст. Нет ни папки роли, ни `meta.roles` — замка нет. */
+function allowedRoles(page: TreePage, segments: string[]): string[] | null {
+  const own = folderRole(page, segments)
+  const base = [...(own ? [own] : []), ...(page.meta.roles ?? [])]
+  if (base.length === 0) return null
+  const set = new Set(base.flatMap(rolesThatSee))
+  set.add('architect')
+  return [...set]
+}
+
+function contentOf(page: TreePage, lang: string, segments: string[]) {
   const w = wordsIn(page, lang)
-  const roles = allowedRoles(page)?.join(', ')
+  const roles = allowedRoles(page, segments)?.join(', ')
   // `%SITE%` в тексте — имя сайта (соглашение данных; прежний каталог подставлял его сам, блок `p` из «Блоков» — нет).
   const site = brand().name
   const blocks = fillElementLinks(w.blocks).map((b) => {
@@ -75,9 +91,6 @@ function dataFile(tree: TreePage, dir: string[], lang: string): string {
   return ['app', '[lang]', ...dir, name].join('/')
 }
 
-/** Публичная ли ветка: индексируется только `(publicLayer)`; остальные закрыты своим layout. */
-const isPublic = (segments: string[]) => segments[0] === '(publicLayer)'
-
 /**
  * Корень ветки: `segments` — путь папки ветки внутри `app/[lang]`, `subPath` — её адрес без языка.
  * 🔒 Данные читаются при каждой отрисовке, не при загрузке модуля: иначе правка JSON не дошла бы до сайта без перезапуска.
@@ -92,7 +105,7 @@ export function rootPage(opts: { segments: string[]; subPath: string; titleInBod
       // набор hreflang, который поисковик не учтёт (сторож: noindex-with-hreflang).
       closedBranch: !isPublic(opts.segments),
       meta: { subPath: opts.subPath, ogImage: page.meta.ogImage ?? '/og-default.png' },
-      resolve: (lang) => contentOf(page, lang),
+      resolve: (lang) => contentOf(page, lang, opts.segments),
       // 331-2: корень ветки тоже может назвать виджет в `_data/meta.json` (как ребёнок в `_pages/<slug>/meta.json`).
       afterBody: page.meta.widget ? (lang) => pageWidget(page.meta.widget as string, lang) : undefined,
       titleInBody: opts.titleInBody,
@@ -123,37 +136,47 @@ export function rootPage(opts: { segments: string[]; subPath: string; titleInBod
   return { generateMetadata, Page }
 }
 
-/** Ребёнок ветки: одна страница на все папки `<ветка>/_pages/<slug>/`. */
+/** Ребёнок ветки: одна страница на все папки `<ветка>/_pages/<slug>/`; 402 — и на `<папка роли>/<страница>` (`[...slug]`). */
+type SlugParam = string | string[]
+const slugOf = (slug: SlugParam) => (Array.isArray(slug) ? slug.join('/') : slug)
+
 export function childRoute(opts: { segments: string[]; subPath: string }) {
   function build(slug: string) {
     const page = branchChild(opts.segments, slug)
     if (!page) return null
     const root = branchRoot(...opts.segments)
+    // 402: страница внутри папки роли — в крошках между корнем ветки и страницей стоит страница роли.
+    const parentSlug = slug.includes('/') ? slug.split('/')[0] : null
+    const parent = parentSlug ? branchChild(opts.segments, parentSlug) : null
     const widget = page.meta.widget
     const factory = createContentPage({
       data: { overrides: page.overrides },
       closedBranch: !isPublic(opts.segments),
       meta: { subPath: `${opts.subPath}/${slug}`, ogImage: page.meta.ogImage ?? '/og-default.png' },
-      resolve: (lang) => contentOf(page, lang),
+      resolve: (lang) => contentOf(page, lang, opts.segments),
       afterBody: widget ? (lang) => pageWidget(widget, lang) : undefined,
       chrome: (lang, c) => {
         const crumbs: Crumb[] = []
         if (root && opts.subPath) crumbs.push({ label: wordsIn(root, lang).title, href: `/${lang}${opts.subPath}` })
+        if (parent) crumbs.push({ label: wordsIn(parent, lang).title, href: `/${lang}${opts.subPath}/${parentSlug}` })
         crumbs.push({ label: c.title })
+        if (parent) return { breadcrumbs: crumbs, backHref: `/${lang}${opts.subPath}/${parentSlug}`, backLabel: wordsIn(parent, lang).title }
         return { breadcrumbs: crumbs, backHref: `/${lang}${opts.subPath}`, backLabel: root ? wordsIn(root, lang).title : undefined }
       },
     })
     return { page, factory }
   }
 
-  async function generateMetadata({ params }: { params: Promise<{ lang: string; slug: string }> }): Promise<Metadata> {
-    const { lang, slug } = await params
+  async function generateMetadata({ params }: { params: Promise<{ lang: string; slug: SlugParam }> }): Promise<Metadata> {
+    const { lang } = await params
+    const slug = slugOf((await params).slug)
     const b = build(slug)
     return b ? b.factory.generateMetadata({ params: Promise.resolve({ lang }) }) : {}
   }
 
-  async function Page({ params }: { params: Promise<{ lang: string; slug: string }> }) {
-    const { lang, slug } = await params
+  async function Page({ params }: { params: Promise<{ lang: string; slug: SlugParam }> }) {
+    const { lang } = await params
+    const slug = slugOf((await params).slug)
     const b = build(slug)
     if (!b) notFound()
     // 330-5: ребёнок-виджет на весь экран (как корень с `widgetOnly`) — виджет рисует страницу сам.
@@ -163,7 +186,7 @@ export function childRoute(opts: { segments: string[]; subPath: string }) {
         {whole ? <main className="flex-1">{pageWidget(b.page.meta.widget as string, lang)}</main> : <b.factory.Page params={Promise.resolve({ lang })} />}
       </PageAddress>
     )
-    const allowed = allowedRoles(b.page)
+    const allowed = allowedRoles(b.page, opts.segments)
     if (!allowed) return body
     return (
       <AccessGate roles={allowed} lang={lang} ui={accessGateUi(lang)} dialogUi={appDialogUi(lang)}>
@@ -173,7 +196,7 @@ export function childRoute(opts: { segments: string[]; subPath: string }) {
   }
 
   /** Сборка детей не рисует: каждый ребёнок рисуется при первом заходе. */
-  function generateStaticParams(): { slug: string }[] {
+  function generateStaticParams(): { slug: SlugParam }[] {
     return []
   }
 

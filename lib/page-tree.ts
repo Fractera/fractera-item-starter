@@ -86,10 +86,14 @@ export function branchRoot(...segments: string[]): TreePage | null {
   return readPageDir(join(branchDir(...segments), '_data'), '')
 }
 
-/** Ребёнок ветки по адресу: `<ветка>/_pages/<slug>/`. Имя проверяется формой — путь из него собирается. */
+const PART = /^[a-z0-9][a-z0-9-]{0,80}$/
+
+/** Ребёнок ветки по адресу: `<ветка>/_pages/<slug>/`. Имя проверяется формой — путь из него собирается.
+ *  402 (владелец 2026-10-05): `slug` бывает путём в два уровня `<папка роли>/<страница>` — `account/_pages/buyer/orders/`. */
 export function branchChild(segments: string[], slug: string): TreePage | null {
-  if (!/^[a-z0-9][a-z0-9-]{0,80}$/.test(slug)) return null
-  const dir = join(branchDir(...segments), '_pages', slug)
+  const parts = slug.split('/')
+  if (parts.length > 2 || !parts.every((p) => PART.test(p))) return null
+  const dir = join(branchDir(...segments), '_pages', ...parts)
   return existsSync(dir) && statSync(dir).isDirectory() ? readPageDir(dir, slug) : null
 }
 
