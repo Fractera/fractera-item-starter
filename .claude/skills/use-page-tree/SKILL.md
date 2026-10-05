@@ -18,7 +18,8 @@ description: >
 ## The rule
 
 **A page is a folder of data. A branch has code only at its root.** Each branch is `layout.tsx` + `page.tsx` (its root)
-and one `[slug]/page.tsx` (all its children). A child lives in `<branch>/_pages/<slug>/`. `scripts/check-routes.mjs`
+and one `[slug]/page.tsx` (all its children; `[...slug]` in the protected branches). A child lives in `<branch>/_pages/<slug>/`;
+in a protected branch a folder named after a role holds that role's pages one level deeper: `_pages/<role>/<page>/`. `scripts/check-routes.mjs`
 runs first in `npm run build` and fails on any route file outside its closed list.
 
 ## Why — measured, not believed (node step 298, Next 16.2)
@@ -51,10 +52,12 @@ A production build is always the whole app; the only lever is how many route fil
 <branch>/_pages/<slug>/ru.json     { "title": "…", "description": "…", "blocks": [ … ] }
 ```
 
-- The address is the branch plus the folder: `/<lang>/account/<slug>`; for the public branch `/<lang>/<slug>`.
+- The address is the branch plus the folder: `/<lang>/account/<slug>`; for the public branch `/<lang>/<slug>`. A page of a role
+  folder: `/<lang>/account/<role>/<page>` (two levels at most).
 - `en.json` is required; every other language overrides it. A language without its file shows English.
-- `roles` (protected branches) puts a second lock on the page on top of the branch lock; the architect always passes.
-  `{roles}` inside a paragraph prints the same list the lock uses.
+- In a protected branch the lock of a page is the role of its folder with every role that inherits it (`lib/roles.ts` →
+  `ROLE_PARENTS`), plus `roles` from `meta.json`, plus the architect. A page several roles need goes into the folder of the
+  parent role — never a copy per role. `{roles}` inside a paragraph prints the same list the lock uses.
 - `widget` names a working part from `lib/page-widgets.tsx` (a table, a form); the page stays a folder of data.
 - `blocks` are kinds of the block set. A kind the set does not have → take it from the Blocks element
   (`npx shadcn add @fractera/<name>`, the address in `BLOCKS_REGISTRY_URL`), add one line to the set and to `types.ts`.

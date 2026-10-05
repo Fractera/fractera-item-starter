@@ -1,6 +1,6 @@
 # `_pages` of the admin branch — its children, as data
 
-Every folder here is one page at `/<lang>/admin/<folder name>`. There is no list of pages anywhere else:
+Every folder here is one page at `/<lang>/admin/<folder name>`. A folder named after a role also holds that role's pages: `<role>/<page>/` answers at `/<lang>/admin/<role>/<page>` and is locked by the role with every role that inherits it (node step 402; `../README.md`, «Role folders»). There is no list of pages anywhere else:
 the folder is the page, and it appears in the sitemap and in the map for agents by itself.
 
 To find a page someone talks about, search the words they used in `*/<lang>.json` of this folder.
@@ -35,4 +35,4 @@ app/[lang]/(protectedLayer)/admin/_pages/<slug>/ru.json
 
 The page answers at `/<lang>/admin/<slug>`. Block kinds — `lib/content/blocks/types.ts`; a missing kind is taken from the Blocks
 element (`npx shadcn add @fractera/<name>`).
-`roles` puts a second lock on the page on top of the branch lock; `{roles}` in a paragraph prints the same list. The architect always passes.
+`roles` adds roles to the lock of the page (inside a role folder the folder's role and its heirs are already there); `{roles}` in a paragraph prints the whole list. The architect always passes.

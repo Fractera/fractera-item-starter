@@ -59,19 +59,21 @@ root is data.
     │   │   ├── layout.tsx
     │   │   ├── page.tsx
     │   │   ├── _data/ {meta,en,ru}.json
-    │   │   ├── [slug]/page.tsx
+    │   │   ├── [...slug]/page.tsx
     │   │   ├── README.md
     │   │   └── _pages/
     │   │       ├── README.md
-    │   │       └── user/ · buyer/ · vip-user/ · subscriber-lite/ · subscriber-standard/ · subscriber-max/
+    │   │       ├── user/ · vip-user/ · subscriber-lite/ · subscriber-standard/ · subscriber-max/
+    │   │       └── buyer/            ← a role folder: the role's page and its pages
+    │   │           └── orders/       ← /<lang>/account/buyer/orders
     │   ├── staff/
-    │   │   ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
+    │   │   ├── layout.tsx · page.tsx · _data/ · [...slug]/page.tsx · README.md
     │   │   └── _pages/ manager/ · senior-manager/ · support-manager/ · delivery-manager/ · content-editor/
     │   ├── finance/
-    │   │   ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
+    │   │   ├── layout.tsx · page.tsx · _data/ · [...slug]/page.tsx · README.md
     │   │   └── _pages/ finance/
     │   └── admin/
-    │       ├── layout.tsx · page.tsx · _data/ · [slug]/page.tsx · README.md
+    │       ├── layout.tsx · page.tsx · _data/ · [...slug]/page.tsx · README.md
     │       └── _pages/ admin/ · users/ · site-settings/
     │
     └── (guestLayer)/
@@ -88,7 +90,7 @@ root is data.
 
 **How to read it.** A branch is a folder with a `layout.tsx` and a `page.tsx` at its root — the only code the branch has.
 Its children live in `_pages/<slug>/` as data (`meta.json`, `en.json`, `ru.json`) and are all served by the one `[slug]`
-route of the branch. To add a page, add a folder of data. To add a branch, ask the person first: a branch is new code,
+route of the branch (`[...slug]` in the four protected branches, where a role folder holds its pages one level deeper). To add a page, add a folder of data. To add a branch, ask the person first: a branch is new code,
 and the list of route files is closed — `scripts/check-routes.mjs` fails the build on any route file it does not know.
 
 ## Pages: static, drawn on the first visit, fresh every five minutes
@@ -149,9 +151,12 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
 
 - **Four categories, four protected branches:** `account`, `staff`, `finance`, `admin`. The `layout.tsx` at the root of a
   branch is the lock of the category: it admits the roles of that category (`lib/roles.ts` → `PROTECTED_GROUP_ROLES`).
-- **A child narrows it.** Its `meta.json` names the roles that open it; the `[slug]` template of the branch puts the
-  second lock on the page with exactly those roles. The page shows who it admits from the same list — one list, two
-  readers, so the lock and the text cannot disagree.
+- **A role folder holds the role's pages** (node step 402, owner 2026-10-05). A folder of `_pages/` named after a role
+  (`buyer`, `vip-user`) is the role's page and the folder of its pages: `_pages/buyer/orders/` → `/<lang>/account/buyer/orders`.
+  The second lock on such a page is the folder's role **with every role that inherits it** (`lib/roles.ts` → `ROLE_PARENTS`:
+  `vip_user` sees what `buyer` sees, `senior_manager` what `manager` sees) plus the architect. `meta.roles` only adds
+  roles; a folder not named after a role is locked by `meta.roles` alone. Never copy a page for two roles — put it in the
+  folder of the parent role. The page shows who it admits from the same list — one list, two readers.
 - **The architect passes every lock.** `architect` is in every category and every child by default.
 - **The guest branch signs a visitor in by itself.** No session → the site's own `/guest-in`, and the proxy sends it where a
   guest is made (the node's sign-in centre on an own domain, the sign-in service's `/api/auth/guest` elsewhere, node step

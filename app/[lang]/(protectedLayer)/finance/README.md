@@ -8,15 +8,24 @@ A branch of the element's frame (node step 314-2). Lock of the branch: the roles
 |---|---|
 | `page.tsx` | the ROOT of the branch — `/<lang>/finance`, words in `_data/{meta,en,ru}.json` |
 | `layout.tsx` | the lock of the branch |
-| `[slug]/page.tsx` | the ONE child route — draws every folder of `_pages/` |
+| `[...slug]/page.tsx` | the ONE child route — draws every folder of `_pages/` |
 | `_data/` | the words of the root: `meta.json`, `en.json` (required), `ru.json` |
-| `_pages/<slug>/` | the children — data only |
+| `_pages/<slug>/` | the children — data only; a folder named after a role holds that role's pages (`_pages/<role>/<page>/`) |
 
+
+## Role folders (node step 402)
+
+A folder of `_pages/` named after a role (`lib/roles.ts` → `ALL_ROLES`, `-` for `_`: `vip-user`) is the role's page AND
+the folder of that role's pages: `_pages/<role>/<page>/` answers at `/<lang>/finance/<role>/<page>`. Its lock is the
+folder's role with every role that inherits it (`ROLE_PARENTS`: `vip_user` sees what `buyer` sees) plus the architect;
+`meta.roles` only adds roles. Two levels at most. A folder not named after a role is locked by its `meta.roles` alone.
+A new page of a role is a folder inside the role's folder; a new role is a line in `ALL_ROLES` (and in `ROLE_PARENTS` if it
+inherits). Sample: `account/_pages/buyer/orders/`.
 
 ## The rule of the frame
 
 This element is built on Next 16.2 and grows only inside its frame (`CLAUDE.md`, section «The frame»). A branch has
-code only at its root: `layout.tsx` + `page.tsx`, and one `[slug]/page.tsx` that draws every child. **A new page is a
+code only at its root: `layout.tsx` + `page.tsx`, and one `[...slug]/page.tsx` that draws every child. **A new page is a
 folder of data in `_pages/`, never a new `page.tsx`** — the build grows with the number of route files, not pages
 (measured: 300 page files 1252 s, the same pages through one template 98 s). `scripts/check-routes.mjs` fails the build
 on any route file outside its closed list. Skill: `.claude/skills/use-page-tree`.

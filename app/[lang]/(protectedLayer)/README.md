@@ -2,13 +2,14 @@
 
 Not a route of its own: a route group. `layout.tsx` closes the whole layer to search engines. Inside — four branches, one
 per category of roles (`lib/roles.ts` → `PROTECTED_GROUP_ROLES`): `account/`, `staff/`, `finance/`, `admin/`. Each
-branch has its own lock (`<branch>/layout.tsx`) and its children narrow it with `meta.roles`. The architect passes
+branch has its own lock (`<branch>/layout.tsx`); inside, a folder named after a role holds that role's pages and locks
+them to the role and every role that inherits it (`lib/roles.ts` → `ROLE_PARENTS`, node step 402); `meta.roles` adds roles. The architect passes
 every lock.
 
 ## The rule of the frame
 
 This element is built on Next 16.2 and grows only inside its frame (`CLAUDE.md`, section «The frame»). A branch has
-code only at its root: `layout.tsx` + `page.tsx`, and one `[slug]/page.tsx` that draws every child. **A new page is a
+code only at its root: `layout.tsx` + `page.tsx`, and one `[...slug]/page.tsx` that draws every child. **A new page is a
 folder of data in `_pages/`, never a new `page.tsx`** — the build grows with the number of route files, not pages
 (measured: 300 page files 1252 s, the same pages through one template 98 s). `scripts/check-routes.mjs` fails the build
 on any route file outside its closed list. Skill: `.claude/skills/use-page-tree`.
