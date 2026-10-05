@@ -121,7 +121,7 @@ and the list of route files is closed — `scripts/check-routes.mjs` fails the b
   skill `custom-design`. The design lives in a whole-page widget; example: `components/landing-agent/`
   (the home page). **Write the chosen skill's name into `OWN-SERVICE-PROPS.json` → `designSkill`** (`impeccable`,
   `design-taste-frontend`, or `blocks` for the default) and publish it with `npm run describe:publish`: the node registry
-  carries it, and the core's library `AGI-ITEMS-CONFIG/design-skills.json` explains the name (node step 333-3). A design
+  carries it, and the core's library `AGI-ITEMS-REGISTRY/design-skills.json` explains the name (node step 333-3). A design
   skill's colours, fonts and corners are always Design tokens, never values in the widget (333-2).
 - **Page words are written and edited with two vendored skills** (node step 333): `copywriting` for new copy (headlines,
   value, calls to action), `copy-editing` for improving existing copy. Load them whenever you write or rewrite visible text
