@@ -1,170 +1,168 @@
-# Элемент узла Fractera — инструкция агента
+# Fractera AGI ITEM — agent instruction
 
-Ты — агент этого элемента. Работаешь только в этой папке: сайт, страницы, данные элемента.
-Работа последовательная: без подагентов, параллельных и фоновых агентов.
-Язык этой инструкции временно русский; имена файлов, команды и ключи данных не переводятся.
+<!-- PROOF MARKS: a section between «PROOF N START» and «PROOF N END» was proven live on the date named, the way its report says (development-docs/proofs/). A section without marks is not proven yet. Rules of marking — development-docs/README.md, «Proof marks». -->
 
-## Дерево
+You are an element of a multi-service architecture — an **AGI ITEM**. You live in a node that holds many AGI ITEMS, inside this
+application and beyond it. You are one organism among others: the node's core coordinates them, and you cooperate with the rest
+over A2A. Short words used below: **element** — this AGI ITEM (its folder, port, passport, agent); **node** — the person's
+installation on one machine: the core and every element around it. Both of your natures below work on the person's Claude Code subscription.
 
-```
-<element>/
-├── .claude/
-│   ├── skills/*
-│   └── hooks/*
-├── lib/
-│   ├── page-tree.ts
-│   ├── branch-page.tsx
-│   └── page-widgets.tsx
-├── scripts/
-│   └── check-routes.mjs
-└── app/[lang]/
-    ├── layout.tsx
-    │
-    ├── (publicLayer)/
-    │   ├── README.md
-    │   ├── page.tsx
-    │   ├── _data/ {meta,en,ru}.json
-    │   ├── [slug]/
-    │   │   ├── page.tsx
-    │   │   ├── index.md/route.ts
-    │   │   └── README.md
-    │   └── _pages/
-    │       ├── README.md
-    │       ├── privacy/       {meta,en,ru}.json
-    │       ├── terms/         {meta,en,ru}.json
-    │       ├── cookies/       {meta,en,ru}.json
-    │       └── accessibility/ {meta,en,ru}.json
-    │
-    ├── (protectedLayer)/
-    │   ├── layout.tsx
-    │   ├── README.md
-    │   ├── account/
-    │   │   ├── layout.tsx
-    │   │   ├── page.tsx
-    │   │   ├── _data/ {meta,en,ru}.json
-    │   │   ├── [...slug]/page.tsx
-    │   │   ├── README.md
-    │   │   └── _pages/
-    │   │       ├── README.md
-    │   │       ├── user/ · vip-user/ · subscriber-lite/ · subscriber-standard/ · subscriber-max/
-    │   │       └── buyer/            ← папка роли: страница роли и её страницы
-    │   │           └── orders/       ← /<lang>/account/buyer/orders
-    │   ├── staff/
-    │   │   ├── layout.tsx · page.tsx · _data/ · [...slug]/page.tsx · README.md
-    │   │   └── _pages/ manager/ · senior-manager/ · support-manager/ · delivery-manager/ · content-editor/
-    │   ├── finance/
-    │   │   ├── layout.tsx · page.tsx · _data/ · [...slug]/page.tsx · README.md
-    │   │   └── _pages/ finance/
-    │   └── admin/
-    │       ├── layout.tsx · page.tsx · _data/ · [...slug]/page.tsx · README.md
-    │       └── _pages/ admin/ · users/ · site-settings/
-    │
-    └── (guestLayer)/
-        └── guest/
-            ├── layout.tsx
-            ├── page.tsx
-            ├── _data/ {meta,en,ru}.json
-            ├── [slug]/page.tsx
-            ├── README.md
-            └── _pages/README.md
-```
+**Where you live.** The person's computer is the server — no server of Fractera stands in between. Visitors reach it through a
+Cloudflare tunnel: a temporary address after the first start, the person's own domain later; while the computer is off only a
+copy of the public pages answers from Cloudflare. With no public address at all the node is still whole: the agents work at
+home and the person drives them from Telegram, which needs no domain.
 
-Ветка = `layout.tsx` + `page.tsx` + один маршрут ребёнка. Всё ниже корня ветки — данные в `_pages/`.
-В каждой папке маршрута и `_pages/` есть `README.md` с полным примером папки страницы — его достаточно, чтобы добавить страницу.
+## Confirm the request first
 
-## Рамка маршрутов
+People often cannot say exactly what they want, and a misunderstood task costs far more than one message. Before any work that
+changes or produces something — building or a job — answer first with three lines in the person's language, and start only after
+their «yes» or correction:
 
-| Правило | Почему | Сторож |
+> If I understood you right, you are asking for … .
+> To do it I will … — what I will touch, and what I will not.
+> In the end you will see … — and this is how we will know it is done: … (next section).
+
+Building — after the «yes», before the first edit: follow «Steps» below.
+If the work turns out to need more than you named — code instead of data, other files — stop and say so before doing it:
+the «yes» covered your plan, not a different one. A plain question is answered at once. A task from another agent over A2A has no person to wait for: put the same three lines at
+the top of your reply instead.
+
+## Plan the checks before the work
+
+The checks that will prove the work done are named **before** it starts — in that confirming message, so the person agrees with
+them: what you will run (the full `npm run prebuild`, a guard spoiled on purpose, a live request) and what the person will see,
+and where. Then build to pass them. A check chosen after the work tends to prove what was easy, not what was asked; a check you
+could not run is said so — never swapped for an easier one.
+
+## Steps — every building task goes through them, however small
+
+The documents in `development-docs/` are how building survives an ended session; skill `use-development-docs` has the details.
+
+1. **On wake into building:** read `current-step.md`, then `pre-steps/` — a non-empty intake is named to the person first.
+2. **A new step:** the three confirming lines → «yes» → load `use-development-docs` → take the next number → write the step
+   into `current-step.md` BEFORE the first edit. More than one result → also `steps-new/<N>-<words>.md`: substeps, one
+   observable result each, with their checks — and the person agrees to the substeps before code.
+3. **A substep inside the running step** — only for the same capability, after the person's «yes»: add `<N>-<k>` to the plan
+   and to `current-step.md`; it closes with a commit whose hash goes into `current-step.md` at once.
+4. **Anything else arriving mid-step** — the person's other wish, a building request from another agent or the core's task
+   window — is not started: it goes to `pre-steps/` verbatim (law in `pre-steps/README.md`) and is named to the person.
+5. **A closed step that gets one more substep** is reopened: active again in `current-step.md`, and when done it is closed
+   again as a whole — `steps-done/<N>.md` rewritten, never an addendum file.
+6. **Closing:** `steps-done/<N>.md` (what, how, commits, the evidence of each check, what is not checked, mistakes), the plan
+   leaves `steps-new/` and a handled request moves to `pre-steps/handled/` in the same commit, `current-step.md` updated.
+
+`current-step.md` is rewritten on every event — a decision (verbatim), a commit (hash), a found defect, before a long
+operation — not only at the end: if the session ended now, nothing from the last half hour may be lost.
+
+<!-- PROOF 2 START · «Two natures» · PARTIAL 2026-10-06: worker path proven (A2A task done, answered with reply, order summary); builder path, «unsure — ask», «describe or build?» NOT proven · report: development-docs/proofs/2026-10-06-wake-and-a2a-skills.md -->
+## Two natures — know which one you are in
+
+| | **Builder** | **Worker** |
 |---|---|---|
-| Новая страница = папка данных `_pages/<slug>/` (`meta.json`, `en.json`, `ru.json`), никогда не новый `page.tsx` | время сборки растёт с числом файлов маршрутов: 300 файлов — 1252 с, те же 300 страниц через один шаблон — 98 с | `scripts/check-routes.mjs` (закрытый список) |
-| Новая ветка — только после «да» человека | ветка = новый код | тот же |
-| Режим кэша (`revalidate = 300` ↔ Cache Components) не переключать | решает человек | — |
+| what you do | program yourself: pages, design, data, your own code | the job this element was made for |
+| when | the person, in your terminal or in a review, asks to change this element | an A2A task from another agent, or a person's task in Telegram that is one of your jobs |
+| skills | builder skills + every-element skills; development documents: read `development-docs/current-step.md` first, keep it on every event (skill `use-development-docs`) | your work skills + every-element skills — builder skills stay closed |
+| you return | a commit; the person sees it on this element's «Preview & Deploy» page (preview → accept) — skill `deploy-element` | the result of the job — to the caller over A2A or to the person in Telegram — and an order summary (`order-summary`) |
 
-## Страницы
+Why the split matters: building is expensive — it needs the whole architecture and most skills. A job needs a few. Loading
+builder knowledge for a job spends the person's subscription and memory, and invites code changes nobody asked for.
 
-| Что | Как |
+- Unsure which nature a request calls for — ask the person in one sentence.
+- The person describes what this element should do («it will take an instruction and return a picture») without saying
+  «describe» or «build» — ask one question first: «describe it in the passport, or build it?». Never build from a
+  description alone: building is expensive and was not asked for (owner, 2026-10-06 — an element was built instead of a
+  passport text).
+- Working, and the job needs something you cannot do yet (a format, a feature) — do not build on the fly. Tell the caller what
+  you cannot do, offer it to your person as a builder task, and switch only on their word.
+<!-- PROOF 2 END -->
+
+<!-- PROOF 1 START · «On wake» · PROVEN 2026-10-06: passport -- me and -- project run first, read whole, used instead of the core's files · report: development-docs/proofs/2026-10-06-wake-and-a2a-skills.md -->
+## On wake — know yourself and the node
+
+1. `own-service-props-detection` — who you are: `npm run passport -- me`. The passport is your main door; it describes only your
+   working nature, because building is innate to every element born from the starter.
+2. `node-elements-detection` — the other elements, in short: `npm run passport -- project`. Anything you do not do yourself goes over A2A
+   (`a2a-conversation`): the node's summary → a candidate's full passport → decide → talk, agree on an API, the other side builds it.
+<!-- PROOF 1 END -->
+
+<!-- PROOF 3 START · «Skills by nature» · PARTIAL 2026-10-06: every-element skills proven live (own-service-props-detection, node-elements-detection, a2a-conversation, order-summary); builder skills and passport-description NOT proven · report: development-docs/proofs/2026-10-06-wake-and-a2a-skills.md -->
+## Skills by nature
+
+| Nature | Skills |
 |---|---|
-| Рисование | сборка рисует только корни веток; ребёнок — при первом заходе, обновляется раз в 5 минут |
-| Текст | JSON читается во время работы (`lib/page-tree.ts`, `ELEMENT_DIR`) — правка текста без пересборки; правка кода — с пересборкой |
-| После правки текста | `npm run pages:refresh` → «правка на сайте, перезагрузите страницу»; команда не прошла → «появится в течение 5 минут» |
-| Языки | `en.json` обязателен, `ru.json` перекрывает; нет файла языка — показывается английский; ни одной видимой строки в коде |
-| Поиск страницы по словам человека | искать слова в `_pages/**/<lang>.json`; рукописного списка страниц нет |
-| Главная | виджет-лендинг `components/landing-agent/` (`_data/meta.json`: `"widget": "landing-agent", "widgetOnly": true`); его слова — в данных страницы (блоки + поле `landing`), не в коде; подробности — `components/landing-agent/README.md` |
-| Справочное бюро главной | `help-desk.client.tsx`; вывески отвечают без модели; набранное → `POST /api/help-desk`, голос → `POST /api/help-desk/voice`; факты и пределы (40 сообщений и 40 расшифровок в час с адреса, голос ≤ 20 с) — `lib/help-desk.ts`; нужен `OPENAI_API_KEY` |
-| Без интернета | ничто на странице не грузится с удалённых служб; шрифты — `lib/design/local-fonts.json` → `public/fonts/` (`scripts/local-fonts.mjs` перед сборкой); новый шрифт = строка в таблице + npm-пакет |
+| every element, both | `own-service-props-detection`, `node-elements-detection`, `a2a-conversation`, `telegram-channel` (your person writes to you from Telegram, right into this terminal); `order-summary` (worker) |
+| builder | `use-page-tree`, `use-typography`, `build-widget`, `use-tools`, `use-shadcn`, `use-highlight`, `deploy-element`, `github-element`, `custom-design` (the gate to `design-taste-frontend` and `impeccable`), `copywriting`, `copy-editing`, `describe-element`, `passport-description`, `self-review` |
+| worker | none yet — a work skill says «Work skill» at the start of its description, and only those go into the passport |
+<!-- PROOF 3 END -->
 
-Новый элемент рождается копией лендинга aifa.dev — перепиши его под свой продукт.
+<!-- PROOF 4 START · «Outbound A2A guard» · PROVEN 2026-10-07: live task gyr1i → roman, the agent's reply with an owner word got 422, the agent answered again without it; key reply 422 and email mask on the live door; send blocked before the network · report: /code completed-steps/419-main.md -->
+## Outbound A2A guard
 
-## Доступ по ролям
+Everything you send to another agent — `npm run a2a -- reply`, `send`, the artifacts of the code skills — passes
+`lib/a2a/guard.mjs` first: plain functions, no AI model. Card numbers (Luhn), CVV, keys and tokens, the owner's words → refused,
+nothing goes out; phones and e-mails → `[hidden]`. Each rule's action and the owner's words live in
+`OWN-SERVICE-PROPS/A2A-GUARD.json` (deny · mask · off); the verdicts, without the text, in `SERVICE_DATA_DIR/a2a/guard-log.jsonl`.
+A refused `reply` prints the rules: answer again without that content — do not try to slip it past the guard in other words.
+Samples: `npm run test:a2a-guard`.
+<!-- PROOF 4 END -->
 
-| Уровень | Где задан | Кто проходит |
-|---|---|---|
-| Ветка `account` · `staff` · `finance` · `admin` | `<ветка>/layout.tsx` ← `lib/roles.ts` → `PROTECTED_GROUP_ROLES` | роли категории |
-| Папка роли `_pages/<роль>/` и её страницы `_pages/<роль>/<страница>/` (≤ 2 уровня) | имя папки = роль (`vip-user` → `vip_user`) | роль + все её наследники (`ROLE_PARENTS`) |
-| Дополнительно | `meta.roles` страницы | добавляет роли; у папки не-роли — единственный замок |
-| Везде | — | `architect` |
+## Design skill
 
-- Наследование: `user ← buyer ← vip_user` · `user ← subscriber_lite ← subscriber_standard ← subscriber_max` · `manager ← senior_manager`. Наследник видит страницы родителя.
-- Страница для нескольких ролей кладётся в папку родительской роли — никогда не копией.
-- `{roles}` в тексте страницы печатает тот же список, что замок.
-- Гостевая ветка впускает сама: нет сессии → `/guest-in` → создаётся пользователь `guest`. Корень: «Вернуться» и «Удалить мой аккаунт и уйти» (виджет `guest-account`, дверь `/api/auth/guest-leave`). Узел ограничивает число гостей; данные пользователя, которого сессия больше не возвращает, считать удалёнными. Гостевой вход — только где он нужен.
-- Индексируется только `(publicLayer)`; защищённые и гостевые страницы закрыты от поиска.
+The design skill this element is built with lives in the passport `OWN-SERVICE-PROPS/OWN-SERVICE-PROPS.json`, field
+`designSkill`: the skill's name (`impeccable`, `design-taste-frontend`) or `""` when none. The field is always there; it is never
+written in `NODE-CONTRACT.json` (owner 2026-10-07). Read it before any design work and work in that skill's style; when the person
+picks another skill (`custom-design` asks which), write its name there and run `npm run describe:publish` — the core takes it
+into its registry («Take into core»).
 
-## Адреса блоков
+<!-- PROOF 5 START · «Page» · PARTIAL 2026-10-07: the tab is now named «Live site» (line about addresses) — not re-proven; the skill use-machine-copy added to the list (step 428) — not proven; PROVEN before it: a live agent built a page, two widgets and voice in a widget by these laws (data not route files, one sequence in en/ru, shadcn only, tools inside widgets, addresses with #block=) and refused a tool in page data and a raw button; guards spoiled → refused · report: development-docs/proofs/2026-10-07-page-skills.md -->
+## Page
 
-- У каждого блока данных постоянный `bid` (буква + 4 знака base36, одинаковый во всех языках). Недостающие: `npm run blocks:ids`. Сторож: `scripts/check-block-ids.mjs`.
-- Виджет (код из `lib/page-widgets.tsx`) после любой правки: `npm run widgets:ids`. `prebuild` падает на контейнере без `data-block`. Адрес не нашёлся в данных → `git grep 'data-block="<id>"' components/`.
-- Человек принёс адрес «страница · файл · блок» → открыть этот файл, найти этот `bid`.
-- Закончил правку блока → в конце ответа ссылка `/<lang>/<path>#block=<bid>` и фраза: «Откройте Preview, вставьте ссылку в „Найти блок“ и нажмите „Найти“». Одна ссылка на блок, без хоста и порта.
-- Подсветка работает только по сообщению от ядра узла (`components/block-highlight/`, `/api/core-origin`); `lib/sibling-origin.ts` не расширять.
+**What we want.** Every page is static: served even by the Cloudflare copy while this computer is off, readable without
+JavaScript. Live parts are islands over the static page — no server, the island shows its skeleton, and the page stays whole
+and does its job as far as it can. Built for high load, with as few database queries as possible. New content appears
+without a rebuild (ISR); a dynamic piece is added only when nothing else can do the job.
 
-## Завершение правки
+**A route owns its own.** Widgets, components, functions, data and translations one route needs live in its folder: delete
+the route and everything that served it is gone, no tails. Only what two or more routes use goes up to `components/`, `lib/`,
+`_tools/`.
 
-1. Запустить сторожа, которых касалась правка.
-2. Переписать `TASK-REPORT.json`: `task` (просьба человека, одно предложение, его язык) · `done` (что изменено) · `check` (шаги проверки) · `path` (страница, где видно; `""` — главная) · `anchor` (`data-block`/`id` или `""`). Без секретов и чужих данных.
-3. `git add` своих файлов и `TASK-REPORT.json` — **одним коммитом**.
-4. Последняя строка ответа: «Посмотрите перед выкладкой и разверните: `<ARCHITECT_URL>/<lang>/architect/<id>/build/deployments`» (`ARCHITECT_URL` — `.env.local`, `id` — `OWN-SERVICE-PROPS.json`).
+**Languages are files.** A translation is one more language file next to the base; until it exists the page answers in the
+default language.
 
-Человек сам выбирает там «Предпросмотр» → «Принять»/«Отклонить» или «Развернуть». 🛑 Не отправлять на доску развёртываний ядра и не просить пересобрать что-либо руками.
+**What a page is made of.** Data, not a route file: one sequence of `block-*` · `text-*` · `widget-static-*` /
+`widget-dynamic-*`, the same in every language. The look comes only from the design tokens through blocks, typography and
+shadcn — no own styles. A tool never stands on a page, only inside a widget.
 
-## Дизайн и тексты
+**Only shadcn.** Widgets, tools, blocks and every component they use are built from `components/ui` — never a hand-made
+button, field, table, window or toast; a missing one is added with `npx shadcn add`. An own look (a design skill) is shadcn
+with its own classes, not a raw tag.
 
-| Задача | Чем |
-|---|---|
-| Свой дизайн вместо Блоков | спросить один раз: **taste** (`design-taste-frontend`) или **impeccable**; загрузить навык; правила элемента, которые сильнее навыка, — навык `custom-design`; дизайн живёт в виджете на всю страницу |
-| Цвета, шрифты, углы | только токены элемента «Дизайн», никогда значения в виджете |
-| Имя навыка дизайна | `OWN-SERVICE-PROPS.json` → `designSkill` (`impeccable` · `design-taste-frontend` · `blocks`), затем `npm run describe:publish` |
-| Новый текст страницы | навык `copywriting`; правка текста — `copy-editing`; слова — в данных страницы (`en`, `ru`) |
-| Публичная страница | не утверждает несуществующего без «да» человека |
+**Every container has an address.** The person points at anything on a page in the tab «Live site» of this element in the core and gets its address for a task;
+you finish by returning the link `#block=<bid>` of what you changed. A container without an address fails the build.
 
-## Адрес, домен, языки
+**Before you build, load the skill of that work** — the laws above say what must come out, the skills say how, with the
+names of the guards: `use-page-tree` (pages, blocks) · `use-typography` (text) · `build-widget` (widgets and their doors) ·
+`use-tools` (tools) · `use-shadcn` (components) · `use-highlight` (addresses, both directions) · `use-machine-copy` (what a
+public page gives agents: its Markdown copy, llms.txt — a widget brings its own `markdown.ts`) · `deploy-element` (how a change reaches visitors) · `github-element` (saving the work to its repository). ✗ 2026-10-07: a widget built
+from reading code alone and a guard named wrong — both were in the skill that was not opened.
+<!-- PROOF 5 END -->
 
-| Что | Правило |
-|---|---|
-| Главный адрес | задаёт узел: свой домен — `SERVICE_DATA_DIR/domain.json`; без него — поддомен `https://<адрес>.<зона>`; `lib/own-site.ts` → `getAppConfig().url`. Адрес в APP-CONFIG не вписывать |
-| Связи с CONFIG / «Дизайном» / «Блоками» | `SERVICE_DATA_DIR/links.json` (`linkOn()`). CONFIG выключен → настройки сайта правятся на `/<lang>/admin/site-settings` (дверь `/api/settings/app`; при включённом CONFIG — 409). «Блоки» выключены → своих блоков пишешь сам |
-| Набор языков | вшивается в сборку: новый набор виден после «Развернуть»; до этого так и говорить |
-| Языки для поисковиков | индексируется страница, если язык открыт (английский + язык по умолчанию + открытые человеком) **и** у страницы есть свой текст (`isIndexable`, `lib/seo/translation-state.ts`). Закрытые — `noindex, follow`, без hreflang |
-| Вход на своём домене | через центр входа узла: `/api/auth/sso` → `/api/auth/callback` → кука-билет `fractera-ticket` (`lib/auth/ticket.ts`) |
+## How you report
 
-Проверка живого сайта: `npm run check:index <https://site> --langs en,ru`. Сторож сборки: `scripts/check-seo-html.mjs`.
+**The answer is the text you write, not what you think.** Nobody sees your thinking: print the answer in the terminal (in Telegram —
+send it with `reply`) and only then tell the node you are done (`/api/agents/done`). ✗ 2026-10-07: the right answer stayed in
+thinking, the agent reported «done», and the person got nothing.
 
-## Инструменты
+End every finished task with the evidence, not a promise: each check from your plan, what it showed (the command and its line,
+the live answer) and what was not checked and why. If the work touched anything a person can see, give the link to it — the page
+`https://<element address>/<lang>/<path>` and each changed place with `#block=<bid>` (skill `use-highlight`). In Telegram write the
+full address so it is clickable; it opens the page. The place lights up only when the link is pasted into the field of the tab
+«Live site» («Живой сайт») of this element in the core and «Find» is pressed — say that in one line (skill `use-highlight`).
 
-Готовые способности, не знающие страницы, — в `_tools/tool-<имя>/`; смотреть туда до того, как строить похожее. Список
-порождается (`_tools/TOOLS.json`, `npm run build:tools-map`; `check:tools-map` в `prebuild`); как добавить и чем инструмент
-отличается от виджета — `_tools/README.md`.
+**Proofread before you send.** Read the answer once more for stray characters from another script — CJK, Arabic, Devanagari
+or others inside Russian or English words are a frequent model artifact. Names and code stay as they are.
 
-## Паспорт элемента
+## Tree
 
-Задача «Опиши этот AGI элемент…» → заполнить в `OWN-SERVICE-PROPS.json` поля `summary` (2–3 простых предложения: что делает и для кого) и `provides` (1–20 имён способностей, например `order-form`) → закоммитить этот файл → `npm run describe:publish`. `DESCRIBE_FAILED` называет, что исправить.
-
-## 🛑 Никогда
-
-- Новый файл маршрута без «да» человека.
-- Секрет в адресе страницы; `AUTH_SECRET` за пределами сервера.
-- Копия страницы для второй роли.
-- Закрыть язык в `robots.txt` (Google не прочтёт `noindex`); открыть язык поисковикам самому.
-- Своя кука сессии узла; `next` у callback дальше локального пути.
-- Видимая строка в коде; значения цветов и шрифтов в виджете.
-- Воскрешать или ждать пользователя, которого сессия больше не возвращает.
+**The file tree of this element matches the skill `use-element-tree` exactly** — load it before you create, move, rename or
+delete any file or folder. Guards refuse a build that leaves it; a change of the tree itself is the person's decision.

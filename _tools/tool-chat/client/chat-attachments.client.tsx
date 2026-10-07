@@ -65,11 +65,11 @@ export function ChatAttachments({
       {items.map((item, index) => {
         if (item.kind === "place") {
           return (
-            <div className={ROW} key={`place-${index}`} data-chat-attachment="place">
+            <div data-block="syph9" className={ROW} key={`place-${index}`} data-chat-attachment="place">
               <MapPin className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-              <div className="min-w-0">
-                <div className="truncate font-medium">{item.label || ui.place}</div>
-                <div className="text-muted-foreground text-xs">
+              <div data-block="kt1pd" className="min-w-0">
+                <div data-block="n2ego" className="truncate font-medium">{item.label || ui.place}</div>
+                <div data-block="r378z" className="text-muted-foreground text-xs">
                   {item.lat.toFixed(5)}, {item.lon.toFixed(5)}
                 </div>
               </div>
@@ -79,11 +79,11 @@ export function ChatAttachments({
 
         if (item.kind === "event") {
           return (
-            <div className={ROW} key={`event-${index}`} data-chat-attachment="event">
+            <div data-block="xm2wx" className={ROW} key={`event-${index}`} data-chat-attachment="event">
               <CalendarClock className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-              <div className="min-w-0">
-                <div className="truncate font-medium">{item.title}</div>
-                <div className="text-muted-foreground text-xs">
+              <div data-block="eys5w" className="min-w-0">
+                <div data-block="cf4b9" className="truncate font-medium">{item.title}</div>
+                <div data-block="liopi" className="text-muted-foreground text-xs">
                   {item.at}
                   {item.note ? ` · ${item.note}` : ""}
                 </div>
@@ -99,9 +99,9 @@ export function ChatAttachments({
         if (!data) {
           const Icon = FILE_ICON[item.kind];
           return (
-            <div className={ROW} key={`bare-${index}`} data-chat-attachment={item.kind}>
+            <div data-block="uuon2" className={ROW} key={`bare-${index}`} data-chat-attachment={item.kind}>
               <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-              <div className="min-w-0 truncate font-medium">{item.name ?? item.kind}</div>
+              <div data-block="syhp0" className="min-w-0 truncate font-medium">{item.name ?? item.kind}</div>
             </div>
           );
         }

@@ -4,9 +4,9 @@ A branch of the element's frame (node step 314-2). Lock of the branch: none — 
 
 ## The home page is a landing (node step 330-4)
 
-`_data/meta.json` names the widget `landing-agent` with `widgetOnly: true`: `components/landing-agent/` draws the whole screen, the
-blocks of `_data/<lang>.json` stay its words (and the text twin for agents), the field `landing` adds the tagline with its
-hint, card titles, the figure, the chips and the closing call. Remove `widget`/`widgetOnly` to go back to the blocks.
+The sequence of `_data/<lang>.json` holds the widget `widget-static-landing-agent`, and `_data/meta.json` → `"bare": true`
+draws it alone, without the page frame (`_widgets/static/widget-static-landing-agent/`). The other items and the field
+`landing` stay its words and the text twin for agents. Remove `bare` and the widget to go back to a page of blocks and text.
 
 ## What is here
 
@@ -15,6 +15,9 @@ hint, card titles, the figure, the chips and the closing call. Remove `widget`/`
 | `page.tsx` | the ROOT of the branch — `/<lang>`, words in `_data/{meta,en,ru}.json` |
 | `[slug]/page.tsx` | the ONE child route — draws every folder of `_pages/` |
 | `_data/` | the words of the root: `meta.json`, `en.json` (required), `ru.json` |
+| `_components/` | required — the branch's own components (server by default, islands `*.client.tsx`); see its README |
+| `_libs/` | required — the branch's own logic without markup; see its README |
+| `_widgets/` | required — the branch's widgets, `static/<name>` · `dynamic/<name>`; see its README |
 | `_pages/<slug>/` | the children — data only |
 | `index.md/route.ts` | the root page as markdown for agents |
 
@@ -44,8 +47,8 @@ app/[lang]/(publicLayer)/_pages/<slug>/en.json
   "description": "Planting, the first weeks and watering.",
   "keywords": "",
   "blocks": [
-    { "kind": "section-head", "id": "planting", "title": "Planting" },
-    { "kind": "p", "text": "Water the seedlings once, right after planting." }
+    { "kind": "block-section-head", "id": "planting", "title": "Planting" },
+    { "kind": "text-p", "text": "Water the seedlings once, right after planting." }
   ]
 }
 
@@ -54,8 +57,8 @@ app/[lang]/(publicLayer)/_pages/<slug>/ru.json
   "title": "Как посадить арбуз",
   "description": "Посадка, первые недели и полив.",
   "blocks": [
-    { "kind": "section-head", "id": "planting", "title": "Посадка" },
-    { "kind": "p", "text": "Полейте рассаду один раз, сразу после высадки." }
+    { "kind": "block-section-head", "id": "planting", "title": "Посадка" },
+    { "kind": "text-p", "text": "Полейте рассаду один раз, сразу после высадки." }
   ]
 }
 ```

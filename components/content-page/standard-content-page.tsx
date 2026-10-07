@@ -6,7 +6,7 @@ import type { Block, FaqPair } from '@/lib/content/blocks/types'
 import { author as projectAuthor } from '@/lib/author'
 import { getPostBodyUi } from '@/lib/content/post-body-ui'
 import { renderBlocks } from '@/lib/content/blocks/registry'
-import { PostBody } from './post-body'
+import { PostBody, type WidgetSet } from './post-body'
 import { PageHeader } from './page-header.server'
 import { PageCover } from './page-cover.server'
 import { BackLink } from './back-link.server'
@@ -111,6 +111,8 @@ export type StandardContentPageProps = {
   afterHeader?: ReactNode
   afterBody?: ReactNode
   blocks: Block[]
+  /** 423: виджеты ветки для `widget-*` в последовательности страницы. */
+  widgets?: WidgetSet
   faq?: FaqPair[]
   /** Ссылка «назад» — на уровень выше. Нет уровня выше — нет и ссылки. */
   backHref?: string
@@ -140,6 +142,7 @@ export function StandardContentPage({
   afterHeader,
   afterBody,
   blocks,
+  widgets,
   faq,
   backHref,
   backLabel,
@@ -174,7 +177,7 @@ export function StandardContentPage({
   // на каждой второй ширине экрана. Поэтому такие секции физически стоят снаружи
   // колонки, а внутри неё остаётся текст.
   // Первым экраном считается любой из двух видов hero, несущих H1: сетка и первый экран по центру (304-1).
-  const heroBlock = blocks.find(b => b.kind === 'hero-centered')
+  const heroBlock = blocks.find(b => b.kind === 'block-hero-centered')
   const bodyBlocks = blocks.filter(b => b !== heroBlock)
 
   return (
@@ -198,7 +201,7 @@ export function StandardContentPage({
     <PageShell
       top={titleInBody ? "work" : "content"}
       columnAs="article"
-      hero={heroBlock ? <PostBody blocks={[heroBlock]} lang={lang} /> : undefined}
+      hero={heroBlock ? <PostBody blocks={[heroBlock]} lang={lang} widgets={widgets} /> : undefined}
       afterHero={afterHero}
       afterBody={afterBody}
     >
@@ -236,7 +239,7 @@ export function StandardContentPage({
         {/* 4–7, 9. Body blocks (callout, H2/H3, quote, CTA, docref download, …).
             Без первого экрана и завершающей секции: они нарисованы снаружи этой
             колонки, потому что подчиняются другой ширине. */}
-        <PostBody blocks={bodyBlocks} lang={lang} />
+        <PostBody blocks={bodyBlocks} lang={lang} widgets={widgets} />
 
         {/* Open sections slot — page-specific sections injected by the route entry
             (e.g. the VPS deploy form / the MCP connector + the founder quote). The
@@ -249,7 +252,7 @@ export function StandardContentPage({
             содержательный на странице: ниже только ссылка «назад» и подвал сайта.
             Материал не изменился — вопросы приходят полем `faq` языковой ячейки,
             и та же ячейка кормит разметку `FAQPage` для поисковика. */}
-        {faq && faq.length > 0 && renderBlocks([{ kind: 'faq', title: blockUi.faqTitle, items: faq }], 'faq')}
+        {faq && faq.length > 0 && renderBlocks([{ kind: 'block-faq', title: blockUi.faqTitle, items: faq }], 'faq')}
 
         {/* Ссылка «назад» — ПРИМИТИВ `BackLink`, последний элемент страницы.
             Ведёт на уровень выше; у корня сайта такого уровня нет, поэтому её

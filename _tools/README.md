@@ -2,7 +2,7 @@
 
 A tool is a ready capability that knows no page: voice input, image crop, video trim, code view, a translations dialog,
 socials by AI, a chat, a draft from free words. **Look here before building anything similar** — the list is
-`_tools/TOOLS.json`.
+`_tools/TOOLS.json`, and `npm run passport -- me` shows the names (`tools`).
 
 ## Naming
 
@@ -45,14 +45,11 @@ _tools/tool-<name>/
 
 `npm run build:tools-map` renders `_tools/TOOLS.json` from the cards. `npm run check:tools-map` (part of `prebuild`) fails when
 a folder has no card, a card names a file that is not on disk, the folder is not `tool-<name>`, or the map is stale. A number
-or a list of tools written by hand anywhere else goes wrong silently.
+or a list of tools written by hand anywhere else goes wrong silently — the passport's `tools` reads this map.
 
 ## Adding a tool
 
-1. `_tools/tool-<name>/` with `client/` (and `server/`, `types/` when needed).
-2. `tool.json` — `id` = the folder name, `entry`, `needs` (`browser` · `https` · `openai-key` · `ffmpeg`), `usedBy` = real callers.
-3. Its door, if any: `app/api/tools/tool-<name>/route.ts`.
-4. `npm run build:tools-map`, then commit the map with the tool.
+Skill `use-tools`: the folder, the card, the door, the generated map.
 
 ## Where these came from
 

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { ServiceMeta } from '@/lib/page-tree'
 import type { ReactNode } from 'react'
 import type { Block, FaqPair } from '@/lib/content/blocks/types'
 import { buildAlternates } from '@/lib/seo/alternates'
@@ -98,6 +99,8 @@ export type ContentPageConfig<C extends ContentPageContent> = {
     ogImage: string
     heroImage?: string
     tags?: readonly string[]
+    /** 431: страница-услуга (`meta.json` → `service`) — разметка `Service` вместо `Article`. */
+    service?: ServiceMeta
   }
   /** Structured-data type for the primary entity. Defaults to 'Article'. */
   jsonLdType?: 'Article' | 'NewsArticle'
@@ -137,6 +140,8 @@ export type ContentPageConfig<C extends ContentPageContent> = {
    * /deployments/mcp). When provided, `meta.heroImage` is ignored.
    */
   hero?: (lang: string) => ReactNode
+  /** 423: виджеты ветки для `widget-*` в последовательности страницы (`<ветка>/_widgets/index.tsx`). */
+  widgets?: Record<string, (lang: string) => ReactNode>
 }
 
 function abs(path: string): string {
@@ -144,7 +149,7 @@ function abs(path: string): string {
 }
 
 export function createContentPage<C extends ContentPageContent>(config: ContentPageConfig<C>) {
-  const { resolve, chrome, meta, jsonLdType = 'Article', sections, hero, afterHero, afterHeader, afterBody, titleInBody = false } = config
+  const { resolve, chrome, meta, jsonLdType = 'Article', sections, hero, afterHero, afterHeader, afterBody, widgets, titleInBody = false } = config
 
   async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
     const { lang } = await params
@@ -177,7 +182,8 @@ export function createContentPage<C extends ContentPageContent>(config: ContentP
       // дало бы 404 там, где нужен просто честный сигнал.
       ...(config.closedBranch || (!config.noindex && isIndexable(lang, config.data)) ? {} : { robots: { index: false, follow: true } }),
       openGraph: {
-        type: 'article',
+        // 431: главная — сайт, а не статья; страница-услуга — тоже не статья. Остальные страницы — статьи.
+        type: meta.subPath === '' || meta.service ? 'website' : 'article',
         url: `${SITE}/${lang}${meta.subPath}`,
         siteName: brand().name,
         title: seoTitle,
@@ -251,6 +257,22 @@ export function createContentPage<C extends ContentPageContent>(config: ContentP
       // 🪦 314-2: разметку `FAQPage` ставит сам блок `faq` из «Блоков» рядом с видимыми вопросами; здесь она была бы второй.
     ]
 
+    // 431: страница-услуга — главная сущность `Service` (название и описание — её слова на её языке), а не `Article`.
+    if (meta.service) {
+      const s = meta.service
+      jsonLd[0] = {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: c.title,
+        description: c.description,
+        url,
+        provider: { '@type': 'Organization', name: s.provider || brand().name, url: SITE },
+        ...(s.areaServed ? { areaServed: { '@type': 'Place', name: s.areaServed } } : {}),
+        ...(s.price && s.priceCurrency ? { offers: { '@type': 'Offer', price: s.price, priceCurrency: s.priceCurrency, url } } : {}),
+        image: ogImageUrl,
+      }
+    }
+
     return (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -268,6 +290,7 @@ export function createContentPage<C extends ContentPageContent>(config: ContentP
           afterHeader={afterHeader?.(lang)}
           afterBody={afterBody?.(lang)}
           blocks={c.blocks}
+          widgets={widgets}
           faq={faq}
           backHref={backHref}
           backLabel={backLabel}

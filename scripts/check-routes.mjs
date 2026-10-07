@@ -33,6 +33,10 @@ const ALLOWED = new Map([
   ['app/[lang]/(publicLayer)/index.md/route.ts', 'главная для агентов (markdown)'],
   ['app/[lang]/(publicLayer)/[slug]/page.tsx', 'РЕБЁНОК публичной ветки — все страницы _pages/'],
   ['app/[lang]/(publicLayer)/[slug]/index.md/route.ts', 'markdown-двойник любого ребёнка публичной ветки'],
+  ['app/api/own-service-props/route.ts', 'паспорт элемента — главная дверь (шаг узла 417; владелец 2026-10-06: «сервер который возвращает этот файл наружу, пока … без ключа»)'],
+  ['app/api/a2a/route.ts', 'конечная точка A2A (привязка JSON-RPC, A2A v1.0; владелец 2026-10-05: «сейчас, делай конечную точку A2A»)'],
+  ['app/.well-known/agent-card.json/route.ts', 'визитка A2A элемента (спецификация A2A v1.0, шаг узла 406-3)'],
+  ['app/api/a2a/tasks/[id]/route.ts', 'ответ агента элемента в задачу A2A (шаг узла 409-2; владелец 2026-10-05: «Разрешить дверь»)'],
   // защищённый слой: четыре ветки-категории
   ['app/[lang]/(protectedLayer)/layout.tsx', 'слой закрыт от поиска'],
   ['app/[lang]/(protectedLayer)/account/layout.tsx', 'замок ветки account'],
@@ -53,12 +57,12 @@ const ALLOWED = new Map([
   ['app/[lang]/(guestLayer)/guest/[slug]/page.tsx', 'РЕБЁНОК гостевой ветки'],
   // двери API — не страницы
   ['app/api/config-image/[slot]/route.ts', 'картинки настроек'],
-  ['app/api/tools/tool-voice-input/route.ts', 'дверь инструмента tool-voice-input: расшифровка речи (узел, шаг 421)'],
+  ['app/api/tools/tool-voice-input/route.ts', 'дверь инструмента tool-voice-input: расшифровка речи (узел, шаг 421; владелец 2026-10-07: «get all from fractera-next-starter»)'],
   ['app/api/tools/tool-socials-ai/route.ts', 'дверь инструмента tool-socials-ai: соцсеть по описанию (узел, шаг 421)'],
   ['app/api/health/route.ts', 'жив ли элемент — для сторожа узла'],
-  ['app/api/help-desk/route.ts', 'чат справочного бюро лендинга (узел, шаг 349)'],
+  ['app/[lang]/(publicLayer)/api/help-desk/route.ts', 'дверь виджета widget-static-landing-agent: чат справочного бюро (узел, шаги 349, 422 — дверь в своей ветке)'],
   ['app/api/task-report/route.ts', 'отчёт о задаче для окна предпросмотра (узел, шаг 356-2)'],
-  ['app/api/help-desk/voice/route.ts', 'голос справочного бюро: расшифровка до 20 с (узел, шаг 350)'],
+  ['app/[lang]/(publicLayer)/api/help-desk/voice/route.ts', 'голос справочного бюро: расшифровка до 20 с (узел, шаги 350, 422)'],
   ['app/api/i18n/translate/route.ts', 'перевод строк'],
   ['app/api/auth/callback/route.ts', 'возврат из центра единого входа (328-3)'],
   ['app/api/auth/guest-leave/route.ts', 'гость удаляет свою запись и уходит (331-2)'],
@@ -71,7 +75,7 @@ const ALLOWED = new Map([
   ['app/api/media/upload/route.ts', 'загрузка медиа'],
   ['app/api/menu/[lang]/route.ts', 'меню проекта'],
   ['app/api/revalidate/route.ts', 'перерисовать страницы'],
-  ['app/api/settings/app/route.ts', 'свои настройки элемента (324-8)'],
+  ['app/[lang]/(protectedLayer)/admin/api/settings/app/route.ts', 'дверь виджета widget-dynamic-site-settings: свои настройки элемента (324-8, 422 — дверь в своей ветке)'],
   ['app/api/settings/changed/route.ts', 'сигнал CONFIG и «Дизайна»'],
   ['app/api/settings/design/route.ts', 'дверь дизайна элемента'],
   ['app/api/shell/[lang]/route.ts', 'шапка и подвал для служб узла'],
@@ -97,6 +101,18 @@ if (extra.length || pagesRouter) {
   if (pagesRouter) console.error('  pages/ — это Pages Router Next, папка запрещена')
   console.error('Новая страница = папка <ветка>/_pages/<slug>/ (meta.json + <язык>.json), а не page.tsx.')
   console.error('Навык: .claude/skills/use-page-tree. Новая ветка — решение человека: строка в ALLOWED этого файла, с причиной.')
+  process.exit(1)
+}
+// ОБЯЗАТЕЛЬНЫЕ ПАПКИ ВЕТКИ (владелец 2026-10-07: «мы их совершенно забыли указать … проверь чтобы они существовали в проекте для
+// всех маршрутов»): у каждого КОРНЯ ветки — `_components/`, `_libs/`, `_widgets/`, в каждой README.md о назначении её файлов.
+// Корни берутся из этого же списка (строки «КОРЕНЬ»), второго списка веток нет.
+const REQUIRED_FOLDERS = ['_components', '_libs', '_widgets']
+const branchRoots = [...ALLOWED].filter(([, why]) => why.startsWith('КОРЕНЬ')).map(([f]) => f.slice(0, f.lastIndexOf('/')))
+const noFolder = branchRoots.flatMap((b) => REQUIRED_FOLDERS.filter((d) => !existsSync(join(ROOT, b, d, 'README.md'))).map((d) => `${b}/${d}/README.md`))
+if (noFolder.length) {
+  console.error('===ROUTES_FAILED=== у ветки нет обязательной папки или её README.md:')
+  for (const f of noFolder) console.error(`  ${f}`)
+  console.error('Каждая ветка: _components/ (свои компоненты), _libs/ (своя логика), _widgets/ (свои виджеты) — см. CLAUDE.md, «Tree».')
   process.exit(1)
 }
 const missing = [...ALLOWED.keys()].filter((f) => !found.includes(f))

@@ -1,0 +1,27 @@
+{
+  "id": "item",
+  "name": "Fractera Item",
+  "shortDescription": "An information desk on a landing page that answers visitors by text and voice.",
+  "longDescription": "",
+  "accepts": "",
+  "returns": "",
+  "designSkill": "impeccable",
+  "isFracteraArchitecture": true,
+  "framework": "next",
+  "visibility": "network",
+  "calls": [
+    "auth",
+    "data",
+    "config",
+    "design"
+  ],
+  "marketplace": {
+    "listed": false,
+    "price": "",
+    "currency": ""
+  },
+  "nostr": {
+    "tags": [],
+    "description": ""
+  }
+}

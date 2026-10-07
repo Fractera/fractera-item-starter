@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button"
 
 // Индикатор ширины экрана — только в режиме разработки.
 //
@@ -112,7 +113,7 @@ export function ViewportBadge({ skill, closeLabel }: { skill: string | null; clo
         </div>
       </div>
       {architect && (
-        <button
+        <Button variant="bare" size="bare"
           type="button"
           onClick={close}
           aria-label={closeLabel}
@@ -120,7 +121,7 @@ export function ViewportBadge({ skill, closeLabel }: { skill: string | null; clo
           className="pointer-events-auto absolute -right-1 -top-1 grid size-5 place-items-center rounded-full border border-black/20 bg-white text-[11px] font-bold leading-none text-black shadow"
         >
           ×
-        </button>
+        </Button>
       )}
     </div>
   );

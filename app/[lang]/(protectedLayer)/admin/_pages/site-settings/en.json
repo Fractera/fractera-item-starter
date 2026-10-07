@@ -2,5 +2,10 @@
   "title": "Site settings",
   "description": "The name, description, search settings, images and languages of this site.",
   "keywords": "",
-  "blocks": []
+  "blocks": [
+    {
+      "kind": "widget-dynamic-site-settings",
+      "bid": "mdh3z"
+    }
+  ]
 }

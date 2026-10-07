@@ -61,9 +61,9 @@ export type ResolvedSocial = {
 }
 
 const OUTCOME_TONE = {
-  exists: "text-emerald-700 dark:text-emerald-400",
+  exists: "text-primary",
   absent: "text-muted-foreground",
-  closed: "text-amber-700 dark:text-amber-400",
+  closed: "text-warning",
 } as const
 
 function OutcomeIcon({ outcome }: { outcome: SocialCandidate["outcome"] }) {
@@ -174,8 +174,8 @@ export function SocialsAiDialog({
         ui={dialogUi}
         size="lg"
       >
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-2">
+        <div data-block="js44n" className="flex flex-col gap-5">
+          <div data-block="s46xp" className="flex flex-col gap-2">
             <Small className="font-medium text-foreground">{ui.phraseLabel}</Small>
             {/* Область текста, а не строка: фраза здесь описательная — «мой
                 инстаграм, псевдоним транслитерацией через дефис». */}
@@ -187,7 +187,7 @@ export function SocialsAiDialog({
               dir="auto"
               className="text-[length:var(--fs-body)] md:text-[length:var(--fs-body)]"
             />
-            <div>
+            <div data-block="mljbb">
               <Button type="button" onClick={recognize} disabled={busy || !phrase.trim()} data-socials-ai-run>
                 {busy ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Sparkles className="size-4" aria-hidden />}
                 {busy ? ui.recognizing : ui.recognize}
@@ -196,20 +196,20 @@ export function SocialsAiDialog({
           </div>
 
           {note && (
-            <p
+            <p data-block="crs8d"
               data-socials-ai-note
-              className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-[length:var(--fs-small)] leading-relaxed text-amber-800 dark:text-amber-200"
+              className="rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-[length:var(--fs-small)] leading-relaxed text-warning"
             >
               {note}
             </p>
           )}
 
           {proposal && (
-            <div data-socials-ai-proposal className="flex flex-col gap-4 rounded-lg border border-border p-4">
-              <div className="flex items-center gap-3">
+            <div data-block="i3kx0" data-socials-ai-proposal className="flex flex-col gap-4 rounded-lg border border-border p-4">
+              <div data-block="cjuj6" className="flex items-center gap-3">
                 <Icon className="size-6 shrink-0" />
-                <div className="min-w-0">
-                  <P className="text-[length:var(--fs-body)] font-medium">{proposal.name}</P>
+                <div data-block="mnalx" className="min-w-0">
+                  <P data-block="vnm7n" className="text-[length:var(--fs-body)] font-medium">{proposal.name}</P>
                   <Small className="block truncate font-mono">{proposal.urlTemplate}</Small>
                 </div>
               </div>
@@ -217,9 +217,9 @@ export function SocialsAiDialog({
               {proposal.valueHint && <Small>{proposal.valueHint}</Small>}
 
               {proposal.candidates.length > 0 && (
-                <ul className="flex flex-col gap-2">
+                <ul data-block="zfcdg" className="flex flex-col gap-2">
                   {proposal.candidates.map(c => (
-                    <li
+                    <li data-block="g9vpu"
                       key={c.value}
                       data-socials-ai-candidate={c.outcome}
                       className="flex items-center justify-between gap-3 rounded-md border border-border px-3 py-2"
@@ -248,9 +248,9 @@ export function SocialsAiDialog({
 
               {/* Свой вариант нужен всегда: модель могла не угадать ни одного, а
                   правило сборки адреса она уже дала — это половина работы. */}
-              <div className="flex flex-col gap-2">
+              <div data-block="sk0ry" className="flex flex-col gap-2">
                 <Small className="font-medium text-foreground">{ui.ownValue}</Small>
-                <div className="flex items-center gap-2">
+                <div data-block="eh07f" className="flex items-center gap-2">
                   <Input
                     value={ownValue}
                     onChange={e => setOwnValue(e.target.value)}

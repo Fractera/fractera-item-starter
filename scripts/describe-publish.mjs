@@ -2,7 +2,7 @@
 //
 // Слово владельца 2026-09-28: «у тебя есть собственное описание и есть ещё общий файл в ядре, который также должен быть
 // обновлён … вся эта процедура должна проходить через Claude Code». Агент элемента пишет описание в свой паспорт
-// (`OWN-SERVICE-PROPS.json`: `summary`, `provides`), коммитит и зовёт эту команду — ядро проверяет паспорт и переносит описание
+// (паспорт `OWN-SERVICE-PROPS/`: `shortDescription`; навыки визитки `OWN-SERVICE-PROPS/A2A-CARD.json`), коммитит и зовёт эту команду — ядро проверяет паспорт и переносит описание
 // в общий реестр узла. Ядро делает это той же дверью, что и кнопка «Забрать в ядро» (325-2): форма проверяется там, а не здесь.
 //
 // 🔒 ЯДРО ЗОВЁТСЯ ПО ПЕТЛЕ МАШИНЫ, И ЕГО ПОРТ СПРАШИВАЕТСЯ У УЗЛА, А НЕ ПОМНИТСЯ: `NODE_DOMAIN_FILE` (его пишет установщик)
@@ -29,7 +29,7 @@ const env = { ...envFile(), ...process.env }
 
 function ownId() {
   try {
-    const id = JSON.parse(readFileSync(join(root, "OWN-SERVICE-PROPS.json"), "utf8")).id
+    const id = JSON.parse(readFileSync(join(root, "OWN-SERVICE-PROPS", "OWN-SERVICE-PROPS.json"), "utf8")).id
     if (typeof id === "string" && id) return id
   } catch { /* паспорта нет */ }
   return env.ITEM_ID?.trim() || null
@@ -49,7 +49,7 @@ function coreUrl() {
 }
 
 const WORDS = {
-  "summary-not-written": "summary in OWN-SERVICE-PROPS.json is empty or still the template/birth text — write what this element does",
+  "summary-not-written": "shortDescription in OWN-SERVICE-PROPS/OWN-SERVICE-PROPS.json is empty or still the template/birth text — write what this element does (skill passport-description)",
   "provides-bad-shape": "provides must be 1–20 different names of latin letters, digits and dashes (for example price-list)",
   "not-a-born-element": "the node does not know this element as a born one",
   "registry-failed": "the node could not write its registry",
@@ -58,7 +58,7 @@ const WORDS = {
 
 const id = ownId()
 const core = coreUrl()
-if (!id) { console.error("DESCRIBE_FAILED: this element has no id (OWN-SERVICE-PROPS.json → id)"); process.exit(1) }
+if (!id) { console.error("DESCRIBE_FAILED: this element has no id (OWN-SERVICE-PROPS/OWN-SERVICE-PROPS.json → id)"); process.exit(1) }
 if (!core) { console.error("DESCRIBE_FAILED: the node core address is unknown here (NODE_DOMAIN_FILE → logs/runtime.json)"); process.exit(1) }
 
 try {

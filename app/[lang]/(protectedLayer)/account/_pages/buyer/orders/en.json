@@ -4,12 +4,12 @@
   "keywords": "",
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "This page lives in the folder of the role **buyer**: `account/_pages/buyer/orders/`. Its lock comes from that folder — the role and every role that inherits it.",
       "bid": "q7orx"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "Roles allowed here: {roles}.",
       "bid": "q7orz"
     }

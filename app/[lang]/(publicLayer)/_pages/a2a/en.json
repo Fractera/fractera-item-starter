@@ -4,7 +4,7 @@
   "keywords": "",
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "Agents already running on your server agree with each other directly and for free, without the blockchain. The lead orchestrator asks the CRM agent to add a «bring a friend» programme, and it does it itself.",
       "bid": "hc6r0"
     }

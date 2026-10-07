@@ -2,6 +2,5 @@
   "order": 5,
   "roles": [
     "admin"
-  ],
-  "widget": "users-table"
+  ]
 }

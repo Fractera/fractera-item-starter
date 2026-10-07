@@ -9,7 +9,7 @@ its place (for example a barbershop site from the marketplace), change `repo` an
 
 ## The contract a replacement must keep
 
-- `OWN-SERVICE-PROPS.json` in the repository root — the passport the node reads.
+- `OWN-SERVICE-PROPS/` — the passport, the element's main door (`GET /api/own-service-props`); `NODE-CONTRACT.json` — what the node needs to install it.
 - The port comes from the `PORT` environment variable.
 - `GET /api/health` answers 200 without a session.
 - Sign-in only through the node's auth element; stored data only through the node's data element.

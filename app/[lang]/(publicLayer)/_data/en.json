@@ -1,10 +1,10 @@
 {
-  "title": "Open-source AI agent framework for Web3 development",
-  "description": "Day-zero infrastructure for indie hackers and Web3 builders. Launch autonomous AI agents, deploy smart contracts and scale services in seconds.",
+  "title": "Open-source AI agent framework on your own computer",
+  "description": "Day-zero infrastructure for indie hackers and AI product makers. Launch autonomous AI agents on your own computer, get your site online at once and scale services in seconds.",
   "keywords": "",
   "blocks": [
     {
-      "kind": "hero-centered",
+      "kind": "block-hero-centered",
       "pill": "AGI element",
       "title": "If you're an indie hacker, a Web3 builder or an AI visionary — you're invited to a private party for the makers of AI corporations.",
       "description": "Not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes. You decide. All you bring is the idea; Fractera AGI does the rest.",
@@ -15,46 +15,50 @@
       "bid": "j7tri"
     },
     {
-      "kind": "section-head",
+      "kind": "block-section-head",
       "id": "what-it-can-do",
       "title": "AI agent orchestration and autonomous deployment of Web3 applications",
       "bid": "zy6l4"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "The AGI and web3 core installs on your computer in seconds, and your site is live on the internet at a temporary address right away. Your own domain takes a couple of minutes more. Need a server? Rent a VPS and run hundreds of sites on your own APP factory.",
       "bid": "r9fm4"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "Tell the agent your idea. It asks a few sharp questions and builds the project. Under it is the Fractera starter for Next 16: high-load architecture, sign-in, database and media storage already set up locally.",
       "bid": "eyhxg"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "Your knowledge graph already holds thousands of proven skills, plugins and MCP servers, chosen on the advice of leading AI developers. The agent finds the right one the moment it is needed.",
       "bid": "g2vkq"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "Take any ready solution and make it stronger with your own experience and craft. That makes a digital product with real value. We find buyers for it, and a smart contract guarantees every deal.",
       "bid": "r4of5"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "You come with an idea and tell it to your agent. It builds the product from skills and other people's expertise. Use it yourself or sell it: buyers find you through the AGI network, and you move on to the next idea.",
       "bid": "xh0ym"
     },
     {
-      "kind": "section-head",
+      "kind": "block-section-head",
       "id": "under-the-hood",
       "title": "Day-zero infrastructure: a ready backend architecture for platforms",
       "bid": "ubj4n"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "A built-in database, sign-in with user roles and dozens of other solutions. All of their code is open right inside your application: fix it, improve it or remove it. It is up to you.",
       "bid": "tr7cu"
+    },
+    {
+      "kind": "widget-static-landing-agent",
+      "bid": "k6tkh"
     }
   ],
   "landing": {

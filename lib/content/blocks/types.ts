@@ -18,10 +18,16 @@ export type Link = { label: string; href: string }
 type Addressed = { bid?: string }
 
 export type Block = Addressed & (
-  | { kind: 'p'; text: string }
-  | { kind: 'section-head'; id: string; title: string; badge?: string }
-  | { kind: 'hero-centered'; pill?: string; title: string; description: string; cta?: Link; secondary?: Link }
-  | { kind: 'warning-card'; title: string; text: string }
+  | { kind: 'block-section-head'; id: string; title: string; badge?: string }
+  | { kind: 'block-hero-centered'; pill?: string; title: string; description: string; cta?: Link; secondary?: Link }
+  | { kind: 'block-warning-card'; title: string; text: string }
+  // 423: типографика элемента (`lib/content/text-set.tsx`) — третий вид рядом с блоками и виджетами.
+  | { kind: 'text-h2' | 'text-h3' | 'text-h4'; text: string; id?: string }
+  | { kind: 'text-p' | 'text-lead' | 'text-small' | 'text-code'; text: string }
+  | { kind: 'text-list'; items: string[]; ordered?: boolean }
+  | { kind: 'text-quote'; text: string; cite?: string }
+  // 423: виджет своей ветки на своём месте в последовательности (`<ветка>/_widgets/index.tsx`).
+  | { kind: `widget-static-${string}` | `widget-dynamic-${string}` }
 )
 
 /** Вопрос и ответ раздела FAQ — рисует блок `faq` из «Блоков», он же ставит разметку `FAQPage`. */

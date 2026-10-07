@@ -76,8 +76,8 @@ export function FactDraft({
   }
 
   return (
-    <div data-fact-draft className="flex flex-col gap-2 rounded-lg border border-border p-3">
-      <div className="flex items-center gap-2">
+    <div data-block="l1bkd" data-fact-draft className="flex flex-col gap-2 rounded-lg border border-border p-3">
+      <div data-block="ce79l" className="flex items-center gap-2">
         <Sparkles className="size-4 text-muted-foreground" />
         <Small className="font-medium text-foreground">{labels.title}</Small>
       </div>
@@ -102,7 +102,7 @@ export function FactDraft({
         </Small>
       )}
 
-      <div>
+      <div data-block="qf530">
         <Button size="sm" variant="outline" onClick={() => void ask()} disabled={busy || !words.trim()}>
           {busy && <Loader2 className="size-3.5 animate-spin" />}
           {busy ? labels.submitting : labels.submit}

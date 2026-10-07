@@ -4,7 +4,7 @@
   "keywords": "",
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "People agree directly through web3: a salon owner and a module author, two partners, a buyer and a seller of a solution. A deal between people is also fixed by a contract on the blockchain.",
       "bid": "ghlab"
     }

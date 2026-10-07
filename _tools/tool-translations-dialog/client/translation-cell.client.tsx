@@ -42,15 +42,15 @@ export function TranslationCell(
   const area = useRef<HTMLTextAreaElement>(null)
 
   return (
-    <div className="rounded-lg border border-border p-3">
-      <div className="mb-1.5 flex items-center gap-1.5">
+    <div data-block="vsihy" className="rounded-lg border border-border p-3">
+      <div data-block="odzwd" className="mb-1.5 flex items-center gap-1.5">
         <span aria-hidden>{getLanguageFlag(lang as SupportedLanguage)}</span>
         <span className="text-[11px] font-medium text-foreground">
           {getLanguageNativeName(lang as SupportedLanguage)}
         </span>
         <span className="font-mono text-[10px] uppercase text-muted-foreground">{lang}</span>
         {saved && (
-          <span className="ml-auto flex items-center gap-1 text-[10px] text-green-600 dark:text-green-400">
+          <span className="ml-auto flex items-center gap-1 text-[10px] text-primary">
             <Check size={10} />{labels.savedMark}
           </span>
         )}
@@ -62,7 +62,7 @@ export function TranslationCell(
         <Input ref={field} value={value} onChange={e => onChange(e.target.value)} className="h-8 text-xs" />
       )}
 
-      <div className="mt-1.5 flex items-center justify-between gap-2">
+      <div data-block="sz3z8" className="mt-1.5 flex items-center justify-between gap-2">
         {/* Голос диктуется НА ЯЗЫКЕ КОНТЕЙНЕРА: испанский перевод по-испански. */}
         <VoiceInput
           targetRef={multiline ? area : field}

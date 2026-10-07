@@ -17,8 +17,8 @@ app/[lang]/(guestLayer)/guest/_pages/<slug>/en.json
   "description": "Planting, the first weeks and watering.",
   "keywords": "",
   "blocks": [
-    { "kind": "section-head", "id": "planting", "title": "Planting" },
-    { "kind": "p", "text": "Water the seedlings once, right after planting." }
+    { "kind": "block-section-head", "id": "planting", "title": "Planting" },
+    { "kind": "text-p", "text": "Water the seedlings once, right after planting." }
   ]
 }
 
@@ -27,11 +27,11 @@ app/[lang]/(guestLayer)/guest/_pages/<slug>/ru.json
   "title": "Как посадить арбуз",
   "description": "Посадка, первые недели и полив.",
   "blocks": [
-    { "kind": "section-head", "id": "planting", "title": "Посадка" },
-    { "kind": "p", "text": "Полейте рассаду один раз, сразу после высадки." }
+    { "kind": "block-section-head", "id": "planting", "title": "Посадка" },
+    { "kind": "text-p", "text": "Полейте рассаду один раз, сразу после высадки." }
   ]
 }
 ```
 
-The page answers at `/<lang>/guest/<slug>`. Block kinds — `lib/content/blocks/types.ts`; a missing kind is taken from the Blocks
+The page answers at `/<lang>/guest/<slug>`. Kinds — `block-*` (the block set), `text-*` (typography, `lib/content/text-set.tsx`), `widget-*` (this branch's `_widgets/index.tsx`), one sequence in every language (`lib/content/blocks/types.ts`); a missing kind is taken from the Blocks
 element (`npx shadcn add @fractera/<name>`).

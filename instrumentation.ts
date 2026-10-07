@@ -12,7 +12,7 @@ export async function register() {
   if (process.env.NEXT_RUNTIME !== "nodejs") return
   const { ownId } = await import("./lib/own-id")
   const who = ownId()
-  if (!who) console.warn("[settings] у элемента нет имени (OWN-SERVICE-PROPS.json → id или ITEM_ID) — на сигналы не подписываюсь")
+  if (!who) console.warn("[settings] у элемента нет имени (паспорт OWN-SERVICE-PROPS/ → id или ITEM_ID) — на сигналы не подписываюсь")
   if (process.env.CONFIG_SERVICE_URL?.trim()) {
     const { pullProjectSettings } = await import("./lib/project-settings")
     const r = await pullProjectSettings()

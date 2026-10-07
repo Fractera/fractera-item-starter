@@ -1,7 +1,8 @@
 import { blocksToMarkdown, faqToMarkdown } from './blocks-to-markdown'
 import { urlFor, mdUrlFor } from '@/lib/seo/alternates'
 import { getAppConfig, metaForLang } from '@/config/app-config'
-import { branchChildren, wordsIn } from '@/lib/page-tree'
+import { branchChildren, branchRoot, wordsIn } from '@/lib/page-tree'
+import { WIDGET_MARKDOWN } from '@/app/[lang]/(publicLayer)/_widgets/markdown'
 
 // ПЕРЕЧЕНЬ ПУБЛИЧНЫХ ПОВЕРХНОСТЕЙ — ОДИН НА ВЕСЬ AIO (шаг 505).
 //
@@ -48,15 +49,17 @@ export function publicSurfaces(lang: string): Surface[] {
       title: home.siteName,
       description: home.description,
       section: 'main',
-      // У главной нет собственного текста в блоках: её содержимое — это
-      // идентичность проекта из настроек. Честнее отдать её как описание с
-      // перечнем разделов, чем выдумать текст, которого на странице нет.
-      // 🔒 БЕЗ СЛУЖЕБНЫХ ПОДПИСЕЙ НА ЧУЖОМ ЯЗЫКЕ (шаг 507). Здесь стояла строка
-      // «- Сайт: <адрес>», и английская главная отдавала машинному читателю
-      // русское слово. Словаря у этой поверхности нет и заводить его не за чем:
-      // адрес сайта — не подпись, а ссылка, и она уже стоит в карте `llms.txt`.
-      body: () =>
-        [`# ${home.siteName}`, '', `> ${home.description}`, ...(cfg.url ? ['', cfg.url] : [])].join('\n'),
+      // 428: главная — такая же страница из блоков, как остальные; текст её виджета (лендинг) приходит через
+      // `WIDGET_MARKDOWN`. 🪦 Здесь было «у главной нет собственного текста в блоках» — отдавалось 159 байт по-английски
+      // при ~16 тыс. знаков на странице. Нет данных главной — прежний минимум: имя и описание проекта.
+      body: () => {
+        const root = branchRoot('(publicLayer)')
+        const blocks = root ? wordsIn(root, lang).blocks ?? [] : []
+        const text = blocksToMarkdown(blocks, home.siteName, widgetText(lang))
+        return text
+          ? text
+          : [`# ${home.siteName}`, '', `> ${home.description}`, ...(cfg.url ? ['', cfg.url] : [])].join('\n')
+      },
     },
   ]
 
@@ -73,11 +76,16 @@ export function publicSurfaces(lang: string): Surface[] {
       description: page.description,
       section: 'legal',
       body: () =>
-        [`# ${page.title}`, '', `> ${page.description}`, '', blocksToMarkdown(page.blocks, home.siteName)].join('\n').trim(),
+        [`# ${page.title}`, '', `> ${page.description}`, '', blocksToMarkdown(page.blocks, home.siteName, widgetText(lang))].join('\n').trim(),
     })
   }
 
   return surfaces
+}
+
+/** Текст виджета ветки на языке страницы; неизвестный виджет — пусто (сторож `check:aio` не даёт ему появиться). */
+function widgetText(lang: string) {
+  return (kind: string) => WIDGET_MARKDOWN[kind]?.(lang) ?? ''
 }
 
 export function surfaceFor(lang: string, subPath: string): Surface | undefined {

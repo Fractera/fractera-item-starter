@@ -58,7 +58,7 @@ export default function Chat({
   const withComposer = typeof onSend === "function";
 
   return (
-    <div
+    <div data-block="bn2kd"
       className={["flex min-h-0 w-full flex-col gap-3", className].filter(Boolean).join(" ")}
       data-chat=""
       data-chat-composer={withComposer ? "on" : "off"}
@@ -78,7 +78,7 @@ export default function Chat({
                 <MessageContent>
                   <ChatMeta message={message} ui={ui} />
                   {message.text ? (
-                    <p className="whitespace-pre-wrap break-words">{message.text}</p>
+                    <p data-block="e3j2k" className="whitespace-pre-wrap break-words">{message.text}</p>
                   ) : null}
                   {message.attachments?.length ? (
                     <ChatAttachments items={message.attachments} ui={ui} />
@@ -106,7 +106,7 @@ function ChatMeta({ message, ui }: { message: ChatMessage; ui: Pick<ChatUi, "for
   if (parts.length === 0) return null;
 
   return (
-    <div className="text-muted-foreground text-xs" data-chat-meta="">
+    <div data-block="ruvh8" className="text-muted-foreground text-xs" data-chat-meta="">
       {parts.join(" · ")}
     </div>
   );

@@ -4,7 +4,7 @@
   "keywords": "",
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "You are at the root of the finance branch. Its pages are protected by authorization.",
       "bid": "hsur5"
     }

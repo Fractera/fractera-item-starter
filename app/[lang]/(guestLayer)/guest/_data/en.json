@@ -8,36 +8,40 @@
   },
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "We have created an anonymous guest account for you in our database. We did not ask for your name, email or phone, and we do not link this account to you as a person. It simply lets the site remember what you do here in this browser — a filled cart, an order in progress, a conversation.",
       "bid": "zytcl"
     },
     {
-      "kind": "section-head",
+      "kind": "block-section-head",
       "id": "why",
       "title": "Why we do this",
       "bid": "tiexd"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "If you close the site and come back later in this same browser, everything will be where you left it: you continue as if you had never left.",
       "bid": "nchlj"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "A guest account is not a full registration. It lives only in this browser, it disappears if you clear the browser's data, and some of our services are available only to registered users.",
       "bid": "c5wch"
     },
     {
-      "kind": "warning-card",
+      "kind": "block-warning-card",
       "title": "We recommend a full registration",
       "text": "With a full registration you can sign in from any device and use everything we offer. It takes a minute.",
       "bid": "o14e4"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "Thank you for being with us.",
       "bid": "q0qj4"
+    },
+    {
+      "kind": "widget-static-guest-account",
+      "bid": "z1uo1"
     }
   ],
   "account": {

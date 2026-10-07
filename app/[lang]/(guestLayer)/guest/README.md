@@ -10,6 +10,9 @@ A branch of the element's frame (node step 314-2). Lock of the branch: no sessio
 | `layout.tsx` | the lock of the branch |
 | `[slug]/page.tsx` | the ONE child route — draws every folder of `_pages/` |
 | `_data/` | the words of the root: `meta.json`, `en.json` (required), `ru.json` |
+| `_components/` | required — the branch's own components (server by default, islands `*.client.tsx`); see its README |
+| `_libs/` | required — the branch's own logic without markup; see its README |
+| `_widgets/` | required — the branch's widgets, `static/<name>` · `dynamic/<name>`; see its README |
 | `_pages/<slug>/` | the children — data only |
 
 
@@ -38,8 +41,8 @@ app/[lang]/(guestLayer)/guest/_pages/<slug>/en.json
   "description": "Planting, the first weeks and watering.",
   "keywords": "",
   "blocks": [
-    { "kind": "section-head", "id": "planting", "title": "Planting" },
-    { "kind": "p", "text": "Water the seedlings once, right after planting." }
+    { "kind": "block-section-head", "id": "planting", "title": "Planting" },
+    { "kind": "text-p", "text": "Water the seedlings once, right after planting." }
   ]
 }
 
@@ -48,8 +51,8 @@ app/[lang]/(guestLayer)/guest/_pages/<slug>/ru.json
   "title": "Как посадить арбуз",
   "description": "Посадка, первые недели и полив.",
   "blocks": [
-    { "kind": "section-head", "id": "planting", "title": "Посадка" },
-    { "kind": "p", "text": "Полейте рассаду один раз, сразу после высадки." }
+    { "kind": "block-section-head", "id": "planting", "title": "Посадка" },
+    { "kind": "text-p", "text": "Полейте рассаду один раз, сразу после высадки." }
   ]
 }
 ```

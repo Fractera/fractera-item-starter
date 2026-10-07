@@ -1,0 +1,87 @@
+---
+name: use-development-docs
+description: >
+  Builder skill. How building this Fractera element is carried in its development documents (`development-docs/`) so that no
+  work is lost when the session ends — planned or sudden (power, a crash, a closed terminal). Load it on every wake into
+  building, the moment the person gives any building task however small, when a plan is agreed, when you commit, when a step
+  or substep closes, when a new task arrives in the middle of a step, when the context is running out, and before you create
+  any file or folder to track work. Not for a worker job (an order for another agent) — orders are kept by skill
+  `order-summary`, not here. The thing you cannot guess: the next session knows only what `development-docs/current-step.md`
+  says — a commit tells what changed, never what was decided, what is half done or what comes next.
+---
+
+<!-- PROOF · PARTIAL 2026-10-07: loaded first after «yes», current-step.md kept on events; no plan in steps-new/; the pre-steps intake (added 2026-10-07) NOT proven · report: development-docs/proofs/2026-10-07-node-skills.md -->
+
+# use-development-docs
+
+> A hint, not a law: if you know a better way for the case in front of you — do it your way and say so. The freedom is in HOW
+> you build; whether the work is carried in these documents is not optional.
+
+What each file holds, who writes it and when it is opened — `development-docs/README.md`; this skill is how to use them.
+Everything here is English; the person's own words stay verbatim in quotes «…» with an English gist next to them
+(`npm run check:dev-docs` refuses Cyrillic outside quotes and any file the README does not list).
+
+## On wake into building
+
+1. Read `current-step.md` whole — first, before code. It says where the work stands, what the person decided and what comes next.
+   Then `pre-steps/` — a non-empty intake is named to the person before you choose what to do.
+2. An active step → its plan in `steps-new/`. The task touches an area built before → the matching files in `steps-done/`.
+3. Something fails → `anti-patterns.md`: the dead end may already be paid for.
+
+## `current-step.md` — written on events, not at the end
+
+Its job is to survive ANY interruption. Ask yourself: «if the session ends right now, what from the last half hour would be
+lost?» — and write that now. Update it when:
+
+- the person takes a decision — verbatim, at once;
+- you learn something expensive (a measured fact, a cause found);
+- you commit — the hash, at once;
+- you find a defect on the way — one line;
+- a long or irreversible operation is about to start — BEFORE it;
+- the next action changes.
+
+Rewrite it over, do not append a diary: the active step, the last commit, the next action, the queue, the person's latest
+decisions. History lives in `steps-done/` and git. Nothing to do → «Active step: none» and the last change.
+
+Near the end of the context: write `current-step.md`, then tell the person that the session should be restarted — a new one
+reads the file first. Do not rely on automatic compaction: what it drops, nobody sees.
+
+## A step
+
+Every building task is a step, even a five-line fix. The number is the next one after the highest in `steps-new/` and
+`steps-done/` and never reused.
+
+- **Small** (one result, one place): the plan is the three lines of «Confirm the request first» in `CLAUDE.md`; after the
+  person's «yes» write the step into `current-step.md`, build, close with a short `steps-done/<N>.md`.
+- **Larger** (more than one result or place): a plan `steps-new/<N>-<six to eight words>.md` — what is asked, in the person's
+  words; what already exists and is reused; the limits it must not break; the observable results; substeps 2–10, **one
+  observable result each, never by layers** («all doors, then all UI»); the checks of each, named before the work (skill
+  `use-tests-before-dev-finish`). Show the substeps to the person, one line each, and start only after their «yes».
+- A substep closes with a commit, and its hash goes into `current-step.md` at once. A summary without a commit hash is an
+  unclosed substep.
+- The work turns out bigger or different from the agreed plan — stop and ask before doing it; the «yes» covered the plan.
+
+## A task in the middle of a step
+
+Two questions: does it change a file, and does it serve the same capability as the active step? Same capability → a new
+substep of this step (after the person's «yes»). Otherwise → a request file in `pre-steps/` (the law and the form are in
+`pre-steps/README.md`), named to the person; it becomes a step after the current one closes or when the person says. The same
+for a building request from another agent over A2A or from the core's task window that you cannot start now.
+One exception: the person's decision that changes a rule of `CLAUDE.md` or a skill is applied at once.
+
+## Closing
+
+- `steps-done/<N>.md` (and `<N>-<k>.md` per substep of a larger step): what was done and how, the commits, the evidence of
+  each planned check, what is not checked and why, the mistakes, what a skill lacked. The plan file leaves `steps-new/` in the
+  same commit.
+- A closed step that gets a new substep is closed again as a whole — no «addendum» files.
+- A cause found the hard way → `anti-patterns.md`: symptom, cause, cure. A live proof of a part of `CLAUDE.md` or a skill →
+  `proofs/` and its mark (README, «Proof marks»). A text left in one language → `translation-debt.md` (skill `use-languages`).
+- `current-step.md`: «Active step: none» or the next one, the last commit, the next action.
+
+## Do not
+
+- Create your own folder or file to track work (`tasks/`, `plans/`, `TODO.md`) — one system of records only; a new kind of
+  document is the person's decision, and it gets its line in the README.
+- Keep the state in your head until the end of the work.
+- Write a worker job (an order) here.

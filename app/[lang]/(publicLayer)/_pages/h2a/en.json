@@ -4,7 +4,7 @@
   "keywords": "",
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "You write to your agent in plain words: what you need, what to change, what it costs. The orchestrator turns the request into tasks for the agents on your server or finds contractors in the network.",
       "bid": "k8ikg"
     }

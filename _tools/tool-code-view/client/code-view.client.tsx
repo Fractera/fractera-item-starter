@@ -78,7 +78,7 @@ export function CodeView(
   }
 
   return (
-    <div
+    <div data-block="e6a9u"
       className={`${box} [&_pre]:!bg-transparent [&_pre]:m-0 [&_code]:font-mono`}
       // Разметка приходит от Shiki: она построена из кода на сервере разбором
       // грамматики, а не собрана из пользовательского ввода строкой.

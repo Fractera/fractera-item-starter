@@ -1,5 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { useVoiceRecorder, VOICE_BAR, type VoiceTargetRef, type AllVoiceStrings } from "./use-voice-recorder";
 
 // ГОЛОСОВОЙ ВВОД — маленькая кнопка рядом с полем (перенос v1, шаг 232).
@@ -15,9 +18,8 @@ import { useVoiceRecorder, VOICE_BAR, type VoiceTargetRef, type AllVoiceStrings 
 // слоя архитектора и в карточке товара; 32-2 — перекладка внутренностей, а не
 // правка интерфейса. Всё, что меняется для человека, меняется в 32-3.
 //
-// Почему здесь нет ни shadcn, ни lucide, ни sonner: инструмент обязан оставаться
-// архивом — распаковал папку в другом месте, и всё работает. Своя кнопка, свои
-// значки, отказ показывается СТРОКОЙ ПОД КНОПКОЙ, а не тостом платформы.
+// 425 (владелец 2026-10-07): облик собран из shadcn (`Button`, `Textarea`) и токенов — в элементе ничего самописного; прежнее
+// «без shadcn, чтобы работать распакованным где угодно» отменено. Отказ по-прежнему СТРОКОЙ ПОД КНОПКОЙ, а не тостом.
 //
 // КАК СЕБЯ ВЕДЁТ (дизайн владельца, как в v1):
 //   • УДЕРЖИВАЕШЬ кнопку — идёт запись; отпустил — уходит на расшифровку.
@@ -59,34 +61,34 @@ export default function VoiceInput({
   const L = v.strings;
 
   return (
-    <div className="w-full space-y-1.5">
-      <div className="flex w-full items-center gap-2">
-        <button
+    <div data-block="hxxuk" className="flex w-full flex-col gap-1.5">
+      <div data-block="gkuy2" className="flex w-full items-center gap-2">
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           disabled={disabled || v.busy || !v.supported}
           title={v.supported ? L.tipOk : L.tipInsecure}
           onPointerDown={(e) => { e.preventDefault(); v.start(); }}
           onPointerUp={v.stop}
           onPointerLeave={v.stop}
           onPointerCancel={v.stop}
-          className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium transition-colors disabled:opacity-50 ${
-            v.recording ? "border-rose-500/50 text-rose-700 dark:text-rose-400" : "hover:bg-accent"
-          }`}
+          className={cn(v.recording && "border-recording/50 text-recording")}
         >
           <MicIcon off={!v.supported} />
           {v.busy ? L.transcribing : v.recording ? L.recording : L.hold}
-        </button>
+        </Button>
 
         {/* ПОЛОСА ЗВУКА — 40px; столбики 2px через 1px, до 32px, дописываются слева
             направо; в центре плашка с прошедшим временем. */}
         {v.recording ? (
-          <div
+          <div data-block="td3tf"
             ref={(el) => {
               if (el) v.setBarCapacity(Math.floor(el.clientWidth / (VOICE_BAR.width + VOICE_BAR.gap)));
             }}
             className="relative h-10 min-w-[120px] flex-1 overflow-hidden rounded-md border border-border bg-muted/40"
           >
-            <div className="absolute inset-0 flex items-center" style={{ gap: `${VOICE_BAR.gap}px`, paddingInline: 2 }}>
+            <div data-block="hctbf" className="absolute inset-0 flex items-center" style={{ gap: `${VOICE_BAR.gap}px`, paddingInline: 2 }}>
               {v.bars.map((h, i) => (
                 <span key={i} className="shrink-0 rounded-sm bg-primary/70" style={{ width: `${VOICE_BAR.width}px`, height: `${h}px` }} />
               ))}
@@ -103,40 +105,31 @@ export default function VoiceInput({
           текст встаёт в СЕРЕДИНУ документа, и выловить там чужую фразу тяжелее,
           чем один раз её прочитать. */}
       {v.draft !== null ? (
-        <div className="w-full rounded-md border border-border bg-muted/30 p-2">
-          <p className="mb-1 text-[10px] font-medium text-muted-foreground">{L.draftTitle}</p>
+        <div data-block="m7q38" className="w-full rounded-md border border-border bg-muted/30 p-2">
+          <p data-block="w89qf" className="mb-1 text-[10px] font-medium text-muted-foreground">{L.draftTitle}</p>
           {/* Текст ПРАВИТСЯ прямо здесь: одно неверно услышанное слово не должно
               стоить повторной диктовки всего абзаца. */}
-          <textarea
+          <Textarea
             value={v.draft}
             onChange={(e) => v.setDraft(e.target.value)}
             rows={Math.min(8, Math.max(2, v.draft.split("\n").length + 1))}
-            className="w-full resize-y rounded border border-border bg-background p-2 text-xs leading-relaxed text-foreground outline-none"
+            className="text-xs leading-relaxed"
           />
-          <div className="mt-1.5 flex items-center gap-2">
-            <button
-              type="button"
-              onClick={v.accept}
-              disabled={!v.draft.trim()}
-              className="rounded-md border border-primary bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground transition-colors disabled:opacity-50"
-            >
+          <div data-block="e986o" className="mt-1.5 flex items-center gap-2">
+            <Button type="button" size="sm" onClick={v.accept} disabled={!v.draft.trim()}>
               {L.accept}
-            </button>
-            <button
-              type="button"
-              onClick={v.discard}
-              className="rounded-md border border-border px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent"
-            >
+            </Button>
+            <Button type="button" size="sm" variant="outline" onClick={v.discard}>
               {L.discard}
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}
 
       {/* Причина отказа — строкой рядом с кнопкой: тостов у инструмента нет, а
           тупика быть не должно. */}
-      {!v.supported ? <p className="text-xs text-muted-foreground">{L.tipInsecure}</p> : null}
-      {v.note ? <p className="text-xs text-amber-700 dark:text-amber-400">{v.note}</p> : null}
+      {!v.supported ? <p data-block="t6l8l" className="text-xs text-muted-foreground">{L.tipInsecure}</p> : null}
+      {v.note ? <p data-block="ek293" className="text-xs text-warning">{v.note}</p> : null}
     </div>
   );
 }

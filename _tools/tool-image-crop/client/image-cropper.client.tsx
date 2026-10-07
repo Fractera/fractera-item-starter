@@ -26,6 +26,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AppDialog } from "@/components/dialog/app-dialog.client";
 import type { AppDialogUi } from "@/components/dialog/app-dialog.i18n";
+import { Slider } from "@/components/ui/slider";
 
 export type CropMode = "horizontal" | "square" | "vertical";
 
@@ -158,12 +159,12 @@ export function ImageCropper(
       size="md"
       bodyClassName="flex flex-col gap-3 p-4"
     >
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-end">
+      <div data-block="ujcgn" className="flex flex-col gap-3">
+        <div data-block="ovrpv" className="flex items-center justify-end">
           {/* Пропорция заперта — выбора нет и показывать его незачем: кнопки,
               которые ничего не меняют, хуже их отсутствия. */}
           {!force && (
-            <div className="flex gap-1">
+            <div data-block="lvkxv" className="flex gap-1">
               {(["horizontal", "square", "vertical"] as CropMode[]).map((m) => (
                 <Button key={m} variant={cropMode === m ? "default" : "outline"} size="xs" onClick={() => setCropMode(m)}>
                   {m === "horizontal" ? "16:9" : m === "square" ? "1:1" : "9:16"}
@@ -180,16 +181,16 @@ export function ImageCropper(
           style={{ width: W, height: H }}
           onMouseDown={onMouseDown}
         />
-        <div className="flex flex-col gap-1">
+        <div data-block="lfkg6" className="flex flex-col gap-1">
           <span className="text-[10px] text-muted-foreground">{t.scale}</span>
-          <input
-            type="range" min={0.05} max={4} step={0.01} value={scale}
-            onChange={(e) => setScale(parseFloat(e.target.value))}
-            className="w-full accent-primary"
+          <Slider
+            min={0.05} max={4} step={0.01} value={[scale]}
+            onValueChange={([v]) => setScale(v)}
+            className="w-full"
             aria-label={t.scale}
           />
         </div>
-        <div className="flex justify-end gap-2">
+        <div data-block="lzmup" className="flex justify-end gap-2">
           <Button variant="outline" size="sm" onClick={onCancel}>{t.cancel}</Button>
           <Button size="sm" onClick={handleDone}>{t.apply}</Button>
         </div>

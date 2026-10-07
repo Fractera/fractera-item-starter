@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { BlockHighlightWords } from "./block-highlight.i18n"
+import { Button } from "@/components/ui/button"
 
 // ПОДСВЕТКА БЛОКОВ В РЕЖИМЕ АРХИТЕКТОРА (node step 317-3). Образец — FineTuneOverlay сайта 22slots: рамка поверх блока,
 // рисуется отдельным слоем `position: fixed` (страница не меняется; портал не нужен — островок и так стоит в конце `<body>`), у рамки — имя блока и «Нажми для обновления» (336-2).
@@ -11,7 +12,7 @@ import type { BlockHighlightWords } from "./block-highlight.i18n"
 // узла (то же правило, что `lib/sibling-origin.ts` на сервере). Посетитель сайта подсветку не увидит: его страница не
 // открыта в окне ядра, и сообщения ему никто не пошлёт.
 // 🔒 АДРЕС = СТРАНИЦА · ФАЙЛ · БЛОК: `data-page` / `data-file` ставит страница ветки (`lib/branch-page.tsx`), `data-block`
-// (постоянный `bid`) и `data-kind` — фабрика `page-body` из «Блоков». Блоку ничего знать не нужно. Код виджетов (`lib/page-widgets.tsx`)
+// (постоянный `bid`) и `data-kind` — фабрика `page-body` из «Блоков». Блоку ничего знать не нужно. Код виджетов (`<ветка>/_widgets/`)
 // получает `data-block` процедурой `npm run widgets:ids` (335) — на каждом контейнере.
 // 🔒 АДРЕС УХОДИТ В ЯДРО (336-2): «Нажми для обновления» шлёт `fractera:block` (панель под Preview) и `fractera:update` (окно
 // задачи ядра). Скопировать адрес — в окне ядра: в окне чужого источника браузер может закрыть буфер обмена.
@@ -239,9 +240,9 @@ export function BlockHighlight({ words }: { words: BlockHighlightWords }) {
         style={{ top: Math.max(4, rect.top - 30), left: Math.max(4, rect.left), zIndex: 2147483001 }}
       >
         <span className="font-mono">{target.kind} · {target.bid}</span>
-        <button type="button" onClick={update} className="rounded bg-primary-foreground/15 px-1.5 py-0.5 hover:bg-primary-foreground/25" data-highlight-update>
+        <Button variant="bare" size="bare" type="button" onClick={update} className="rounded bg-primary-foreground/15 px-1.5 py-0.5 hover:bg-primary-foreground/25" data-highlight-update>
           {copied ? words.sent : words.update}
-        </button>
+        </Button>
       </div>
     </div>
   )

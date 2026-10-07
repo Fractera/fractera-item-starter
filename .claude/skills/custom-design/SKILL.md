@@ -1,7 +1,9 @@
 ---
 name: custom-design
-description: Use when the person asks for a custom design of a page or the whole element instead of the Blocks element (for example "make it look amazing", "drop the blocks", "own design", "landing page with its own style"). Asks which of the two vendored design skills to use (taste or impeccable), loads it, and states which rules of this element win over the skill.
+description: Builder skill. Use when the person asks for a custom design of a page or the whole element instead of the Blocks element (for example "make it look amazing", "drop the blocks", "own design", "landing page with its own style"). Asks which of the two vendored design skills to use (taste or impeccable), loads it, and states which rules of this element win over the skill.
 ---
+
+<!-- PROOF · NOT PROVEN yet: written, never checked by a live run (rules: development-docs/README.md, «Proof marks») -->
 
 # Custom design — the gatekeeper of two design skills
 
@@ -19,13 +21,13 @@ their own look (owner's decision 2026-09-28, node step 330-5), **ask once, befor
 After the answer, load that skill (`design-taste-frontend` or `impeccable`) and design in its style, following it fully.
 **With impeccable, read `impeccable-on-design.md` next to this file before building:** it marries the skill to the Design
 element (roles as relations to `--primary` in OKLCH, a measured formula per world), so every preset gets its own palette.
-Then write its name into `OWN-SERVICE-PROPS.json` → `designSkill` and run `npm run describe:publish` (node step 333-3).
+Then write its name into the passport `OWN-SERVICE-PROPS/OWN-SERVICE-PROPS.json` → `designSkill` and run `npm run describe:publish` (node step 333-3).
 
 ## Where the design lives
 
 A page with its own look is a **widget** that takes the whole page: its data folder's `meta.json` names
-`"widget": "<name>", "widgetOnly": true`, the widget lives in `components/<name>/` and is listed in `lib/page-widgets.tsx`.
-Words stay in the page data (`_data` / `_pages/<slug>/<lang>.json`), never in code. Example: `components/landing-agent/`
+`"bare": true` and its sequence holds only the widget `widget-static-<name>`; the widget lives in `<branch>/_widgets/static/widget-static-<name>/` and is listed in that branch's `_widgets/index.tsx`.
+Words stay in the page data (`_data` / `_pages/<slug>/<lang>.json`), never in code. Example: `app/[lang]/(publicLayer)/_widgets/static/widget-static-landing-agent/`
 (the home page, made with impeccable).
 
 ## What this element's rules override in both skills

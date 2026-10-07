@@ -25,7 +25,7 @@ in the database without signing in: a visitor who opens it becomes a guest autom
 
 ## The root page: «Go back» and «Delete my account and leave» (node step 331-2)
 
-`guest/_data/meta.json` names the widget `guest-account` (`components/guest-account/`); its words are the field `account` in
+the sequence of `guest/_data/<lang>.json` ends with the widget `widget-static-guest-account` (`guest/_widgets/static/widget-static-guest-account/`); its words are the field `account` in
 `guest/_data/<lang>.json`.
 - **Go back** returns the visitor to the page they came from (a cart, a chat): `?from=<path>` in the address first, then the
   path the lock remembered before leaving for the sign-in (`sessionStorage` `guest-came-from`, same site, not the guest

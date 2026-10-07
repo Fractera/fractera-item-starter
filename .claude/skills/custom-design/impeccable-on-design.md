@@ -95,4 +95,4 @@ A departure board is a split-flap (Solari) display. Animate the real mechanism, 
 1. The person asks for an own design → skill `custom-design` asks «taste or impeccable?» → load impeccable.
 2. Build the page with impeccable fully (its world, its composition, its craft floor), then set every colour through the
    relations above (or measure a new reference palette for a new world the same way).
-3. Write `designSkill` into `OWN-SERVICE-PROPS.json` and run `npm run describe:publish`.
+3. Write `designSkill` into the passport `OWN-SERVICE-PROPS/OWN-SERVICE-PROPS.json` and run `npm run describe:publish`.

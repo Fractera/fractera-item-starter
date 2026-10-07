@@ -7,6 +7,8 @@ const LEADING_LANG = /^\/[a-z]{2}(?=\/|#|\?|$)/
 export function shellHref(lang: string, href: string | undefined, fallbackPath: string): string {
   if (href && /^https?:\/\//.test(href)) return href
   if (!href) return fallbackPath
+  // A placeholder item («#», owner 2026-10-07: Store and Blog have no page yet) stays where it is — no language, no address.
+  if (href.startsWith("#")) return href
   if (LEADING_LANG.test(href)) return href.replace(LEADING_LANG, `/${lang}`)
   return `/${lang}${href}`
 }

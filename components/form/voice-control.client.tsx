@@ -126,7 +126,7 @@ export function VoiceControl({
   )
 
   return (
-    <div data-voice-control={variant} className="flex w-full flex-col gap-2">
+    <div data-block="rj937" data-voice-control={variant} className="flex w-full flex-col gap-2">
       {variant === "textarea" ? (
         <>
           <Textarea
@@ -149,7 +149,7 @@ export function VoiceControl({
         // элемента срезала бы ему скругления справа, и заблокированное поле
         // выглядело бы обрубленным без всякой причины.
         withVoice ? (
-          <ButtonGroup className="w-full">
+          <ButtonGroup data-block="dgaa3" className="w-full">
             <Input
               id={id}
               ref={inputRef}
@@ -184,14 +184,14 @@ export function VoiceControl({
 
       {/* Одно место, три состояния, взаимно исключающие друг друга. */}
       {v.recording ? (
-        <div
+        <div data-block="kdpva"
           data-voice-bar
           ref={el => {
             if (el) v.setBarCapacity(Math.floor(el.clientWidth / (VOICE_BAR.width + VOICE_BAR.gap)))
           }}
           className="relative h-12 w-full overflow-hidden rounded-lg border border-border bg-muted/40"
         >
-          <div className="absolute inset-0 flex items-center" style={{ gap: `${VOICE_BAR.gap}px`, paddingInline: 4 }}>
+          <div data-block="d1xjd" className="absolute inset-0 flex items-center" style={{ gap: `${VOICE_BAR.gap}px`, paddingInline: 4 }}>
             {v.bars.map((h, i) => (
               <span
                 key={i}
@@ -205,7 +205,7 @@ export function VoiceControl({
           </span>
         </div>
       ) : v.draft !== null ? (
-        <div data-voice-draft className="flex w-full flex-col gap-2">
+        <div data-block="eye7b" data-voice-draft className="flex w-full flex-col gap-2">
           <Small>{L.draftTitle}</Small>
           <Textarea
             value={v.draft}
@@ -213,7 +213,7 @@ export function VoiceControl({
             rows={Math.min(8, Math.max(2, v.draft.split("\n").length + 1))}
             className="text-[length:var(--fs-body)] md:text-[length:var(--fs-body)]"
           />
-          <div className="flex items-center gap-2">
+          <div data-block="ehgvh" className="flex items-center gap-2">
             <Button type="button" size="sm" onClick={v.accept} disabled={!v.draft.trim()} data-voice-accept>
               {L.accept}
             </Button>

@@ -32,6 +32,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Play, Scissors } from "lucide-react";
 import { AppDialog } from "@/components/dialog/app-dialog.client";
 import type { AppDialogUi } from "@/components/dialog/app-dialog.i18n";
+import { Slider } from "@/components/ui/slider";
 
 export type TrimmerLabels = {
   title: string; start: string; end: string; keeping: string; lossless: string;
@@ -158,20 +159,19 @@ export function VideoTrimmer(
       size="lg"
       bodyClassName="flex flex-col gap-3 p-4"
     >
-      <div className="flex flex-col gap-3">
+      <div data-block="w8hun" className="flex flex-col gap-3">
 
         <video ref={videoRef} src={src} controls className="max-h-[46vh] w-full rounded-lg bg-black" />
 
         {duration > 0 ? (
           <>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
+            <div data-block="w6emv" className="flex flex-col gap-2">
+              <div data-block="kxtrk" className="flex items-center gap-2">
                 <span className="w-10 text-[10px] text-muted-foreground">{labels.start}</span>
-                <input
-                  type="range" min={0} max={duration} step={0.05} value={start}
+                <Slider
+                  min={0} max={duration} step={0.05} value={[start]}
                   aria-label={labels.start}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
+                  onValueChange={([v]) => {
                     setStart(Math.min(v, end - 0.2));
                     if (videoRef.current) videoRef.current.currentTime = v;
                   }}
@@ -179,13 +179,12 @@ export function VideoTrimmer(
                 />
                 <span className="w-16 text-right font-mono text-[10px] text-foreground">{fmt(start)}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div data-block="geb0k" className="flex items-center gap-2">
                 <span className="w-10 text-[10px] text-muted-foreground">{labels.end}</span>
-                <input
-                  type="range" min={0} max={duration} step={0.05} value={end}
+                <Slider
+                  min={0} max={duration} step={0.05} value={[end]}
                   aria-label={labels.end}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
+                  onValueChange={([v]) => {
                     setEnd(Math.max(v, start + 0.2));
                     if (videoRef.current) videoRef.current.currentTime = v;
                   }}
@@ -195,12 +194,12 @@ export function VideoTrimmer(
               </div>
             </div>
 
-            <p className="text-[10px] text-muted-foreground">
+            <p data-block="e4ssg" className="text-[10px] text-muted-foreground">
               {fill(labels.keeping, { kept: (end - start).toFixed(1), total: duration.toFixed(1) })}{" "}
               {labels.lossless}
             </p>
 
-            <div className="flex justify-end gap-2">
+            <div data-block="uajvd" className="flex justify-end gap-2">
               <Button variant="outline" size="sm" onClick={playMiddle}><Play size={11} /> {labels.previewMiddle}</Button>
               <Button variant="outline" size="sm" onClick={onClose}>{labels.keepWhole}</Button>
               <Button size="sm" onClick={apply} disabled={applying}>
@@ -210,7 +209,7 @@ export function VideoTrimmer(
             </div>
           </>
         ) : (
-          <p className="text-[11px] text-muted-foreground">{labels.reading}</p>
+          <p data-block="fd43y" className="text-[11px] text-muted-foreground">{labels.reading}</p>
         )}
       </div>
     </AppDialog>

@@ -4,7 +4,7 @@
   "keywords": "",
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "You ask an agent from the network questions before buying its work: what it can do, how it solves your task, what happens in a hard case. Anna asked the booking agent what happens when a client is late.",
       "bid": "hy6y9"
     }

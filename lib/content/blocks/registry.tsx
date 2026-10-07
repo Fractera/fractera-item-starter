@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 import { PageBody, type BlockSet } from '@/components/blocks/page-body'
-import { P } from '@/components/blocks/p'
-import { SectionHead } from '@/components/blocks/section-head'
-import { HeroCentered } from '@/components/blocks/hero-centered'
-import { WarningCard } from '@/components/blocks/warning-card'
-import { Faq } from '@/components/blocks/faq'
+import { SectionHead } from '@/components/blocks/block-section-head'
+import { HeroCentered } from '@/components/blocks/block-hero-centered'
+import { WarningCard } from '@/components/blocks/block-warning-card'
+import { Faq } from '@/components/blocks/block-faq'
 import type { Block } from './types'
+import { TEXT_SET } from '@/lib/content/text-set'
 
 // НАБОР БЛОКОВ ЭТОГО ЭЛЕМЕНТА И ОТРИСОВКА СТРАНИЦЫ (шаг 314-2).
 //
@@ -15,14 +15,15 @@ import type { Block } from './types'
 // 🪦 Прежняя отрисовка через `sections/` (62 вида) удалена вместе с каталогом.
 
 export const BLOCK_SET: BlockSet = {
-  p: P,
-  'section-head': SectionHead,
-  'hero-centered': HeroCentered,
-  'warning-card': WarningCard,
-  faq: Faq,
+  'block-section-head': SectionHead,
+  'block-hero-centered': HeroCentered,
+  'block-warning-card': WarningCard,
+  'block-faq': Faq,
 }
 
 /** Нарисовать список блоков по порядку; `keyPrefix` держит ключи уникальными между вызовами на одной странице. */
-export function renderBlocks(blocks: (Block | { kind: 'faq'; title: string; items: { q: string; a: string }[] })[], keyPrefix = 'blk'): ReactNode {
-  return <PageBody key={keyPrefix} blocks={blocks} set={BLOCK_SET} />
+/** 423: страница — последовательность трёх видов: `block-*` (набор выше), `text-*` (типографика элемента), `widget-*` (виджеты
+ *  ветки — `widgets`, уже привязанные к языку). Незнакомое имя — громкая ошибка фабрики, а не пустое место. */
+export function renderBlocks(blocks: (Block | { kind: 'block-faq'; title: string; items: { q: string; a: string }[] })[], keyPrefix = 'blk', widgets?: BlockSet): ReactNode {
+  return <PageBody key={keyPrefix} blocks={blocks} set={{ ...BLOCK_SET, ...TEXT_SET, ...(widgets ?? {}) }} />
 }

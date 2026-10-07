@@ -26,15 +26,16 @@ import { resolveMarkdownLinks } from '@/lib/content/blocks/links'
 // Раскрывает её теперь `resolveMarkdownLinks` — там же, где живут все прочие
 // решения о ссылках, чтобы обе формы страницы не разошлись снова.
 
-function lines(block: Block): string[] {
+/** Текст виджета по его имени (`_widgets/markdown.ts` ветки); виджет без текста — пустая строка. */
+export type WidgetText = (kind: string) => string
+
+function lines(block: Block, widget?: WidgetText): string[] {
   // 314-2: виды набора элемента (`lib/content/blocks/registry.tsx`). Новый вид в наборе — строка здесь той же правкой,
   // иначе машинная версия страницы молча теряет его текст.
   switch (block.kind) {
-    case 'p':
-      return [block.text]
-    case 'section-head':
+    case 'block-section-head':
       return [`## ${block.title}`]
-    case 'hero-centered':
+    case 'block-hero-centered':
       return [
         ...(block.pill ? [`_${block.pill}_`, ''] : []),
         `# ${block.title}`,
@@ -43,9 +44,34 @@ function lines(block: Block): string[] {
         ...(block.cta ? ['', `[${block.cta.label}](${block.cta.href})`] : []),
         ...(block.secondary ? [`[${block.secondary.label}](${block.secondary.href})`] : []),
       ]
-    case 'warning-card':
+    case 'block-warning-card':
       return [`> **${block.title}** ${block.text}`]
+    // 423: типографика элемента — сама почти Markdown.
+    case 'text-h2':
+      return [`## ${block.text}`]
+    case 'text-h3':
+      return [`### ${block.text}`]
+    case 'text-h4':
+      return [`#### ${block.text}`]
+    case 'text-p':
+    case 'text-lead':
+    case 'text-small':
+      return [block.text]
+    case 'text-list':
+      return block.items.map((t, i) => (block.ordered ? `${i + 1}. ${t}` : `- ${t}`))
+    case 'text-quote':
+      return [`> ${block.text}`, ...(block.cite ? [`> — ${block.cite}`] : [])]
+    case 'text-code':
+      return ['```', block.text, '```']
   }
+  // 428: виджет ветки несёт свой текст (лендинг — поле `landing` данных, форма — свои строки), и в копию он приходит через
+  // `markdown(lang)` в папке виджета. 🪦 Здесь стояло «его слова уже в машинной версии» — неверно: главная отдавала 159 байт.
+  const kind = (block as { kind: string }).kind
+  if (widget && kind.startsWith('widget-')) {
+    const text = widget(kind).trim()
+    return text ? [text] : []
+  }
+  return []
 }
 
 /**
@@ -58,10 +84,10 @@ function lines(block: Block): string[] {
  * во что. Параметр сделан ОБЯЗАТЕЛЬНЫМ намеренно: с умолчанием следующая
  * поверхность молча забыла бы его передать, и дефект вернулся бы туда же.
  */
-export function blocksToMarkdown(blocks: Block[], siteName: string): string {
+export function blocksToMarkdown(blocks: Block[], siteName: string, widget?: WidgetText): string {
   return resolveMarkdownLinks(
     blocks
-      .flatMap(b => [...lines(b), ''])
+      .flatMap(b => [...lines(b, widget), ''])
       .join('\n')
       .replace(/\n{3,}/g, '\n\n')
       .trim(),

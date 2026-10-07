@@ -1,0 +1,8 @@
+import { markdown as landingAgent } from "./static/widget-static-landing-agent/markdown"
+
+// ТЕКСТ ВИДЖЕТОВ ЭТОЙ ВЕТКИ ДЛЯ МАШИН (узел, шаг 428). Пара к `index.tsx`: там виджет рисуется для человека, здесь его текст
+// уходит в markdown-копию страницы (`/<язык>/index.md`) и в `llms-full.txt`. Отдельный файл, а не поле в `index.tsx`: маршрут
+// копии не должен тянуть компоненты и островки. Ключи обязаны совпадать с `WIDGETS` — `npm run check:aio` сверяет.
+export const WIDGET_MARKDOWN: Record<string, (lang: string) => string> = {
+  "widget-static-landing-agent": landingAgent,
+}

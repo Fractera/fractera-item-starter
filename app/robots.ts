@@ -88,6 +88,8 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       { userAgent: "Googlebot", allow: "/", disallow },
       { userAgent: "Bingbot", allow: "/", disallow, crawlDelay: 1 },
       { userAgent: "GPTBot", allow: "/", disallow, crawlDelay: 1 },
+      // 431 (владелец 2026-10-07: «Разрешить, как другим»): токен Google — учится ли Gemini на страницах; на поиск не влияет.
+      { userAgent: "Google-Extended", allow: "/", disallow },
       { userAgent: "OAI-SearchBot", allow: "/", disallow },
       { userAgent: "ChatGPT-User", allow: "/", disallow },
       { userAgent: "anthropic-ai", allow: "/", disallow, crawlDelay: 1 },

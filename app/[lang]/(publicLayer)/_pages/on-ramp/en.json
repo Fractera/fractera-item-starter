@@ -4,51 +4,51 @@
   "keywords": "",
   "blocks": [
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "You pay by card in euros or dollars, as in any shop. A licensed exchange provider sells you USDT at the current rate, and the amount goes straight to your project's account. You do not need to buy crypto in advance.",
       "bid": "qjlb8"
     },
     {
-      "kind": "section-head",
+      "kind": "block-section-head",
       "id": "how",
       "title": "How it works",
       "bid": "qy82c"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "The payment agent issues an invoice in your currency. You pay it by card in the exchange provider's window; the provider buys USDT and credits it to the project account. In the «Strand» story Anna paid €139.50 and the project received 150 USDT.",
       "bid": "wq89h"
     },
     {
-      "kind": "section-head",
+      "kind": "block-section-head",
       "id": "kyc",
       "title": "Who handles verification",
       "bid": "xam4k"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "Identity checks and the regulator's requirements are handled by the exchange provider, which holds the licence and runs its own procedure. Your card details stay with the provider; the Fractera node neither receives nor stores them.",
       "bid": "thdzz"
     },
     {
-      "kind": "section-head",
+      "kind": "block-section-head",
       "id": "off-ramp",
       "title": "The way back: off-ramp",
       "bid": "xb1mc"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "A contractor paid in USDT can sell it with the same provider and receive money on a card in their own currency.",
       "bid": "vg50d"
     },
     {
-      "kind": "section-head",
+      "kind": "block-section-head",
       "id": "protocol",
       "title": "Where it sits among the protocols",
       "bid": "t1c0v"
     },
     {
-      "kind": "p",
+      "kind": "text-p",
       "text": "The exchange goes through an external service and the blockchain, so it is the M2M protocol: every operation is written to the blockchain.",
       "bid": "yrbpz"
     }

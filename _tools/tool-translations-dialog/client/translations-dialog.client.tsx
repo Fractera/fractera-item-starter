@@ -123,7 +123,7 @@ export function TranslationsDialog(
       bodyClassName="space-y-2 p-4"
       footerClassName="block px-4 py-2.5"
       footer={
-        <div className="flex items-center gap-1.5">
+        <div data-block="seg41" className="flex items-center gap-1.5">
           <Button size="sm" variant="ghost" onClick={onSkip}>{t.skip}</Button>
           {/* Родной `title`: работает на касании и переживает выключенный JS. */}
           <span title={t.hint} className="cursor-help text-muted-foreground">
@@ -132,10 +132,10 @@ export function TranslationsDialog(
         </div>
       }
       toolbar={
-        <div className="space-y-3">
+        <div data-block="b6wkx" className="flex flex-col gap-3">
           {/* Вкладки полей — только когда полей больше одного. */}
           {fields.length > 1 && (
-            <div className="flex flex-wrap items-center gap-1.5">
+            <div data-block="a9rle" className="flex flex-wrap items-center gap-1.5">
               {fields.map((f, i) => (
                 <Button
                   key={f.key}
@@ -155,7 +155,7 @@ export function TranslationsDialog(
           {/* ДВЕ кнопки перевода, и обе про ВКЛАДКИ: эту и все. «Перевести это
               поле» отсюда убрано — поле и вкладка здесь одно и то же, а два
               имени одного действия заставляли выбирать между синонимами. */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div data-block="dh9rl" className="flex flex-wrap items-center gap-2">
             <Button size="sm" variant="outline" onClick={() => translate(field?.key)} disabled={busy}>
               {busy ? <Loader2 size={12} className="animate-spin" /> : <Languages size={12} />}
               {busy ? t.translating : t.translateTab}
@@ -168,10 +168,10 @@ export function TranslationsDialog(
           </div>
 
           {errorText && (
-            <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/5 p-2.5 text-[11px] leading-relaxed text-destructive">
+            <div data-block="fy6vi" className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/5 p-2.5 text-[11px] leading-relaxed text-destructive">
               <AlertTriangle size={12} className="mt-0.5 shrink-0" />
-              <div>
-                <p>{errorText}</p>
+              <div data-block="s12dy">
+                <p data-block="aj8us">{errorText}</p>
                 {(error === "no-key" || error === "bad-key") && (
                   <a href={`${adminBase()}/${lang}/openai`} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 underline">
                     {errors.keyLink}<ExternalLink size={10} />

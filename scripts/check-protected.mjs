@@ -159,6 +159,9 @@ for (const f of walk(APP)) {
   const i = rel.lastIndexOf("_widgets")
   if (i === -1) continue
   const kind = rel[i + 1]
+  // Исключение поимённо (владелец 2026-10-07): `_widgets/index.tsx` — список виджетов этой ветки; ветка объявляет их у себя.
+  // Шаг 428: его пара `_widgets/markdown.ts` — текст тех же виджетов для машинной копии страницы (сверяет `check:aio`).
+  if (rel.length === i + 2 && (kind === "index.tsx" || kind === "markdown.ts")) continue
   if (!WIDGET_KINDS.has(kind)) {
     fail(f, "widget-without-kind", `лежит в _widgets/${kind ?? "?"} — вид виджета называется папкой: _widgets/static/<имя> или _widgets/dynamic/<имя>`)
   }
