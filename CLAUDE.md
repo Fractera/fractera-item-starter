@@ -149,6 +149,12 @@
 
 Проверка живого сайта: `npm run check:index <https://site> --langs en,ru`. Сторож сборки: `scripts/check-seo-html.mjs`.
 
+## Инструменты
+
+Готовые способности, не знающие страницы, — в `_tools/tool-<имя>/`; смотреть туда до того, как строить похожее. Список
+порождается (`_tools/TOOLS.json`, `npm run build:tools-map`; `check:tools-map` в `prebuild`); как добавить и чем инструмент
+отличается от виджета — `_tools/README.md`.
+
 ## Паспорт элемента
 
 Задача «Опиши этот AGI элемент…» → заполнить в `OWN-SERVICE-PROPS.json` поля `summary` (2–3 простых предложения: что делает и для кого) и `provides` (1–20 имён способностей, например `order-form`) → закоммитить этот файл → `npm run describe:publish`. `DESCRIBE_FAILED` называет, что исправить.
