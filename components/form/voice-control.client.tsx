@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Small } from "@/components/ui/typography"
-import { useVoiceRecorder, VOICE_BAR } from "@/_tools/tool-voice-input/client/use-voice-recorder"
+import { useVoiceRecorder, VOICE_BAR, type AllVoiceStrings } from "@/_tools/tool-voice-input/client/use-voice-recorder"
 import { MicIcon } from "./mic-icon"
 
 // УПРАВЛЯЮЩИЙ ЭЛЕМЕНТ С ГОЛОСОМ — поле, микрофон, полоса, расшифровка (32-8).
@@ -48,7 +48,8 @@ export function VoiceControl({
   type = "text",
   inputMode,
   voice = true,
-  apiUrl = "/api/transcribe",
+  apiUrl = "/api/tools/tool-voice-input",
+  strings,
 }: {
   id: string
   variant?: VoiceControlVariant
@@ -80,6 +81,8 @@ export function VoiceControl({
    */
   voice?: boolean
   apiUrl?: string
+  /** Слова голоса на языке страницы — от сервера (`voiceStrings(lang)`); клиент словарь не импортирует (422). */
+  strings: AllVoiceStrings
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const areaRef = useRef<HTMLTextAreaElement>(null)
@@ -90,6 +93,7 @@ export function VoiceControl({
     lang,
     disabled: disabled || readOnly,
     apiUrl,
+    strings,
   })
   const L = v.strings
 

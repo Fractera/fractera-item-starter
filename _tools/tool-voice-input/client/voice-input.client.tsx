@@ -1,6 +1,6 @@
 "use client";
 
-import { useVoiceRecorder, VOICE_BAR, type VoiceTargetRef } from "./use-voice-recorder";
+import { useVoiceRecorder, VOICE_BAR, type VoiceTargetRef, type AllVoiceStrings } from "./use-voice-recorder";
 
 // ГОЛОСОВОЙ ВВОД — маленькая кнопка рядом с полем (перенос v1, шаг 232).
 //
@@ -41,6 +41,7 @@ export default function VoiceInput({
   lang,
   disabled,
   apiUrl,
+  strings,
 }: {
   /** Поле, которое принимает речь (его курсор решает КУДА). */
   targetRef: VoiceTargetRef;
@@ -49,10 +50,12 @@ export default function VoiceInput({
   onChange: (next: string) => void;
   lang: string;
   disabled?: boolean;
-  /** Адрес двери расшифровки; не задан — соседняя `api/transcribe`. */
+  /** Адрес двери расшифровки; не задан — `/api/tools/tool-voice-input`. */
   apiUrl?: string;
+  /** Слова облика на языке страницы — выбирает сервер (`voiceStrings(lang)`), клиент словарь не импортирует (422). */
+  strings: AllVoiceStrings;
 }) {
-  const v = useVoiceRecorder({ targetRef, value, onChange, lang, disabled, apiUrl });
+  const v = useVoiceRecorder({ targetRef, value, onChange, lang, disabled, apiUrl, strings });
   const L = v.strings;
 
   return (

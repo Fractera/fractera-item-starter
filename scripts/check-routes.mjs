@@ -53,6 +53,8 @@ const ALLOWED = new Map([
   ['app/[lang]/(guestLayer)/guest/[slug]/page.tsx', 'РЕБЁНОК гостевой ветки'],
   // двери API — не страницы
   ['app/api/config-image/[slot]/route.ts', 'картинки настроек'],
+  ['app/api/tools/tool-voice-input/route.ts', 'дверь инструмента tool-voice-input: расшифровка речи (узел, шаг 421)'],
+  ['app/api/tools/tool-socials-ai/route.ts', 'дверь инструмента tool-socials-ai: соцсеть по описанию (узел, шаг 421)'],
   ['app/api/health/route.ts', 'жив ли элемент — для сторожа узла'],
   ['app/api/help-desk/route.ts', 'чат справочного бюро лендинга (узел, шаг 349)'],
   ['app/api/task-report/route.ts', 'отчёт о задаче для окна предпросмотра (узел, шаг 356-2)'],

@@ -1,8 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { voiceStrings, type VoiceStrings } from "./voice-input-i18n";
+// 350: слова НЕ импортируются — их выбирает сервер по языку страницы и передаёт параметром `strings` (сторож check-lang-delivery:
+// словарь, импортированный клиентом, уезжает в браузер целиком, со всеми языками).
+import type { VoiceStrings as AllVoiceStrings } from "@/lib/i18n/voice-field.i18n";
+export type VoiceStrings = Pick<AllVoiceStrings, "micDenied" | "micNoDevice" | "frame" | "failed" | "nothing" | "noKey">;
+export type { AllVoiceStrings };
 
+// 422 (узел): единственная механика голоса элемента. `maxSeconds` — запись останавливается сама (владелец 2026-09-30: «ограничь
+// запись в 20 секунд»); `extra` — поля формы расшифровки; `strings` — слова отказов от сервера. Прежняя копия `lib/use-voice-recorder.ts` снята.
+//
 // МЕХАНИКА ГОЛОСОВОГО ВВОДА — ОДНА НА ВСЕ ИНТЕРФЕЙСЫ (шаг 32-2, 2026-08-28).
 //
 // 🔒 ЗАЧЕМ ХУК, ЕСЛИ ВСЁ УЖЕ РАБОТАЛО. Владелец заказал второй облик того же
@@ -46,9 +53,9 @@ function inFrame(): boolean {
   }
 }
 
-export type VoiceRecorder = {
-  /** Слова на языке страницы — резолвятся один раз здесь, чтобы оба облика брали одни. */
-  strings: VoiceStrings;
+export type VoiceRecorder<S extends VoiceStrings = VoiceStrings> = {
+  /** Слова на языке страницы — от сервера (422), оба облика берут одни. */
+  strings: S;
   /** Микрофон в принципе доступен в этой среде. */
   supported: boolean;
   recording: boolean;
@@ -72,13 +79,16 @@ export type VoiceRecorder = {
   discard: () => void;
 };
 
-export function useVoiceRecorder({
+export function useVoiceRecorder<S extends VoiceStrings = VoiceStrings>({
   targetRef,
   value,
   onChange,
   lang,
   disabled,
   apiUrl,
+  maxSeconds,
+  extra,
+  strings,
 }: {
   targetRef: VoiceTargetRef;
   value: string;
@@ -86,16 +96,21 @@ export function useVoiceRecorder({
   lang: string;
   disabled?: boolean;
   /**
-   * Адрес двери расшифровки. Не задан — берётся соседняя `api/transcribe`
-   * относительно текущего пути.
+   * Адрес двери расшифровки. Не задан — дверь инструмента элемента `/api/tools/tool-voice-input` (422).
    *
    * 🔒 Пропс появился, когда инструмент понадобился в панели: там страница живёт
    * по адресу вида `/ru/doc-instruction`, и относительный путь дал бы
    * `/ru/doc-instruction/api/transcribe` — двери, которой нет.
    */
   apiUrl?: string;
-}): VoiceRecorder {
-  const L = voiceStrings(lang);
+  /** 350: предел записи в секундах — дальше запись останавливается сама и уходит на расшифровку. */
+  maxSeconds?: number;
+  /** 350: дополнительные поля формы расшифровки (например, язык страницы). */
+  extra?: Record<string, string>;
+  /** Слова отказов на языке страницы — от сервера. */
+  strings: S;
+}): VoiceRecorder<S> {
+  const L = strings;
   const [recording, setRecording] = useState(false);
   const [busy, setBusy] = useState(false);
   const [bars, setBars] = useState<number[]>([]);
@@ -167,10 +182,11 @@ export function useVoiceRecorder({
       try {
         const fd = new FormData();
         fd.append("audio", new File([blob], "speech.webm", { type: blob.type || "audio/webm" }));
-        const url = apiUrl ?? `${location.pathname.replace(/\/+$/, "")}/api/transcribe`;
+        for (const [k, v] of Object.entries(extra ?? {})) fd.append(k, v);
+        const url = apiUrl ?? "/api/tools/tool-voice-input";
         const r = await fetch(url, { method: "POST", body: fd, credentials: "include" });
         const d = (await r.json()) as { text?: string; reason?: string };
-        if (!r.ok) { setNote(d.reason === "no-key" ? L.noKey : L.failed); return; }
+        if (!r.ok) { setNote(d.reason === "no-key" ? L.noKey : d.reason === "rate-limit" ? L.failed : L.failed); return; }
         if (!d.text) { setNote(L.nothing); return; }
         setNote("");
         setDraft(d.text);
@@ -180,7 +196,7 @@ export function useVoiceRecorder({
         setBusy(false);
       }
     },
-    [L, apiUrl],
+    [L, apiUrl, extra],
   );
 
   const start = useCallback(async () => {
@@ -257,6 +273,11 @@ export function useVoiceRecorder({
     audioCtx.current = null;
     analyser.current = null;
   }, [recording]);
+
+  // 350: предел записи — дошли до `maxSeconds`, запись останавливается сама и уходит на расшифровку.
+  useEffect(() => {
+    if (recording && maxSeconds && seconds >= maxSeconds) stop();
+  }, [recording, seconds, maxSeconds, stop]);
 
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
   const ss = String(seconds % 60).padStart(2, "0");

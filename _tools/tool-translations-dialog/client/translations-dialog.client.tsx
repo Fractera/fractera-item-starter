@@ -46,6 +46,7 @@ import { SINGLE_LANG_MODE } from "@/config/translations/translations.config"
 import { adminBase } from "@/lib/runtime-urls"
 import type { PlatformErrors } from "@/lib/i18n/platform-errors"
 import { TranslationCell } from "./translation-cell.client"
+import type { AllVoiceStrings } from "@/_tools/tool-voice-input/client/use-voice-recorder"
 import type { TranslationsUi } from "../types/translations-dialog.i18n"
 import { useTranslations, type Drafts, type TranslatableField } from "./use-translations"
 
@@ -57,8 +58,10 @@ export type { TranslatableField, Drafts }
 // что у панели (/code/CLAUDE.md §4д).
 
 export function TranslationsDialog(
-  { open, lang, fields, ui, dialogUi, errors, billingUrl, onSave, onSkip }: {
+  { open, lang, fields, ui, dialogUi, errors, billingUrl, onSave, onSkip, voiceWords }: {
     open: boolean
+    /** Слова голоса на языке страницы — от сервера (`voiceStrings(lang)`); клиент словарь не импортирует (422). */
+    voiceWords: AllVoiceStrings
     /** Язык интерфейса — он же язык исходных значений. */
     lang: string
     fields: TranslatableField[]
@@ -192,6 +195,7 @@ export function TranslationsDialog(
         return (
           <TranslationCell
             key={code}
+            voiceWords={voiceWords}
             lang={code}
             value={value}
             multiline={field?.multiline}

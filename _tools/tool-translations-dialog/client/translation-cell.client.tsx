@@ -16,14 +16,17 @@
 import { useRef } from "react"
 import { Check, Loader2 } from "lucide-react"
 import VoiceInput from "@/_tools/tool-voice-input/client/voice-input.client"
+import type { AllVoiceStrings } from "@/_tools/tool-voice-input/client/use-voice-recorder"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { getLanguageFlag, getLanguageNativeName, type SupportedLanguage } from "@/config/translations/translations.config"
 
 export function TranslationCell(
-  { lang, value, multiline, dirty, saved, saving, labels, onChange, onSave }: {
+  { lang, value, multiline, dirty, saved, saving, labels, onChange, onSave, voiceWords }: {
     lang: string
+    /** Слова голоса на языке страницы — от сервера (`voiceStrings(lang)`); клиент словарь не импортирует (422). */
+    voiceWords: AllVoiceStrings
     value: string
     multiline?: boolean
     /** Текст отличается от исходного — значит есть что сохранять. */
@@ -66,7 +69,8 @@ export function TranslationCell(
           value={value}
           onChange={onChange}
           lang={lang}
-          apiUrl="/api/transcribe"
+          apiUrl="/api/tools/tool-voice-input"
+          strings={voiceWords}
         />
         {dirty && !saved && (
           <Button size="sm" variant="secondary" onClick={onSave} disabled={saving} className="h-7 text-[11px]">

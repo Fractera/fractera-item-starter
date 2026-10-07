@@ -5,6 +5,7 @@ import { Loader2, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Small } from "@/components/ui/typography"
 import { VoiceControl } from "@/components/form/voice-control.client"
+import type { AllVoiceStrings } from "@/_tools/tool-voice-input/client/use-voice-recorder"
 import type { DraftFailure } from "../types/fact-draft"
 
 // ОПИСАНИЕ СЛОВАМИ → ЧЕРНОВИК ЗАПИСИ (81-5).
@@ -36,9 +37,12 @@ export function FactDraft({
   lang,
   labels,
   onDraft,
+  voiceWords,
 }: {
   lang: string
   labels: FactDraftLabels
+  /** Слова голоса на языке страницы — от сервера (`voiceStrings(lang)`); клиент словарь не импортирует (422). */
+  voiceWords: AllVoiceStrings
   /** Разобранное уезжает наружу. Инструмент сам ничего не сохраняет. */
   onDraft: (draft: Record<string, string>, notes: string) => void
 }) {
@@ -87,6 +91,7 @@ export function FactDraft({
         value={words}
         onChange={setWords}
         lang={lang}
+        strings={voiceWords}
         placeholder={labels.placeholder}
         disabled={busy}
       />
